@@ -2,12 +2,11 @@ aniso8601
 asgiref
 certifi
 chardet
-Django
+django
 django-allauth
 django-graphql-jwt
 django-rest-auth
 djangorestframework
-mongoengine
 dnspython
 graphene
 graphene-django
@@ -16,7 +15,6 @@ graphql-core
 graphql-relay
 idna
 numpy
-pymongo
 python-dateutil
 pytz
 requests
@@ -25,3 +23,4 @@ text-unidecode
 typing_extensions
 tzdata
 urllib3
+mysqlclient

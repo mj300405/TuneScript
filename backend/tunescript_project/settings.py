@@ -1,7 +1,5 @@
 # settings.py
-
 from pathlib import Path
-from mongoengine import connect
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -61,11 +59,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tunescript_project.wsgi.application'
 
-# Database
-connect(
-    db='tunescript_db',
-    host='mongodb://127.0.0.1:27017',
-)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tunescript_db',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+
+
 
 # Graphene settings
 GRAPHENE = {
