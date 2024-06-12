@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: tunescript_db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+
+  redis:
+    image: redis:alpine
+
+  web:
+    build:
+      context: ..
+      dockerfile: devtools/Dockerfile
+    command: poetry run python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ../backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgres://root:root@db:5432/tunescript_db
+      - REDIS_URL=redis://redis:6379/0
+
+  celery:
+    build:
+      context: ..
+      dockerfile: devtools/Dockerfile
+    command: poetry run celery -A tunescript_project worker --loglevel=info
+    volumes:
+      - ../backend:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgres://root:root@db:5432/tunescript_db
+      - REDIS_URL=redis://redis:6379/0
+
+volumes:
+  postgres_data:
