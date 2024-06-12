@@ -71,6 +71,9 @@ urllib3 = "2.2.1"
 virtualenv = "20.26.2"
 zipp = "3.19.2"
 piano-transcription-inference = "^0.0.5"
+celery = "^5.4.0"
+django-celery-beat = "^2.6.0"
+django-celery-results = "^2.5.1"
 
 [tool.poetry.dev-dependencies]
 poetry = "1.8.3"

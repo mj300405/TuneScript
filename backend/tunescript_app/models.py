@@ -1,7 +1,8 @@
+# backend/tunescript_app/models.py
+
 from django.db import models
 from django.contrib.auth import get_user_model
 from datetime import datetime, timedelta
-from .tasks import process_transcription
 
 User = get_user_model()
 
@@ -58,6 +59,7 @@ class Transcription(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.status == 'PENDING':
+            from .tasks import process_transcription
             process_transcription.delay(self.id)
 
 class Favorite(models.Model):
