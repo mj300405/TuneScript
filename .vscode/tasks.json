@@ -1,0 +1,61 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start MySQL",
+            "type": "shell",
+            "command": "sudo service mysql start",
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "Install Dependencies",
+            "type": "shell",
+            "command": "poetry install",
+            "problemMatcher": [],
+            "group": "build",
+            "dependsOn": ["Start MySQL"]
+        },
+        {
+            "label": "Start Redis",
+            "type": "shell",
+            "command": "sudo service redis-server start",
+            "problemMatcher": [],
+            "group": "build",
+            "dependsOn": ["Install Dependencies"]
+        },
+        {
+            "label": "Run Migrations",
+            "type": "shell",
+            "command": "poetry run python manage.py migrate",
+            "problemMatcher": [],
+            "group": "build",
+            "dependsOn": ["Start Redis"]
+        },
+        {
+            "label": "Start Celery Worker",
+            "type": "shell",
+            "command": "poetry run celery -A tunescript_project worker --loglevel=info",
+            "problemMatcher": [],
+            "group": "build",
+            "isBackground": true,
+            "dependsOn": ["Run Migrations"]
+        },
+        {
+            "label": "Start Django Development Server",
+            "type": "shell",
+            "command": "poetry run python manage.py runserver",
+            "problemMatcher": [],
+            "group": "build",
+            "isBackground": true,
+            "dependsOn": ["Start Celery Worker"]
+        },
+        {
+            "label": "Open Poetry Shell",
+            "type": "shell",
+            "command": "poetry shell",
+            "problemMatcher": [],
+            "group": "build"
+        }
+    ]
+}

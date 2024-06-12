@@ -1,0 +1,8 @@
+{
+    "python.defaultInterpreterPath": "/home/michal/.cache/pypoetry/virtualenvs/tunescript-5sNk4Ifv-py3.11/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "terminal.integrated.env.linux": {
+        "VIRTUAL_ENV": "/home/michal/.cache/pypoetry/virtualenvs/tunescript-5sNk4Ifv-py3.11",
+        "PATH": "/home/michal/.cache/pypoetry/virtualenvs/tunescript-5sNk4Ifv-py3.11/bin:${env:PATH}"
+    }
+}

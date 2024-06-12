@@ -1,4 +1,5 @@
 @echo off
-REM Start WSL and run the setup script
-wsl -d Ubuntu -u michal /mnt/c/Users/Michal/Desktop/TuneScript/setup_dev_env.sh
+echo Starting WSL2 setup script...
+wsl bash -ic "cd /mnt/c/Users/Michal/Desktop/TuneScript && ./setup_dev_env.sh"
+
 exit
