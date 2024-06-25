@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'tunescript_app',
     'graphene_django',
+    'graphene_file_upload',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
 ]
 
@@ -100,7 +101,12 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Media files (Uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

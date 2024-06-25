@@ -17,9 +17,14 @@ services:
     build:
       context: ..
       dockerfile: devtools/Dockerfile
-    command: poetry run python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "poetry run python manage.py makemigrations &&
+             poetry run python manage.py migrate &&
+             poetry run python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ../backend:/app
+      - ../backend/staticfiles:/app/staticfiles
+      - ../backend/media:/app/media
     ports:
       - "8000:8000"
     depends_on:
@@ -36,6 +41,8 @@ services:
     command: poetry run celery -A tunescript_project worker --loglevel=info
     volumes:
       - ../backend:/app
+      - ../backend/staticfiles:/app/staticfiles
+      - ../backend/media:/app/media
     depends_on:
       - db
       - redis

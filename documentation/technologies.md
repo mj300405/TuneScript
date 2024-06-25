@@ -69,7 +69,7 @@
    - The system must use secure authentication mechanisms.
 
 **Compatibility**:
-   - The system must be compatible with major web browsers (e.g., Chrome, Firefox).
+   - The system must be compatible with major web browsers (e.g., Chrome, Firefox), with their latest versions.
 
 **Maintainability**:
    - The codebase must be well-documented and modular to facilitate maintenance and updates.

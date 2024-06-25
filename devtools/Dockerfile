@@ -8,10 +8,10 @@ ENV PYTHONUNBUFFERED 1
 # Create a working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies including MuseScore
 RUN apt-get update && \
     apt-get install -y build-essential libpq-dev gettext gcc pkg-config default-libmysqlclient-dev && \
-    apt-get install -y libpq-dev python3-dev
+    apt-get install -y libpq-dev python3-dev musescore
 
 # Install Poetry
 RUN pip install poetry
