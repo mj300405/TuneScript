@@ -1,1 +1,52 @@
-backend/venv
+# Node modules
+frontend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+frontend/dist/
+
+# Production
+frontend/build/
+
+# Static files generated
+frontend/public/static
+
+# Tailwind CSS
+frontend/src/**/*.css
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+frontend/.eslintcache
+
+
+# Log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Django specific
+backend/staticfiles/
+backend/media/
+backend/db.sqlite3
+
+# Poetry
+backend/poetry.lock
+backend/.cache/

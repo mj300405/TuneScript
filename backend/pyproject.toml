@@ -78,6 +78,7 @@ django-celery-results = "^2.5.1"
 psycopg2-binary = "^2.9.9"
 redis = "^5.0.5"
 torch = "^1.10.0"
+django-cors-headers = "^3.13.0"
 
 [tool.poetry.dev-dependencies]
 poetry = "1.8.3"

@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'graphene_file_upload',
     'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -39,6 +40,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Add frontend URL
 ]
 
 ROOT_URLCONF = 'tunescript_project.urls'
