@@ -21,6 +21,11 @@ class TranscriptionType(DjangoObjectType):
     class Meta:
         model = Transcription
 
+    visibility = graphene.String()
+
+    def resolve_visibility(self, info):
+        return "public" if self.public else "private"
+
 class FavoriteType(DjangoObjectType):
     class Meta:
         model = Favorite

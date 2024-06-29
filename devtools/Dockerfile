@@ -11,7 +11,7 @@ WORKDIR /app
 # Install system dependencies including MuseScore
 RUN apt-get update && \
     apt-get install -y build-essential libpq-dev gettext gcc pkg-config default-libmysqlclient-dev && \
-    apt-get install -y libpq-dev python3-dev musescore
+    apt-get install -y libpq-dev python3-dev musescore ffmpeg wget xvfb x11-xkb-utils
 
 # Install Poetry
 RUN pip install poetry

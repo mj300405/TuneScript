@@ -1,4 +1,3 @@
-# tunescript_app/mutations.py
 import graphene
 from graphene_file_upload.scalars import Upload
 from django.core.files.storage import default_storage
@@ -10,6 +9,11 @@ from .models import AudioFile, Transcription, Favorite, Rating, Profile
 from .tasks import process_transcription
 from .types import UserType, AudioFileType, TranscriptionType, FavoriteType, RatingType
 import graphql_jwt
+from graphql_jwt.decorators import login_required
+import logging
+from django.core.files.uploadedfile import SimpleUploadedFile, InMemoryUploadedFile
+
+logger = logging.getLogger(__name__)
 
 class TranscribeAudio(graphene.Mutation):
     class Arguments:
@@ -28,61 +32,76 @@ class TranscribeAudio(graphene.Mutation):
         return TranscribeAudio(success=True, message="Transcription started")
 
 class UploadAudioFile(graphene.Mutation):
+    class Arguments:
+        file = Upload(required=True)
+        title = graphene.String(required=True)
+
     audio_file = graphene.Field(AudioFileType)
 
-    class Arguments:
-        title = graphene.String(required=True)
-        audio_file = Upload(required=True)
-
-    def mutate(self, info, title, audio_file):
+    def mutate(self, info, file, title):
         user = info.context.user
+
         if user.is_anonymous:
             raise Exception("Not logged in!")
 
+        # Check if file is an instance of uploaded file classes
+        if not isinstance(file, (InMemoryUploadedFile, SimpleUploadedFile)):
+            raise Exception(f"Invalid file type. Received: {type(file).__name__}")
+
+        logger.info(f"Received file with content type: {file.content_type}")
+        logger.info(f"Received file name: {file.name}")
+
+        # Validate file type
+        valid_types = ['audio/mpeg', 'audio/wav', 'audio/mp3']
+        if file.content_type not in valid_types:
+            raise Exception(f"Invalid file type. Only MP3 and WAV files are allowed. Received: {file.content_type}")
+
+        # Create the AudioFile instance
         audio_file_instance = AudioFile(
             user=user,
-            title=title,
-            audio_file=audio_file,
+            title=title
         )
+        audio_file_instance.audio_file.save(file.name, file)
         audio_file_instance.save()
+
+        logger.info(f"File saved: {audio_file_instance.audio_file.path}")
+
         return UploadAudioFile(audio_file=audio_file_instance)
 
 class CreateTranscription(graphene.Mutation):
-    transcription = graphene.Field(TranscriptionType)
-
     class Arguments:
         audio_file_id = graphene.Int(required=True)
         title = graphene.String(required=True)
-        description = graphene.String()
         genre = graphene.String()
         composer = graphene.String()
         player = graphene.String()
-        is_public = graphene.Boolean(default_value=True)
+        is_public = graphene.Boolean(required=True)
 
-    def mutate(self, info, audio_file_id, title, description=None, genre=None, composer=None, player=None, is_public=True):
+    transcription = graphene.Field(TranscriptionType)
+
+    def mutate(self, info, audio_file_id, title, genre=None, composer=None, player=None, is_public=False):
         user = info.context.user
+
         if user.is_anonymous:
             raise Exception("Not logged in!")
 
-        audio_file = AudioFile.objects.get(id=audio_file_id)
+        try:
+            audio_file = AudioFile.objects.get(id=audio_file_id)
+        except AudioFile.DoesNotExist:
+            raise Exception("Audio file not found")
+
         transcription = Transcription(
             audio_file=audio_file,
             user=user,
             title=title,
-            description=description,
-            genre=genre,
-            composer=composer,
-            player=player,
-            public=is_public,
-            status='PENDING',
+            genre=genre or "",
+            composer=composer or "",
+            player=player or "",
+            public=is_public
         )
         transcription.save()
 
-        # Trigger the Celery task
-        process_transcription.delay(transcription.id)
-
         return CreateTranscription(transcription=transcription)
-
 class PasswordReset(graphene.Mutation):
     class Arguments:
         email = graphene.String(required=True)
@@ -109,13 +128,12 @@ class UpdateTranscription(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
         title = graphene.String()
-        description = graphene.String()
         genre = graphene.String()
         composer = graphene.String()
         player = graphene.String()
         is_public = graphene.Boolean()
 
-    def mutate(self, info, id, title=None, description=None, genre=None, composer=None, player=None, is_public=None):
+    def mutate(self, info, id, title=None, genre=None, composer=None, player=None, is_public=None):
         user = info.context.user
         if user.is_anonymous:
             raise Exception("Not logged in!")
@@ -123,8 +141,6 @@ class UpdateTranscription(graphene.Mutation):
         transcription = Transcription.objects.get(pk=id, user=user)
         if title:
             transcription.title = title
-        if description:
-            transcription.description = description
         if genre:
             transcription.genre = genre
         if composer:

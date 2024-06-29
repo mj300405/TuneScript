@@ -1,8 +1,9 @@
 // src/pages/login.tsx
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
+import AuthContext from '../context/AuthContext';
 
 const LOGIN_MUTATION = gql`
   mutation TokenAuth($username: String!, $password: String!) {
@@ -17,13 +18,14 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
   const router = useRouter();
+  const { login: contextLogin } = useContext(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await login({ variables: { username, password } });
-      localStorage.setItem('token', response.data.tokenAuth.token);
-      router.push('/dashboard'); // Redirect to the dashboard or any other page
+      contextLogin(response.data.tokenAuth.token);
+      router.push('/dashboard');
     } catch (err) {
       console.error(err);
     }

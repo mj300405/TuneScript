@@ -1,23 +1,27 @@
 // src/lib/apolloClient.ts
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from '@apollo/client/link/context';
 
-const httpLink = createHttpLink({
+// Create an upload link
+const uploadLink = createUploadLink({
   uri: 'http://localhost:8000/graphql/', // Note the trailing slash
 });
 
+// Set up the auth link to include JWT token in headers
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
+      Authorization: token ? `JWT ${token}` : "",
     }
   };
 });
 
+// Combine the auth link and upload link
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(uploadLink),
   cache: new InMemoryCache(),
 });
 

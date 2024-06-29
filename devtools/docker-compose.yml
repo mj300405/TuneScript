@@ -33,6 +33,7 @@ services:
     environment:
       - DATABASE_URL=postgres://root:root@db:5432/tunescript_db
       - REDIS_URL=redis://redis:6379/0
+      - DISPLAY=:99
 
   celery:
     build:
@@ -49,6 +50,8 @@ services:
     environment:
       - DATABASE_URL=postgres://root:root@db:5432/tunescript_db
       - REDIS_URL=redis://redis:6379/0
+      - DISPLAY=:99
 
 volumes:
   postgres_data:
+  media:
