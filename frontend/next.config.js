@@ -12,7 +12,11 @@ const nextConfig = {
     return [
       {
         source: '/api/sse-stream/:id',
-        destination: 'http://web:8000/sse-stream/:id/', // Note the trailing slash
+        destination: 'http://web:8000/sse-stream/:id/',
+      },
+      {
+        source: '/media/:path*',
+        destination: 'http://web:8000/media/:path*',
       },
     ];
   },

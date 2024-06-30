@@ -6,6 +6,7 @@ from .mutations import Mutation  # Import the Mutation class from mutations.py
 from django.contrib.auth import get_user_model
 from .models import Profile, AudioFile, Transcription, Favorite, MIDIFile, SheetMusic, Tag, TranscriptionTag, Rating
 from django.db import models
+from django.conf import settings
 
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
@@ -16,6 +17,22 @@ class Query(graphene.ObjectType):
     search_transcriptions = graphene.List(TranscriptionType, title=graphene.String(), composer=graphene.String(), is_public=graphene.Boolean())
     me = graphene.Field(UserType)
     transcription_status = graphene.String(id=graphene.Int(required=True))
+    download_midi = graphene.String(transcription_id=graphene.Int(required=True))
+    download_sheet_music = graphene.String(transcription_id=graphene.Int(required=True))
+
+    def resolve_download_midi(self, info, transcription_id):
+        transcription = Transcription.objects.get(pk=transcription_id)
+        midi_file = transcription.midifile_set.first()
+        if midi_file and midi_file.midi_file:
+            return f"{settings.BASE_URL}{midi_file.midi_file.url}"
+        return None
+
+    def resolve_download_sheet_music(self, info, transcription_id):
+        transcription = Transcription.objects.get(pk=transcription_id)
+        sheet_music = transcription.sheetmusic_set.first()
+        if sheet_music and sheet_music.pdf_file:
+            return f"{settings.BASE_URL}{sheet_music.pdf_file.url}"
+        return None
 
     def resolve_users(self, info, **kwargs):
         return get_user_model().objects.all()

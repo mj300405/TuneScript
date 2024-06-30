@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import Layout from '../components/Layout';
 
 const UPLOAD_AUDIO_FILE = gql`
@@ -25,6 +25,13 @@ const CREATE_TRANSCRIPTION = gql`
   }
 `;
 
+const GET_DOWNLOAD_URLS = gql`
+  query GetDownloadUrls($transcriptionId: Int!) {
+    downloadMidi(transcriptionId: $transcriptionId)
+    downloadSheetMusic(transcriptionId: $transcriptionId)
+  }
+`;
+
 const Upload = () => {
   const [title, setTitle] = useState('');
   const [genre, setGenre] = useState('');
@@ -39,6 +46,11 @@ const Upload = () => {
 
   const [uploadAudioFile] = useMutation(UPLOAD_AUDIO_FILE);
   const [createTranscription] = useMutation(CREATE_TRANSCRIPTION);
+
+  const { data: downloadUrls, refetch: refetchDownloadUrls } = useQuery(GET_DOWNLOAD_URLS, {
+    variables: { transcriptionId: transcriptionId || 0 },
+    skip: !transcriptionId,
+  });
 
   const handleAudioFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -107,6 +119,9 @@ const Upload = () => {
           if (data.status === 'COMPLETED' || data.status === 'FAILED') {
             setButtonDisabled(false);
             eventSource?.close();
+            if (data.status === 'COMPLETED') {
+              refetchDownloadUrls();
+            }
           }
         } catch (error) {
           console.error('Failed to parse SSE message:', error);
@@ -135,7 +150,7 @@ const Upload = () => {
         eventSource.close();
       }
     };
-  }, [transcriptionId]);
+  }, [transcriptionId, refetchDownloadUrls]);
 
   return (
     <Layout title="Upload Audio">
@@ -195,26 +210,30 @@ const Upload = () => {
         </div>
         <div className="mt-4">
           <p>{statusMessage}</p>
-          {transcriptionDetails && transcriptionDetails.status === 'COMPLETED' && (
+          {transcriptionDetails && transcriptionDetails.status === 'COMPLETED' && downloadUrls && (
             <div className="mt-4 p-4 border rounded bg-green-50">
               <h2 className="text-xl font-bold mb-2">Transcription Completed</h2>
               <p><strong>Title:</strong> {transcriptionDetails.title}</p>
               <p><strong>Audio File:</strong> {transcriptionDetails.audio_file_name}</p>
               <div className="mt-2">
-                {transcriptionDetails.midi_file_url && (
+                {downloadUrls.downloadMidi && (
                   <a 
-                    href={transcriptionDetails.midi_file_url} 
-                    className="bg-blue-500 text-white px-4 py-2 rounded inline-block mr-2 hover:bg-blue-600" 
+                    href={downloadUrls.downloadMidi}
+                    className="bg-blue-500 text-white px-4 py-2 rounded inline-block mr-2 hover:bg-blue-600"
                     download
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Download MIDI
                   </a>
                 )}
-                {transcriptionDetails.sheet_music_url && (
+                {downloadUrls.downloadSheetMusic && (
                   <a 
-                    href={transcriptionDetails.sheet_music_url} 
-                    className="bg-green-500 text-white px-4 py-2 rounded inline-block hover:bg-green-600" 
+                    href={downloadUrls.downloadSheetMusic}
+                    className="bg-green-500 text-white px-4 py-2 rounded inline-block hover:bg-green-600"
                     download
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     Download Sheet Music
                   </a>

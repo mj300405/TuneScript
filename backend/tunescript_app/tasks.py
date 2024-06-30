@@ -1,13 +1,11 @@
-import requests
+import os
 from celery import shared_task
 from piano_transcription_inference import PianoTranscription, sample_rate, load_audio
 from .models import Transcription, MIDIFile, SheetMusic
 from .utils import convert_midi_to_pdf
 import tempfile
-import os
 import logging
 from django.conf import settings
-from django.urls import reverse
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +31,7 @@ def process_transcription(self, transcription_id):
         with open(midi_path, 'rb') as midi_file:
             midi_instance = MIDIFile(transcription=transcription)
             midi_instance.midi_file.save(f"{transcription.title}.mid", midi_file)
+            os.chmod(midi_instance.midi_file.path, 0o644)  # Set file permissions
 
         # Generate PDF from MIDI
         pdf_path = os.path.splitext(midi_path)[0] + '.pdf'
@@ -44,13 +43,14 @@ def process_transcription(self, transcription_id):
         with open(pdf_path, 'rb') as pdf_file:
             sheet_music_instance = SheetMusic(transcription=transcription)
             sheet_music_instance.pdf_file.save(f"{transcription.title}.pdf", pdf_file)
+            os.chmod(sheet_music_instance.pdf_file.path, 0o644)  # Set file permissions
 
         # Update transcription status
         transcription.status = 'COMPLETED'
         transcription.save()
 
-        midi_url = f"{settings.BASE_URL}{midi_instance.midi_file.url}" if midi_instance else None
-        sheet_music_url = f"{settings.BASE_URL}{sheet_music_instance.pdf_file.url}" if sheet_music_instance else None
+        midi_url = midi_instance.midi_file.url if midi_instance else None
+        sheet_music_url = sheet_music_instance.pdf_file.url if sheet_music_instance else None
 
         # Clean up temporary files
         os.remove(midi_path)

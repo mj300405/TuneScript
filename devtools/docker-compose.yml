@@ -20,7 +20,7 @@ services:
   web:
     build:
       context: ..
-      dockerfile: devtools/Dockerfile
+      dockerfile: devtools/Dockerfile.backend
     command: >
       sh -c "poetry run python manage.py makemigrations tunescript_app &&
              poetry run python manage.py migrate &&
@@ -46,7 +46,7 @@ services:
   celery:
     build:
       context: ..
-      dockerfile: devtools/Dockerfile
+      dockerfile: devtools/Dockerfile.backend
     command: poetry run celery -A tunescript_project worker --loglevel=info
     volumes:
       - ../backend:/app
@@ -66,8 +66,8 @@ services:
 
   frontend:
     build:
-      context: ../frontend
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: devtools/Dockerfile.frontend
     ports:
       - "3000:3000"
     depends_on:
