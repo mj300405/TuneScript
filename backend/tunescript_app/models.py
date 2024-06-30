@@ -41,6 +41,12 @@ class AudioFile(models.Model):
         return self.title
 
 class Transcription(models.Model):
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('COMPLETED', 'Completed'),
+        ('FAILED', 'Failed'),
+    ]
+
     audio_file = models.ForeignKey(AudioFile, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     genre = models.CharField(max_length=100, blank=True)
@@ -48,7 +54,7 @@ class Transcription(models.Model):
     composer = models.CharField(max_length=200, blank=True)
     player = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=50, choices=[('PENDING', 'Pending'), ('COMPLETED', 'Completed')], default='PENDING')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='PENDING')
     public = models.BooleanField(default=False)
     rating = models.FloatField(default=0.0)
     num_ratings = models.IntegerField(default=0)

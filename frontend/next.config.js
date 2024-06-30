@@ -8,6 +8,14 @@ const nextConfig = {
     };
     return config;
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/sse-stream/:id',
+        destination: 'http://web:8000/sse-stream/:id/', // Note the trailing slash
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

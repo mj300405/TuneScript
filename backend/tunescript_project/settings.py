@@ -13,7 +13,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-9mw-#8t705d86r5$fs2j-hi%n3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = ['web', 'localhost', '127.0.0.1']
+
+BACKEND_URL = 'http://web:8000'
+FRONTEND_URL = 'http://frontend:3000'
 
 # Application definition
 INSTALLED_APPS = [
@@ -114,6 +117,15 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
+
+# 
+BASE_URL = 'http://localhost:8000'
+
+#
+FRONTEND_WEBHOOK_URL = 'http://frontend:3000/api/webhook'
+WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-very-secure-secret')
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'

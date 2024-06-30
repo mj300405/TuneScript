@@ -15,12 +15,17 @@ class Query(graphene.ObjectType):
     tags = graphene.List(TagType)
     search_transcriptions = graphene.List(TranscriptionType, title=graphene.String(), composer=graphene.String(), is_public=graphene.Boolean())
     me = graphene.Field(UserType)
+    transcription_status = graphene.String(id=graphene.Int(required=True))
 
     def resolve_users(self, info, **kwargs):
         return get_user_model().objects.all()
 
     def resolve_profiles(self, info, **kwargs):
         return Profile.objects.all()
+    
+    def resolve_transcription_status(self, info, id):
+        transcription = Transcription.objects.get(pk=id)
+        return transcription.status
 
     def resolve_transcriptions(self, info, title=None, composer=None, visibility=None, **kwargs):
         user = info.context.user

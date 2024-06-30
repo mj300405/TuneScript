@@ -9,16 +9,20 @@ services:
       POSTGRES_DB: tunescript_db
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
+    networks:
+      - tunescript-network
 
   redis:
     image: redis:alpine
+    networks:
+      - tunescript-network
 
   web:
     build:
       context: ..
       dockerfile: devtools/Dockerfile
     command: >
-      sh -c "poetry run python manage.py makemigrations &&
+      sh -c "poetry run python manage.py makemigrations tunescript_app &&
              poetry run python manage.py migrate &&
              poetry run python manage.py runserver 0.0.0.0:8000"
     volumes:
@@ -34,6 +38,10 @@ services:
       - DATABASE_URL=postgres://root:root@db:5432/tunescript_db
       - REDIS_URL=redis://redis:6379/0
       - DISPLAY=:99
+      - FRONTEND_WEBHOOK_URL=http://frontend:3000/api/sse-stream
+      - WEBHOOK_SECRET=your-very-secure-secret
+    networks:
+      - tunescript-network
 
   celery:
     build:
@@ -51,7 +59,30 @@ services:
       - DATABASE_URL=postgres://root:root@db:5432/tunescript_db
       - REDIS_URL=redis://redis:6379/0
       - DISPLAY=:99
+      - FRONTEND_WEBHOOK_URL=http://frontend:3000/api/sse-stream
+      - WEBHOOK_SECRET=your-very-secure-secret
+    networks:
+      - tunescript-network
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - web
+    environment:
+      - NEXT_PUBLIC_API_URL=http://web:8000/graphql/
+      - WEBHOOK_SECRET=your-very-secure-secret
+      - BACKEND_SSE_URL=http://web:8000/sse-stream/
+    networks:
+      - tunescript-network
 
 volumes:
   postgres_data:
   media:
+
+networks:
+  tunescript-network:
+    driver: bridge

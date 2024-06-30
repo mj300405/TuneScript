@@ -1,5 +1,4 @@
-// src/pages/upload.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import Layout from '../components/Layout';
 
@@ -20,6 +19,7 @@ const CREATE_TRANSCRIPTION = gql`
       transcription {
         id
         title
+        status
       }
     }
   }
@@ -32,7 +32,10 @@ const Upload = () => {
   const [player, setPlayer] = useState('');
   const [isPublic, setIsPublic] = useState(true);
   const [audioFile, setAudioFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [transcriptionId, setTranscriptionId] = useState<number | null>(null);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [transcriptionDetails, setTranscriptionDetails] = useState<any>(null);
 
   const [uploadAudioFile] = useMutation(UPLOAD_AUDIO_FILE);
   const [createTranscription] = useMutation(CREATE_TRANSCRIPTION);
@@ -50,19 +53,15 @@ const Upload = () => {
       return;
     }
 
-    setLoading(true);
-
     try {
+      setButtonDisabled(true);
+      setStatusMessage('Uploading audio file...');
       const { data: uploadData } = await uploadAudioFile({
         variables: { title, file: audioFile },
       });
-
-      if (!uploadData || !uploadData.uploadAudioFile) {
-        throw new Error('File upload failed.');
-      }
-
       const audioFileId = parseInt(uploadData.uploadAudioFile.audioFile.id, 10);
 
+      setStatusMessage('Creating transcription...');
       const { data: transcriptionData } = await createTranscription({
         variables: {
           audioFileId,
@@ -74,18 +73,69 @@ const Upload = () => {
         },
       });
 
-      if (!transcriptionData || !transcriptionData.createTranscription) {
-        throw new Error('Transcription creation failed.');
-      }
-
-      alert('Transcription created successfully!');
+      setTranscriptionId(parseInt(transcriptionData.createTranscription.transcription.id, 10));
+      setStatusMessage('Transcription started. Awaiting status update...');
+      // Clear form
+      setTitle('');
+      setGenre('');
+      setComposer('');
+      setPlayer('');
+      setIsPublic(true);
+      setAudioFile(null);
     } catch (err) {
       console.error('Upload or transcription creation failed:', err);
+      setButtonDisabled(false);
       alert('Failed to upload the audio file or create the transcription.');
-    } finally {
-      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    let eventSource: EventSource | null = null;
+
+    if (transcriptionId) {
+      const sseUrl = `/api/sse-stream/${transcriptionId}`;
+      console.log('Connecting to SSE:', sseUrl);
+      eventSource = new EventSource(sseUrl);
+
+      eventSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          console.log('Received SSE data:', data);
+          setStatusMessage(`Transcription Status: ${data.status}`);
+          setTranscriptionDetails(data);
+
+          if (data.status === 'COMPLETED' || data.status === 'FAILED') {
+            setButtonDisabled(false);
+            eventSource?.close();
+          }
+        } catch (error) {
+          console.error('Failed to parse SSE message:', error);
+        }
+      };
+
+      eventSource.onerror = (error) => {
+        console.error('EventSource failed:', error);
+        setStatusMessage('Lost connection. Retrying...');
+        eventSource?.close();
+        // Attempt to reconnect after a short delay
+        setTimeout(() => {
+          setTranscriptionId(null);
+          setTranscriptionId(transcriptionId);
+        }, 5000);
+      };
+
+      eventSource.onopen = () => {
+        console.log('SSE connection opened');
+        setStatusMessage('Connected. Waiting for updates...');
+      };
+    }
+
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+      }
+    };
+  }, [transcriptionId]);
 
   return (
     <Layout title="Upload Audio">
@@ -126,21 +176,58 @@ const Upload = () => {
             onChange={(e) => setPlayer(e.target.value)}
             className="border p-2 mb-2 w-full rounded"
           />
-          <label>
+          <label className="flex items-center mb-2">
             <input
               type="checkbox"
               checked={isPublic}
               onChange={() => setIsPublic(!isPublic)}
+              className="mr-2"
             />
             Public
           </label>
           <button
             onClick={handleUpload}
-            className="bg-blue-500 text-white p-2 w-full rounded"
-            disabled={loading}
+            className="bg-blue-500 text-white p-2 w-full rounded disabled:bg-gray-400"
+            disabled={buttonDisabled}
           >
-            {loading ? 'Uploading...' : 'Upload and Create Transcription'}
+            Upload and Create Transcription
           </button>
+        </div>
+        <div className="mt-4">
+          <p>{statusMessage}</p>
+          {transcriptionDetails && transcriptionDetails.status === 'COMPLETED' && (
+            <div className="mt-4 p-4 border rounded bg-green-50">
+              <h2 className="text-xl font-bold mb-2">Transcription Completed</h2>
+              <p><strong>Title:</strong> {transcriptionDetails.title}</p>
+              <p><strong>Audio File:</strong> {transcriptionDetails.audio_file_name}</p>
+              <div className="mt-2">
+                {transcriptionDetails.midi_file_url && (
+                  <a 
+                    href={transcriptionDetails.midi_file_url} 
+                    className="bg-blue-500 text-white px-4 py-2 rounded inline-block mr-2 hover:bg-blue-600" 
+                    download
+                  >
+                    Download MIDI
+                  </a>
+                )}
+                {transcriptionDetails.sheet_music_url && (
+                  <a 
+                    href={transcriptionDetails.sheet_music_url} 
+                    className="bg-green-500 text-white px-4 py-2 rounded inline-block hover:bg-green-600" 
+                    download
+                  >
+                    Download Sheet Music
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+          {transcriptionDetails && transcriptionDetails.status === 'FAILED' && (
+            <div className="mt-4 p-4 border rounded bg-red-50">
+              <h2 className="text-xl font-bold mb-2 text-red-600">Transcription Failed</h2>
+              <p>{transcriptionDetails.message}</p>
+            </div>
+          )}
         </div>
       </div>
     </Layout>
