@@ -20,7 +20,10 @@ cd TuneScript/devtools
 docker-compose up --build
 ```
 
-4. Open the project in your browser localhost:3000
+4. Open the project in your browser
+```bash
+localhost:3000
+```
 
 ## Database diagram
 [![](https://ujeb.link/smidoa)]
