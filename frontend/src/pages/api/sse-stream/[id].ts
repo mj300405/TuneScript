@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       'Connection': 'keep-alive',
     });
 
-    const response = await fetch(`http://your-django-backend/sse-stream/${id}/`);
+    const response = await fetch(`http://localhost:8000/sse-stream/${id}/`);
   
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
