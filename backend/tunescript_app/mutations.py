@@ -7,7 +7,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from .models import AudioFile, Transcription, Favorite, Rating, Profile
 from .tasks import process_transcription
-from .types import UserType, AudioFileType, TranscriptionType, FavoriteType, RatingType
+from .types import UserType, AudioFileType, TranscriptionType, FavoriteType, RatingType, ProfileType
 import graphql_jwt
 from graphql_jwt.decorators import login_required
 import logging
@@ -227,6 +227,55 @@ class Register(graphene.Mutation):
             raise Exception("User with this username already exists.")
         
         return Register(user=user)
+    
+class ActivatePremium(graphene.Mutation):
+    class Arguments:
+        duration_days = graphene.Int(default_value=30)
+
+    profile = graphene.Field(ProfileType)
+
+    @login_required
+    def mutate(self, info, duration_days):
+        user = info.context.user
+        profile = Profile.objects.get(user=user)
+        profile.activate_premium(duration_days)
+        return ActivatePremium(profile=profile)
+
+class DeactivatePremium(graphene.Mutation):
+    profile = graphene.Field(ProfileType)
+
+    @login_required
+    def mutate(self, info):
+        user = info.context.user
+        profile = Profile.objects.get(user=user)
+        profile.deactivate_premium()
+        return DeactivatePremium(profile=profile)
+    
+class UpdateProfile(graphene.Mutation):
+    class Arguments:
+        bio = graphene.String()
+        public = graphene.Boolean()
+        preferences = graphene.JSONString()
+        profile_picture = Upload(required=False)
+
+    profile = graphene.Field(ProfileType)
+
+    @login_required
+    def mutate(self, info, bio=None, public=None, preferences=None, profile_picture=None):
+        user = info.context.user
+        profile = Profile.objects.get(user=user)
+
+        if bio is not None:
+            profile.bio = bio
+        if public is not None:
+            profile.public = public
+        if preferences is not None:
+            profile.preferences = preferences
+        if profile_picture is not None:
+            profile.profile_picture = profile_picture
+
+        profile.save()
+        return UpdateProfile(profile=profile)
 
 class Mutation(graphene.ObjectType):
     transcribe_audio = TranscribeAudio.Field()
@@ -241,3 +290,6 @@ class Mutation(graphene.ObjectType):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
+    activate_premium = ActivatePremium.Field()
+    deactivate_premium = DeactivatePremium.Field()
+    update_profile = UpdateProfile.Field()

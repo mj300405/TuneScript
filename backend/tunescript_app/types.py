@@ -14,6 +14,20 @@ class UserType(DjangoObjectType):
 class ProfileType(DjangoObjectType):
     class Meta:
         model = Profile
+        fields = ('id', 'user', 'bio', 'profile_picture', 'preferences', 'public', 'is_premium', 'premium_start_date', 'premium_end_date')
+
+    is_premium = graphene.Boolean()
+    premium_start_date = graphene.DateTime()
+    premium_end_date = graphene.DateTime()
+
+    def resolve_is_premium(self, info):
+        return self.is_premium
+
+    def resolve_premium_start_date(self, info):
+        return self.premium_start_date
+
+    def resolve_premium_end_date(self, info):
+        return self.premium_end_date
 
 class AudioFileType(DjangoObjectType):
     class Meta:

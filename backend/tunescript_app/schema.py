@@ -19,6 +19,13 @@ class Query(graphene.ObjectType):
     transcription_status = graphene.String(id=graphene.Int(required=True))
     download_midi = graphene.String(transcription_id=graphene.Int(required=True))
     download_sheet_music = graphene.String(transcription_id=graphene.Int(required=True))
+    profile = graphene.Field(ProfileType)
+
+    def resolve_profile(self, info):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+        return Profile.objects.get(user=user)
 
     def resolve_download_midi(self, info, transcription_id):
         transcription = Transcription.objects.get(pk=transcription_id)
