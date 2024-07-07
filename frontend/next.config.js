@@ -6,6 +6,7 @@ const nextConfig = {
       ...config.resolve.alias,
       'apollo-upload-client': require.resolve('apollo-upload-client'),
     };
+    config.resolve.alias.canvas = false;
     return config;
   },
   async rewrites() {

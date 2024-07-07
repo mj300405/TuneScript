@@ -12,7 +12,7 @@ class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     profiles = graphene.List(ProfileType)
     transcriptions = graphene.List(TranscriptionType, title=graphene.String(), composer=graphene.String(), visibility=graphene.String())
-    transcription = graphene.Field(TranscriptionType, id=graphene.Int())
+    transcription = graphene.Field(TranscriptionType, id=graphene.Int(required=True))
     tags = graphene.List(TagType)
     search_transcriptions = graphene.List(TranscriptionType, title=graphene.String(), composer=graphene.String(), is_public=graphene.Boolean())
     me = graphene.Field(UserType)
@@ -20,6 +20,11 @@ class Query(graphene.ObjectType):
     download_midi = graphene.String(transcription_id=graphene.Int(required=True))
     download_sheet_music = graphene.String(transcription_id=graphene.Int(required=True))
     profile = graphene.Field(ProfileType)
+    my_transcriptions = graphene.List(TranscriptionType)
+
+    
+    def resolve_my_transcriptions(self, info):
+        return Transcription.objects.filter(user=info.context.user).order_by('-created_at')
 
     def resolve_profile(self, info):
         user = info.context.user
@@ -71,7 +76,10 @@ class Query(graphene.ObjectType):
         return qs
 
     def resolve_transcription(self, info, id):
-        return Transcription.objects.get(pk=id)
+        try:
+            return Transcription.objects.get(pk=id)
+        except Transcription.DoesNotExist:
+            return None
 
     def resolve_tags(self, info, **kwargs):
         return Tag.objects.all()

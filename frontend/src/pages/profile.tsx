@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import Layout from '../components/Layout';
+import Image from 'next/image';
 
 const GET_PROFILE = gql`
   query GetProfile {
