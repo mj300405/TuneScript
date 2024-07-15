@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// src/components/TranscriptionDetails.tsx
+import React, { useState, useRef, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import dynamic from 'next/dynamic';
 
@@ -24,6 +25,9 @@ const GET_TRANSCRIPTION_DETAILS = gql`
       sheetMusic {
         downloadUrl
       }
+      audioFile {
+        audioFile
+      }
     }
   }
 `;
@@ -37,6 +41,9 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
   const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   const { loading, error, data } = useQuery(GET_TRANSCRIPTION_DETAILS, {
     variables: { id: parseInt(transcriptionId as string, 10) },
   });
@@ -45,6 +52,26 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
     setNumPages(pages);
     setPageNumber(1);
   }
+
+  const handlePlayPause = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -93,6 +120,14 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
               </button>
             </>
           )}
+          {transcription.audioFile?.audioFile && (
+            <button
+              onClick={handlePlayPause}
+              className="bg-purple-500 text-white px-4 py-2 rounded inline-block hover:bg-purple-600"
+            >
+              {isPlaying ? 'Pause Preview' : 'Play Preview'}
+            </button>
+          )}
         </div>
         {showPdfPreview && transcription.sheetMusic?.downloadUrl && (
           <div className="mt-4">
@@ -130,6 +165,14 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
         >
           Close
         </button>
+        {transcription.audioFile?.audioFile && (
+          <audio
+            ref={audioRef}
+            src={`/media/${transcription.audioFile.audioFile}`}
+            onEnded={() => setIsPlaying(false)}
+            className="hidden"
+          />
+        )}
       </div>
     </div>
   );

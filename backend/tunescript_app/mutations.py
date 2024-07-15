@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction, models
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from .models import AudioFile, Transcription, Favorite, Rating, Profile
+from .models import AudioFile, Transcription, Favorite, Rating, Profile, UserPlayHistory
 from .tasks import process_transcription
 from .types import UserType, AudioFileType, TranscriptionType, FavoriteType, RatingType, ProfileType
 import graphql_jwt
@@ -277,6 +277,50 @@ class UpdateProfile(graphene.Mutation):
         profile.save()
         return UpdateProfile(profile=profile)
 
+class UpdatePlayHistory(graphene.Mutation):
+    class Arguments:
+        transcription_id = graphene.ID(required=True)
+        play_time = graphene.Int(required=True)
+
+    success = graphene.Boolean()
+
+    @login_required
+    def mutate(self, info, transcription_id, play_time):
+        user = info.context.user
+        try:
+            transcription = Transcription.objects.get(pk=transcription_id)
+            play_history, created = UserPlayHistory.objects.get_or_create(
+                user=user,
+                transcription=transcription
+            )
+            play_history.play_time += play_time
+            play_history.save()
+            return UpdatePlayHistory(success=True)
+        except Transcription.DoesNotExist:
+            return UpdatePlayHistory(success=False)
+        
+class RateTranscription(graphene.Mutation):
+    rating = graphene.Field(RatingType)
+
+    class Arguments:
+        transcription_id = graphene.Int(required=True)
+        rating_value = graphene.Int(required=True)
+        comment = graphene.String()
+
+    def mutate(self, info, transcription_id, rating_value, comment=None):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+
+        transcription = Transcription.objects.get(pk=transcription_id)
+        rating, created = Rating.objects.update_or_create(
+            transcription=transcription, 
+            user=user,
+            defaults={'rating': rating_value, 'comment': comment}
+        )
+
+        return RateTranscription(rating=rating)
+
 class Mutation(graphene.ObjectType):
     transcribe_audio = TranscribeAudio.Field()
     upload_audio_file = UploadAudioFile.Field()
@@ -293,3 +337,5 @@ class Mutation(graphene.ObjectType):
     activate_premium = ActivatePremium.Field()
     deactivate_premium = DeactivatePremium.Field()
     update_profile = UpdateProfile.Field()
+    update_play_history = UpdatePlayHistory.Field()
+    rate_transcription = RateTranscription.Field()

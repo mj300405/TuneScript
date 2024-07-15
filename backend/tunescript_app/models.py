@@ -114,3 +114,16 @@ class Rating(models.Model):
 
     class Meta:
         unique_together = ('transcription', 'user')
+
+
+class UserPlayHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    transcription = models.ForeignKey(Transcription, on_delete=models.CASCADE)
+    play_time = models.PositiveIntegerField(default=0)  # in seconds
+    last_played = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'transcription')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.transcription.title}"

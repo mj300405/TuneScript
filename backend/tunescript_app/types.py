@@ -33,7 +33,12 @@ class AudioFileType(DjangoObjectType):
     class Meta:
         model = AudioFile
 
+    audio_file = graphene.String()
 
+    def resolve_audio_file(self, info):
+        if self.audio_file:
+            return self.audio_file.name  # This returns the relative path
+        return None
 
 class FavoriteType(DjangoObjectType):
     class Meta:
@@ -89,3 +94,14 @@ class TranscriptionTagType(DjangoObjectType):
 class RatingType(DjangoObjectType):
     class Meta:
         model = Rating
+
+class TranscriptionWithPlayCountType(DjangoObjectType):
+    class Meta:
+        model = Transcription
+
+    play_count = graphene.Int()
+
+class UserStatisticsType(graphene.ObjectType):
+    total_transcriptions = graphene.Int()
+    average_rating = graphene.Float()
+    total_play_time = graphene.Int()

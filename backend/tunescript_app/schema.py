@@ -1,17 +1,19 @@
 # tunescript_app/schema.py
 
 import graphene
-from .types import UserType, ProfileType, AudioFileType, TranscriptionType, FavoriteType, MIDIFileType, SheetMusicType, TagType, TranscriptionTagType, RatingType
+from .types import UserType, ProfileType, AudioFileType, TranscriptionType, FavoriteType, MIDIFileType, SheetMusicType, TagType, TranscriptionTagType, RatingType, TranscriptionWithPlayCountType, UserStatisticsType
 from .mutations import Mutation  # Import the Mutation class from mutations.py
 from django.contrib.auth import get_user_model
-from .models import Profile, AudioFile, Transcription, Favorite, MIDIFile, SheetMusic, Tag, TranscriptionTag, Rating
+from .models import Profile, AudioFile, Transcription, Favorite, MIDIFile, SheetMusic, Tag, TranscriptionTag, Rating, UserPlayHistory
 from django.db import models
 from django.conf import settings
+from django.db.models import Q
+from django.db.models import Count, Avg, Sum
 
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     profiles = graphene.List(ProfileType)
-    transcriptions = graphene.List(TranscriptionType, title=graphene.String(), composer=graphene.String(), visibility=graphene.String())
+    transcriptions = graphene.List(TranscriptionType, title=graphene.String(), composer=graphene.String(), genre=graphene.String(), player=graphene.String(), min_rating=graphene.Float(), visibility=graphene.String())
     transcription = graphene.Field(TranscriptionType, id=graphene.Int(required=True))
     tags = graphene.List(TagType)
     search_transcriptions = graphene.List(TranscriptionType, title=graphene.String(), composer=graphene.String(), is_public=graphene.Boolean())
@@ -21,6 +23,63 @@ class Query(graphene.ObjectType):
     download_sheet_music = graphene.String(transcription_id=graphene.Int(required=True))
     profile = graphene.Field(ProfileType)
     my_transcriptions = graphene.List(TranscriptionType)
+    highest_rated_transcriptions = graphene.List(TranscriptionType)
+    recent_transcriptions = graphene.List(TranscriptionType)
+    user_most_played_transcriptions = graphene.List(TranscriptionWithPlayCountType)
+    recommended_transcriptions = graphene.List(TranscriptionType)
+    user_statistics = graphene.Field(UserStatisticsType)
+
+    def resolve_highest_rated_transcriptions(self, info):
+        return Transcription.objects.filter(public=True).order_by('-rating')[:5]
+
+    def resolve_recent_transcriptions(self, info):
+        return Transcription.objects.filter(public=True).order_by('-created_at')[:5]
+
+    def resolve_user_most_played_transcriptions(self, info):
+        user = info.context.user
+        if not user.is_authenticated:
+            return []
+        
+        return (Transcription.objects
+                .filter(userplayhistory__user=user)
+                .annotate(play_count=Count('userplayhistory'))
+                .order_by('-play_count')[:5])
+
+    def resolve_recommended_transcriptions(self, info):
+        user = info.context.user
+        if not user.is_authenticated:
+            return Transcription.objects.filter(public=True).order_by('?')[:5]
+        
+        # Simple recommendation based on user's most played genres
+        favorite_genres = (UserPlayHistory.objects
+                           .filter(user=user)
+                           .values('transcription__genre')
+                           .annotate(count=Count('id'))
+                           .order_by('-count')
+                           .values_list('transcription__genre', flat=True))
+        
+        if favorite_genres:
+            return (Transcription.objects
+                    .filter(public=True, genre__in=favorite_genres[:3])
+                    .exclude(userplayhistory__user=user)
+                    .order_by('?')[:5])
+        else:
+            return Transcription.objects.filter(public=True).order_by('?')[:5]
+
+    def resolve_user_statistics(self, info):
+        user = info.context.user
+        if not user.is_authenticated:
+            return None
+        
+        total_transcriptions = Transcription.objects.filter(user=user).count()
+        average_rating = Transcription.objects.filter(user=user).aggregate(Avg('rating'))['rating__avg'] or 0
+        total_play_time = UserPlayHistory.objects.filter(user=user).aggregate(Sum('play_time'))['play_time__sum'] or 0
+
+        return UserStatisticsType(
+            total_transcriptions=total_transcriptions,
+            average_rating=average_rating,
+            total_play_time=total_play_time
+        )
 
     
     def resolve_my_transcriptions(self, info):
@@ -56,23 +115,32 @@ class Query(graphene.ObjectType):
         transcription = Transcription.objects.get(pk=id)
         return transcription.status
 
-    def resolve_transcriptions(self, info, title=None, composer=None, visibility=None, **kwargs):
+    def resolve_transcriptions(self, info, title=None, composer=None, genre=None, player=None, min_rating=None, visibility=None):
         user = info.context.user
         qs = Transcription.objects.all()
+
         if title:
             qs = qs.filter(title__icontains=title)
         if composer:
             qs = qs.filter(composer__icontains=composer)
+        if genre:
+            qs = qs.filter(genre__icontains=genre)
+        if player:
+            qs = qs.filter(player__icontains=player)
+        if min_rating is not None:
+            qs = qs.filter(rating__gte=min_rating)
+        
         if visibility:
             if visibility.lower() == 'public':
                 qs = qs.filter(public=True)
-            elif visibility.lower() == 'private':
+            elif visibility.lower() == 'private' and not user.is_anonymous:
                 qs = qs.filter(public=False, user=user)
         else:
             if user.is_anonymous:
                 qs = qs.filter(public=True)
             else:
-                qs = qs.filter(models.Q(public=True) | models.Q(user=user))
+                qs = qs.filter(Q(public=True) | Q(user=user))
+
         return qs
 
     def resolve_transcription(self, info, id):

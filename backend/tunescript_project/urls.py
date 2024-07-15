@@ -10,7 +10,7 @@ from tunescript_app.views import WebhookView, sse_stream
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('graphql/', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True, schema=schema))),
-    path('webhook/', WebhookView.as_view(), name='webhook'),
+    #path('webhook/', WebhookView.as_view(), name='webhook'),
     path('sse-stream/<int:transcription_id>/', sse_stream, name='sse_stream'),
 ]
 
