@@ -3,6 +3,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from datetime import datetime, timedelta
+from django.templatetags.static import static
+from django.conf import settings
+
 
 User = get_user_model()
 
@@ -30,6 +33,11 @@ class Profile(models.Model):
         self.premium_start_date = None
         self.premium_end_date = None
         self.save()
+
+    def get_profile_picture_url(self):
+        if self.profile_picture and hasattr(self.profile_picture, 'url'):
+            return self.profile_picture.url
+        return static('images/default_profile_picture.png')
 
 class AudioFile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

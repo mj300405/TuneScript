@@ -19,6 +19,10 @@ const nextConfig = {
         source: '/media/:path*',
         destination: 'http://web:8000/media/:path*',
       },
+      {
+        source: '/static/:path*',
+        destination: 'http://web:8000/static/:path*',
+      },
     ];
   },
 };

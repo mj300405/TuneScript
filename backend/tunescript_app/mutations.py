@@ -1,7 +1,7 @@
 import graphene
 from graphene_file_upload.scalars import Upload
 from django.core.files.storage import default_storage
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.db import IntegrityError, transaction, models
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
@@ -320,6 +320,17 @@ class RateTranscription(graphene.Mutation):
         )
 
         return RateTranscription(rating=rating)
+    
+class Logout(graphene.Mutation):
+    class Arguments:
+        pass
+
+    success = graphene.Boolean()
+
+    @login_required
+    def mutate(self, info):
+        logout(info.context)
+        return Logout(success=True)
 
 class Mutation(graphene.ObjectType):
     transcribe_audio = TranscribeAudio.Field()
@@ -339,3 +350,4 @@ class Mutation(graphene.ObjectType):
     update_profile = UpdateProfile.Field()
     update_play_history = UpdatePlayHistory.Field()
     rate_transcription = RateTranscription.Field()
+    logout = Logout.Field()

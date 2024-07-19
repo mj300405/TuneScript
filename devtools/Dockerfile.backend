@@ -31,5 +31,9 @@ COPY ../backend/ /app/
 # Expose the port the app runs on
 EXPOSE 8000
 
+# Create necessary directories
+RUN mkdir -p /app/static/images /app/staticfiles /app/media
+RUN chmod -R 755 /app/static /app/staticfiles /app/media
+
 # Run the application
 CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]

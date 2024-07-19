@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import Layout from '../components/Layout';
-import Image from 'next/image';
 
 const GET_PROFILE = gql`
   query GetProfile {
@@ -54,6 +53,8 @@ const DEACTIVATE_PREMIUM = gql`
   }
 `;
 
+const DEFAULT_PROFILE_PICTURE = '/static/images/default_profile_picture.png';
+
 const ProfilePage = () => {
   const { loading, error, data, refetch } = useQuery(GET_PROFILE);
   const [updateProfile] = useMutation(UPDATE_PROFILE);
@@ -65,7 +66,6 @@ const ProfilePage = () => {
   const [emailNotifications, setEmailNotifications] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
-  const [currentProfilePicture, setCurrentProfilePicture] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -76,7 +76,6 @@ const ProfilePage = () => {
       const preferences = JSON.parse(data.profile.preferences || '{}');
       setEmailNotifications(preferences.emailNotifications || false);
       setDarkMode(preferences.darkMode || false);
-      setCurrentProfilePicture(data.profile.profilePicture || null);
     }
   }, [data]);
 
@@ -84,7 +83,7 @@ const ProfilePage = () => {
     e.preventDefault();
     const preferences = JSON.stringify({ emailNotifications, darkMode });
     try {
-      const result = await updateProfile({
+      await updateProfile({
         variables: {
           bio,
           public: isPublic,
@@ -92,9 +91,6 @@ const ProfilePage = () => {
           profilePicture: profilePicture
         },
       });
-      if (result.data && result.data.updateProfile) {
-        setCurrentProfilePicture(result.data.updateProfile.profile.profilePicture);
-      }
       alert('Profile updated successfully!');
       refetch();
     } catch (err) {
@@ -105,15 +101,7 @@ const ProfilePage = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setProfilePicture(file);
-      
-      // Create a preview URL
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCurrentProfilePicture(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setProfilePicture(e.target.files[0]);
     }
   };
 
@@ -139,8 +127,16 @@ const ProfilePage = () => {
     }
   };
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = DEFAULT_PROFILE_PICTURE;
+  };
+
   if (loading) return <Layout title="Profile">Loading...</Layout>;
   if (error) return <Layout title="Profile">Error: {error.message}</Layout>;
+
+  const profilePictureUrl = data.profile.profilePicture
+    ? `${process.env.NEXT_PUBLIC_API_URL}${data.profile.profilePicture}`
+    : DEFAULT_PROFILE_PICTURE;
 
   return (
     <Layout title="Profile">
@@ -151,9 +147,10 @@ const ProfilePage = () => {
             <h2 className="text-xl font-semibold mb-2">Profile Picture</h2>
             <div className="flex items-center space-x-4">
               <img
-                src={currentProfilePicture ? (currentProfilePicture.startsWith('data:') ? currentProfilePicture : `${process.env.NEXT_PUBLIC_API_URL}/media/${currentProfilePicture}`) : '/default-avatar.png'}
+                src={profilePictureUrl}
                 alt="Profile"
                 className="w-24 h-24 rounded-full object-cover"
+                onError={handleImageError}
               />
               <input
                 type="file"

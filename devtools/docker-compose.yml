@@ -27,6 +27,7 @@ services:
              poetry run python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ../backend:/app
+      - ../backend/static:/app/static
       - ../backend/staticfiles:/app/staticfiles
       - ../backend/media:/app/media
     ports:

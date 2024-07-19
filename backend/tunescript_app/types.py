@@ -6,6 +6,7 @@ from .models import Profile, AudioFile, Transcription, Favorite, MIDIFile, Sheet
 from django.contrib.auth import get_user_model
 from graphene import String
 from django.conf import settings
+from django.templatetags.static import static
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -14,11 +15,12 @@ class UserType(DjangoObjectType):
 class ProfileType(DjangoObjectType):
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'bio', 'profile_picture', 'preferences', 'public', 'is_premium', 'premium_start_date', 'premium_end_date')
+        fields = ('id', 'user', 'bio', 'preferences', 'public', 'is_premium', 'premium_start_date', 'premium_end_date')
 
     is_premium = graphene.Boolean()
     premium_start_date = graphene.DateTime()
     premium_end_date = graphene.DateTime()
+    profile_picture = graphene.String()
 
     def resolve_is_premium(self, info):
         return self.is_premium
@@ -28,7 +30,12 @@ class ProfileType(DjangoObjectType):
 
     def resolve_premium_end_date(self, info):
         return self.premium_end_date
-
+    
+    def resolve_profile_picture(self, info):
+        if self.profile_picture and hasattr(self.profile_picture, 'url'):
+            return self.profile_picture.url
+        return static('images/default_profile_picture.png')
+    
 class AudioFileType(DjangoObjectType):
     class Meta:
         model = AudioFile
