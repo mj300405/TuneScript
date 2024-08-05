@@ -43,7 +43,7 @@ services:
       - DISPLAY=:99
       - FRONTEND_WEBHOOK_URL=http://frontend:3000/api/sse-stream
       - WEBHOOK_SECRET=your-very-secure-secret
-      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - EMAIL_HOST_PASSWORD=pajt qvan xnhw ssnt
     networks:
       - tunescript-network
     dns:
