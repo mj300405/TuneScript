@@ -1,13 +1,31 @@
 # backend/tunescript_app/models.py
 
 from django.db import models
-from django.contrib.auth import get_user_model
 from datetime import datetime, timedelta
 from django.templatetags.static import static
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 
-
-User = get_user_model()
+class User(AbstractUser):
+    email_confirmed = models.BooleanField(default=False)
+    
+    # Add related_name to avoid clashes
+    groups = models.ManyToManyField(
+        'auth.Group',
+        verbose_name='groups',
+        blank=True,
+        help_text='The groups this user belongs to.',
+        related_name='tunescript_user_set',
+        related_query_name='user',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        verbose_name='user permissions',
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_name='tunescript_user_set',
+        related_query_name='user',
+    )
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

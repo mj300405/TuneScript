@@ -50,3 +50,6 @@ backend/db.sqlite3
 # Poetry
 backend/poetry.lock
 backend/.cache/
+
+# environment files
+backend/.env

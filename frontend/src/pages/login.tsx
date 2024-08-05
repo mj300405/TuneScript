@@ -1,4 +1,3 @@
-// src/pages/login.tsx
 import { useState, useContext } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { useRouter } from 'next/router';
@@ -9,6 +8,11 @@ const LOGIN_MUTATION = gql`
   mutation TokenAuth($username: String!, $password: String!) {
     tokenAuth(username: $username, password: $password) {
       token
+      user {
+        id
+        username
+        emailConfirmed
+      }
     }
   }
 `;
@@ -16,18 +20,24 @@ const LOGIN_MUTATION = gql`
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
+  const [login, { loading }] = useMutation(LOGIN_MUTATION);
   const router = useRouter();
   const { login: contextLogin } = useContext(AuthContext);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const response = await login({ variables: { username, password } });
+      if (!response.data.tokenAuth.user.emailConfirmed) {
+        setError('Please confirm your email before logging in.');
+        return;
+      }
       contextLogin(response.data.tokenAuth.token);
       router.push('/dashboard');
     } catch (err) {
       console.error(err);
+      setError('Login failed. Please check your credentials.');
     }
   };
 
@@ -53,7 +63,7 @@ export default function Login() {
           <button type="submit" className="bg-blue-500 text-white p-2 w-full rounded">
             {loading ? 'Loading...' : 'Login'}
           </button>
-          {error && <p className="text-red-500 mt-4">{error.message}</p>}
+          {error && <p className="text-red-500 mt-4">{error}</p>}
         </form>
       </div>
     </Layout>

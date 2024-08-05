@@ -1,7 +1,5 @@
-// src/pages/register.tsx
 import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
-import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 
 const REGISTER_MUTATION = gql`
@@ -19,13 +17,22 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [register, { data, loading, error }] = useMutation(REGISTER_MUTATION);
-  const router = useRouter();
+  const [register, { loading }] = useMutation(REGISTER_MUTATION);
+  const [status, setStatus] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await register({ variables: { username, email, password } });
-    router.push('/login');
+    try {
+      await register({ variables: { username, email, password } });
+      setStatus('Registration successful! Please check your email to confirm your account.');
+      // Clear form fields after successful registration
+      setUsername('');
+      setEmail('');
+      setPassword('');
+    } catch (err) {
+      console.error(err);
+      setStatus('Registration failed. Please try again.');
+    }
   };
 
   return (
@@ -57,7 +64,7 @@ export default function Register() {
           <button type="submit" className="bg-blue-500 text-white p-2 w-full rounded">
             {loading ? 'Loading...' : 'Register'}
           </button>
-          {error && <p className="text-red-500 mt-4">{error.message}</p>}
+          {status && <p className={`mt-4 ${status.includes('successful') ? 'text-green-500' : 'text-red-500'}`}>{status}</p>}
         </form>
       </div>
     </Layout>

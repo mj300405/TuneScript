@@ -12,6 +12,10 @@ import graphql_jwt
 from graphql_jwt.decorators import login_required
 import logging
 from django.core.files.uploadedfile import SimpleUploadedFile, InMemoryUploadedFile
+from .utils import send_confirmation_email
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from graphql_jwt import JSONWebTokenMutation
 
 logger = logging.getLogger(__name__)
 
@@ -223,6 +227,7 @@ class Register(graphene.Mutation):
         try:
             user = get_user_model().objects.create_user(username=username, password=password, email=email)
             Profile.objects.create(user=user)
+            send_confirmation_email(user)
         except IntegrityError:
             raise Exception("User with this username already exists.")
         
@@ -331,6 +336,33 @@ class Logout(graphene.Mutation):
     def mutate(self, info):
         logout(info.context)
         return Logout(success=True)
+    
+class ConfirmEmail(graphene.Mutation):
+    class Arguments:
+        uid = graphene.String(required=True)
+        token = graphene.String(required=True)
+
+    success = graphene.Boolean()
+
+    def mutate(self, info, uid, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uid))
+            user = get_user_model().objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            user.email_confirmed = True
+            user.save()
+            return ConfirmEmail(success=True)
+        return ConfirmEmail(success=False)
+
+class ObtainJSONWebToken(JSONWebTokenMutation):
+    user = graphene.Field(UserType)
+
+    @classmethod
+    def resolve(cls, root, info, **kwargs):
+        return cls(user=info.context.user)
 
 class Mutation(graphene.ObjectType):
     transcribe_audio = TranscribeAudio.Field()
@@ -342,7 +374,7 @@ class Mutation(graphene.ObjectType):
     delete_transcription = DeleteTranscription.Field()
     rate_transcription = RateTranscription.Field()
     bookmark_transcription = BookmarkTranscription.Field()
-    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    token_auth = ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
     activate_premium = ActivatePremium.Field()
@@ -351,3 +383,4 @@ class Mutation(graphene.ObjectType):
     update_play_history = UpdatePlayHistory.Field()
     rate_transcription = RateTranscription.Field()
     logout = Logout.Field()
+    confirm_email = ConfirmEmail.Field()

@@ -13,10 +13,13 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-9mw-#8t705d86r5$fs2j-hi%n3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
+AUTH_USER_MODEL = 'tunescript_app.User'
+
 ALLOWED_HOSTS = ['web', 'localhost', '127.0.0.1', 'frontend']
 
 BACKEND_URL = 'http://web:8000'
 FRONTEND_URL = 'http://frontend:3000'
+EMAIL_URL = 'http://localhost:3000'
 
 # Application definition
 INSTALLED_APPS = [
@@ -149,3 +152,25 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'tunescript.noreply@gmail.com'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
