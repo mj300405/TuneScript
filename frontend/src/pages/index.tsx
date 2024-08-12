@@ -31,15 +31,19 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <Link href="/register">
-              <a className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-blue-100 transition duration-300 mr-4">
+            <Link
+              href="/register"
+              className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-blue-100 transition duration-300 mr-4">
+              
                 Get Started
-              </a>
+              
             </Link>
-            <Link href="/search">
-              <a className="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-white hover:text-blue-600 transition duration-300">
+            <Link
+              href="/search"
+              className="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-white hover:text-blue-600 transition duration-300">
+              
                 Explore Transcriptions
-              </a>
+              
             </Link>
           </motion.div>
         </section>
@@ -72,10 +76,12 @@ const Home = () => {
         <section className="container mx-auto px-6 py-20 text-center">
           <h2 className="text-4xl font-bold mb-6">Ready to Start Your Musical Journey?</h2>
           <p className="text-xl mb-12">Join TuneScript today and transform the way you interact with sheet music.</p>
-          <Link href="/register">
-            <a className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-blue-100 transition duration-300">
+          <Link
+            href="/register"
+            className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full text-lg hover:bg-blue-100 transition duration-300">
+            
               Sign Up Now
-            </a>
+            
           </Link>
         </section>
       </div>

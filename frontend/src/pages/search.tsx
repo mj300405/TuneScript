@@ -12,8 +12,10 @@ const GET_TRANSCRIPTIONS = gql`
       composer
       genre
       player
-      rating
       visibility
+      avgRating
+      userRating
+      numRatings
     }
   }
 `;
@@ -24,8 +26,10 @@ interface Transcription {
   composer: string;
   genre: string;
   player: string;
-  rating: number;
   visibility: string;
+  avgRating: number;
+  userRating: number | null;
+  numRatings: number;
 }
 
 const Search = () => {
@@ -113,7 +117,9 @@ const Search = () => {
                 <p>Genre: {transcription.genre}</p>
                 <p>Player: {transcription.player}</p>
                 <p>Visibility: {transcription.visibility}</p>
-                <p>Rating: {transcription.rating.toFixed(1)}</p>
+                <p>Average Rating: {transcription.avgRating.toFixed(1)}</p>
+                <p>Your Rating: {transcription.userRating ? transcription.userRating.toFixed(1) : 'Not rated'}</p>
+                <p>Number of Ratings: {transcription.numRatings}</p>
                 <button
                   onClick={() => setSelectedTranscription(transcription.id)}
                   className="mt-2 bg-blue-500 text-white px-2 py-1 rounded"

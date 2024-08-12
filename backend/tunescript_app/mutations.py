@@ -16,6 +16,8 @@ from .utils import send_confirmation_email
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from graphql_jwt import JSONWebTokenMutation
+from django.db.models import F, Avg
+from graphql_relay import from_global_id
 
 logger = logging.getLogger(__name__)
 
@@ -174,29 +176,47 @@ class DeleteTranscription(graphene.Mutation):
         return DeleteTranscription(success=True)
 
 class RateTranscription(graphene.Mutation):
-    rating = graphene.Field(RatingType)
-
     class Arguments:
-        transcription_id = graphene.Int(required=True)
+        transcription_id = graphene.ID(required=True)
         rating_value = graphene.Int(required=True)
         comment = graphene.String()
 
+    rating = graphene.Field(RatingType)
+    transcription = graphene.Field(TranscriptionType)
+
+    @login_required
     def mutate(self, info, transcription_id, rating_value, comment=None):
+        logger.debug(f"Starting RateTranscription mutation with ID: {transcription_id}, value: {rating_value}")
+        
         user = info.context.user
-        if user.is_anonymous:
-            raise Exception("Not logged in!")
+        logger.debug(f"User: {user.username}")
+        
+        _, transcription_id = from_global_id(transcription_id)
+        logger.debug(f"Decoded transcription ID: {transcription_id}")
+        
+        try:
+            transcription = Transcription.objects.get(pk=transcription_id)
+            logger.debug(f"Found transcription: {transcription.title}")
+        except Transcription.DoesNotExist:
+            logger.error(f"Transcription with ID {transcription_id} not found")
+            raise Exception(f"Transcription with ID {transcription_id} not found")
+        
+        try:
+            rating, created = Rating.objects.update_or_create(
+                transcription=transcription,
+                user=user,
+                defaults={'rating': rating_value, 'comment': comment}
+            )
+            logger.debug(f"Rating {'created' if created else 'updated'}: {rating.id}")
+            
+            # The save method of Rating will call the appropriate update method on Transcription
+        except Exception as e:
+            logger.error(f"Error creating/updating rating: {str(e)}")
+            raise
 
-        transcription = Transcription.objects.get(pk=transcription_id)
-        rating, created = Rating.objects.get_or_create(transcription=transcription, user=user)
-        rating.rating = rating_value
-        rating.comment = comment
-        rating.save()
-
-        transcription.num_ratings = Rating.objects.filter(transcription=transcription).count()
-        transcription.rating = Rating.objects.filter(transcription=transcription).aggregate(models.Avg('rating'))['rating__avg']
-        transcription.save()
-
-        return RateTranscription(rating=rating)
+        logger.debug(f"Updated rating. New avg: {transcription.avg_rating}, num_ratings: {transcription.num_ratings}")
+        
+        return RateTranscription(rating=rating, transcription=transcription)
 
 class BookmarkTranscription(graphene.Mutation):
     favorite = graphene.Field(FavoriteType)
@@ -304,27 +324,6 @@ class UpdatePlayHistory(graphene.Mutation):
         except Transcription.DoesNotExist:
             return UpdatePlayHistory(success=False)
         
-class RateTranscription(graphene.Mutation):
-    rating = graphene.Field(RatingType)
-
-    class Arguments:
-        transcription_id = graphene.Int(required=True)
-        rating_value = graphene.Int(required=True)
-        comment = graphene.String()
-
-    def mutate(self, info, transcription_id, rating_value, comment=None):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception("Not logged in!")
-
-        transcription = Transcription.objects.get(pk=transcription_id)
-        rating, created = Rating.objects.update_or_create(
-            transcription=transcription, 
-            user=user,
-            defaults={'rating': rating_value, 'comment': comment}
-        )
-
-        return RateTranscription(rating=rating)
     
 class Logout(graphene.Mutation):
     class Arguments:
@@ -381,6 +380,5 @@ class Mutation(graphene.ObjectType):
     deactivate_premium = DeactivatePremium.Field()
     update_profile = UpdateProfile.Field()
     update_play_history = UpdatePlayHistory.Field()
-    rate_transcription = RateTranscription.Field()
     logout = Logout.Field()
     confirm_email = ConfirmEmail.Field()

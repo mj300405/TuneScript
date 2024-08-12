@@ -1,14 +1,14 @@
-// src/components/TranscriptionDetails.tsx
 import React, { useState, useRef, useEffect } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery, useMutation } from '@apollo/client';
 import dynamic from 'next/dynamic';
+import RatingComponent, { RATE_TRANSCRIPTION } from './RatingComponent';
 
 const PDF = dynamic(() => import('react-pdf-js'), {
   ssr: false,
 });
 
 const GET_TRANSCRIPTION_DETAILS = gql`
-  query GetTranscriptionDetails($id: Int!) {
+  query GetTranscriptionDetails($id: ID!) {
     transcription(id: $id) {
       id
       title
@@ -17,8 +17,10 @@ const GET_TRANSCRIPTION_DETAILS = gql`
       genre
       visibility
       status
-      rating
+      avgRating
+      userRating
       createdAt
+      numRatings
       midiFile {
         downloadUrl
       }
@@ -33,7 +35,7 @@ const GET_TRANSCRIPTION_DETAILS = gql`
 `;
 
 interface TranscriptionDetailsProps {
-  transcriptionId: string | number;
+  transcriptionId: string;
   onClose: () => void;
 }
 
@@ -44,9 +46,11 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const { loading, error, data } = useQuery(GET_TRANSCRIPTION_DETAILS, {
-    variables: { id: parseInt(transcriptionId as string, 10) },
+  const { loading, error, data, refetch } = useQuery(GET_TRANSCRIPTION_DETAILS, {
+    variables: { id: transcriptionId },
   });
+
+  const [updateRating] = useMutation(RATE_TRANSCRIPTION);
 
   function onDocumentComplete(pages: number) {
     setNumPages(pages);
@@ -61,6 +65,21 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
         audioRef.current.play();
       }
       setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleRatingChange = async (newRating: number, newComment: string | null) => {
+    try {
+      await updateRating({
+        variables: {
+          transcriptionId,
+          ratingValue: newRating,
+          comment: newComment,
+        },
+      });
+      refetch();
+    } catch (error) {
+      console.error('Error updating rating:', error);
     }
   };
 
@@ -90,8 +109,16 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
           <p><strong>Genre:</strong> {transcription.genre}</p>
           <p><strong>Visibility:</strong> {transcription.visibility}</p>
           <p><strong>Status:</strong> {transcription.status}</p>
-          <p><strong>Rating:</strong> {transcription.rating.toFixed(1)}</p>
           <p><strong>Created At:</strong> {new Date(transcription.createdAt).toLocaleDateString()}</p>
+        </div>
+        <div className="mb-4">
+          <RatingComponent
+            transcriptionId={transcriptionId}
+            initialRating={transcription.userRating}
+            averageRating={transcription.avgRating}
+            numRatings={transcription.numRatings}
+            onRatingChange={handleRatingChange}
+          />
         </div>
         <div className="mb-4 flex space-x-4">
           {transcription.midiFile?.downloadUrl && (

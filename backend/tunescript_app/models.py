@@ -1,10 +1,11 @@
 # backend/tunescript_app/models.py
 
-from django.db import models
+from django.db import models, transaction
 from datetime import datetime, timedelta
 from django.templatetags.static import static
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.db.models import Avg, F
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class User(AbstractUser):
     email_confirmed = models.BooleanField(default=False)
@@ -73,7 +74,7 @@ class Transcription(models.Model):
         ('FAILED', 'Failed'),
     ]
 
-    audio_file = models.ForeignKey(AudioFile, on_delete=models.CASCADE)
+    audio_file = models.ForeignKey('AudioFile', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     genre = models.CharField(max_length=100, blank=True)
     title = models.CharField(max_length=200)
@@ -84,6 +85,7 @@ class Transcription(models.Model):
     public = models.BooleanField(default=False)
     rating = models.FloatField(default=0.0)
     num_ratings = models.IntegerField(default=0)
+    avg_rating = models.FloatField(default=0.0)
 
     def __str__(self):
         return f"Transcription for {self.audio_file.title}"
@@ -93,6 +95,58 @@ class Transcription(models.Model):
         if self.status == 'PENDING':
             from .tasks import process_transcription
             process_transcription.delay(self.id)
+
+    def update_rating(self, new_rating):
+        with transaction.atomic():
+            self.num_ratings = F('num_ratings') + 1
+            self.avg_rating = (F('avg_rating') * F('num_ratings') + new_rating) / (F('num_ratings') + 1)
+            self.save()
+            self.refresh_from_db()
+
+    def update_rating_on_change(self, old_rating, new_rating):
+        with transaction.atomic():
+            self.avg_rating = (F('avg_rating') * F('num_ratings') - old_rating + new_rating) / F('num_ratings')
+            self.save()
+            self.refresh_from_db()
+
+    def recalculate_rating(self):
+        with transaction.atomic():
+            ratings = self.rating_set.all()
+            self.num_ratings = ratings.count()
+            self.avg_rating = ratings.aggregate(Avg('rating'))['rating__avg'] or 0.0
+            self.save()
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    transcription = models.ForeignKey(Transcription, on_delete=models.CASCADE, related_name='rating_set')
+    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comment = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'transcription')
+        indexes = [
+            models.Index(fields=['user', 'transcription']),
+            models.Index(fields=['rating']),
+        ]
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        if not is_new:
+            old_rating = Rating.objects.get(pk=self.pk).rating
+        
+        super().save(*args, **kwargs)
+        
+        if is_new:
+            self.transcription.update_rating(self.rating)
+        else:
+            self.transcription.update_rating_on_change(old_rating, self.rating)
+
+    def delete(self, *args, **kwargs):
+        transcription = self.transcription
+        super().delete(*args, **kwargs)
+        transcription.recalculate_rating()
 
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -130,16 +184,6 @@ class TranscriptionTag(models.Model):
 
     class Meta:
         unique_together = ('transcription', 'tag')
-
-class Rating(models.Model):
-    transcription = models.ForeignKey(Transcription, related_name='ratings', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField()
-    comment = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ('transcription', 'user')
 
 
 class UserPlayHistory(models.Model):

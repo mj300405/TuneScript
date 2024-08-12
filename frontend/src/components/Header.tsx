@@ -9,6 +9,7 @@ const GET_PROFILE_PICTURE = gql`
   query GetProfilePicture {
     profile {
       profilePicture
+      isPremium
     }
   }
 `;
@@ -83,26 +84,32 @@ const Header = () => {
   return (
     <header className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        <Link href="/">
-          <a className="text-2xl font-bold text-blue-600">TuneScript</a>
+        <Link href="/" className="text-2xl font-bold text-blue-600">
+          TuneScript
         </Link>
         <nav>
           <ul className="flex space-x-4 items-center">
             <li>
-              <Link href="/search">
-                <a className="text-gray-600 hover:text-blue-600 transition-colors duration-200">Search</a>
+              <Link
+                href="/search"
+                className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                Search
               </Link>
             </li>
             {isAuthenticated ? (
               <>
                 <li>
-                  <Link href="/dashboard">
-                    <a className="text-gray-600 hover:text-blue-600 transition-colors duration-200">Dashboard</a>
+                  <Link
+                    href="/dashboard"
+                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                    Dashboard
                   </Link>
                 </li>
                 <li>
-                  <Link href="/upload">
-                    <a className="text-gray-600 hover:text-blue-600 transition-colors duration-200">Upload MP3</a>
+                  <Link
+                    href="/upload"
+                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                    Upload MP3
                   </Link>
                 </li>
                 <li className="relative">
@@ -118,14 +125,21 @@ const Header = () => {
                       className="w-full h-full object-cover"
                       onError={handleImageError}
                     />
+                    {data?.profile?.isPremium && (
+                      <span className="absolute top-0 right-0 bg-yellow-400 text-xs font-bold px-1 rounded-full">P</span>
+                    )}
                   </motion.button>
                   {isDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                      <Link href="/profile">
-                        <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                      <Link
+                        href="/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Profile
                       </Link>
-                      <Link href="/my-transcriptions">
-                        <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Transcriptions</a>
+                      <Link
+                        href="/my-transcriptions"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        My Transcriptions
                       </Link>
                       <a href="#" onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
                     </div>
@@ -142,13 +156,17 @@ const Header = () => {
             ) : (
               <>
                 <li>
-                  <Link href="/login">
-                    <a className="text-gray-600 hover:text-blue-600 transition-colors duration-200">Login</a>
+                  <Link
+                    href="/login"
+                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                    Login
                   </Link>
                 </li>
                 <li>
-                  <Link href="/register">
-                    <a className="text-gray-600 hover:text-blue-600 transition-colors duration-200">Register</a>
+                  <Link
+                    href="/register"
+                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                    Register
                   </Link>
                 </li>
               </>

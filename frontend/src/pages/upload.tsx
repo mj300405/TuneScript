@@ -15,14 +15,18 @@ const UPLOAD_AUDIO_FILE = gql`
 
 const CREATE_TRANSCRIPTION = gql`
   mutation CreateTranscription($audioFileId: Int!, $title: String!, $genre: String, $composer: String, $player: String, $isPublic: Boolean!) {
-    createTranscription(audioFileId: $audioFileId, title: $title, genre: $genre, composer: $composer, player: $player, isPublic: $isPublic) {
-      transcription {
-        id
-        title
-        status
-      }
+  createTranscription(audioFileId: $audioFileId, title: $title, genre: $genre, composer: $composer, player: $player, isPublic: $isPublic) {
+    transcription {
+      id
+      title
+      composer
+      genre
+      player
+      visibility
+      status
     }
   }
+}
 `;
 
 const GET_DOWNLOAD_URLS = gql`

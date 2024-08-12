@@ -12,16 +12,28 @@ const GET_MY_TRANSCRIPTIONS = gql`
       composer
       genre
       player
-      rating
       visibility
       status
       createdAt
+      averageRating
     }
   }
 `;
 
+interface Transcription {
+  id: string;
+  title: string;
+  composer: string;
+  genre: string;
+  player: string;
+  visibility: string;
+  status: string;
+  createdAt: string;
+  averageRating: number;
+}
+
 const MyTranscriptions = () => {
-  const [selectedTranscription, setSelectedTranscription] = useState<string | null>(null);
+  const [selectedTranscriptionId, setSelectedTranscriptionId] = useState<string | null>(null);
   const { loading, error, data } = useQuery(GET_MY_TRANSCRIPTIONS);
 
   if (loading) return <Layout title="My Transcriptions"><p>Loading...</p></Layout>;
@@ -32,17 +44,18 @@ const MyTranscriptions = () => {
       <div className="max-w-4xl mx-auto p-8">
         <h1 className="text-3xl font-bold mb-4">My Transcriptions</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {data.myTranscriptions.map((transcription: any) => (
+          {data.myTranscriptions.map((transcription: Transcription) => (
             <div key={transcription.id} className="border p-4 rounded shadow">
               <h2 className="text-xl font-bold">{transcription.title}</h2>
               <p>Composer: {transcription.composer}</p>
               <p>Genre: {transcription.genre}</p>
               <p>Player: {transcription.player}</p>
-              <p>Rating: {transcription.rating.toFixed(1)}</p>
+              <p>Visibility: {transcription.visibility}</p>
               <p>Status: {transcription.status}</p>
+              <p>Average Rating: {transcription.averageRating ? transcription.averageRating.toFixed(1) : 'No ratings'}</p>
               <p>Created: {new Date(transcription.createdAt).toLocaleDateString()}</p>
               <button
-                onClick={() => setSelectedTranscription(transcription.id)}
+                onClick={() => setSelectedTranscriptionId(transcription.id)}
                 className="mt-2 bg-blue-500 text-white px-2 py-1 rounded"
               >
                 View Details
@@ -50,10 +63,10 @@ const MyTranscriptions = () => {
             </div>
           ))}
         </div>
-        {selectedTranscription && (
+        {selectedTranscriptionId && (
           <TranscriptionDetails
-            transcriptionId={selectedTranscription}
-            onClose={() => setSelectedTranscription(null)}
+            transcriptionId={selectedTranscriptionId}
+            onClose={() => setSelectedTranscriptionId(null)}
           />
         )}
       </div>

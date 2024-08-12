@@ -10,7 +10,7 @@ const GET_DASHBOARD_DATA = gql`
       id
       title
       composer
-      rating
+      avgRating
     }
     recentTranscriptions {
       id
@@ -55,13 +55,13 @@ const Dashboard = () => {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Highest Rated Transcriptions</h2>
             <ul>
-              {data.highestRatedTranscriptions.map((t: any) => (
+              {data?.highestRatedTranscriptions?.map((t: any) => (
                 <li key={t.id} className="mb-2">
                   <button 
                     onClick={() => setSelectedTranscription(t.id)}
                     className="text-blue-600 hover:underline"
                   >
-                    {t.title} by {t.composer} - Rating: {t.rating.toFixed(1)}
+                    {t.title} by {t.composer} - Rating: {t.avgRating?.toFixed(1)}
                   </button>
                 </li>
               ))}
@@ -72,7 +72,7 @@ const Dashboard = () => {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Recently Added</h2>
             <ul>
-              {data.recentTranscriptions.map((t: any) => (
+              {data?.recentTranscriptions?.map((t: any) => (
                 <li key={t.id} className="mb-2">
                   <button 
                     onClick={() => setSelectedTranscription(t.id)}
@@ -89,7 +89,7 @@ const Dashboard = () => {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Your Most Played</h2>
             <ul>
-              {data.userMostPlayedTranscriptions.map((t: any) => (
+              {data?.userMostPlayedTranscriptions?.map((t: any) => (
                 <li key={t.id} className="mb-2">
                   <button 
                     onClick={() => setSelectedTranscription(t.id)}
@@ -106,7 +106,7 @@ const Dashboard = () => {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Recommended for You</h2>
             <ul>
-              {data.recommendedTranscriptions.map((t: any) => (
+              {data?.recommendedTranscriptions?.map((t: any) => (
                 <li key={t.id} className="mb-2">
                   <button 
                     onClick={() => setSelectedTranscription(t.id)}
@@ -122,20 +122,9 @@ const Dashboard = () => {
           {/* User Statistics */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Your Statistics</h2>
-            <p>Total Transcriptions: {data.userStatistics.totalTranscriptions}</p>
-            <p>Average Rating: {data.userStatistics.averageRating.toFixed(2)}</p>
-            <p>Total Play Time: {Math.floor(data.userStatistics.totalPlayTime / 3600)} hours</p>
-          </div>
-
-          {/* Quick Links */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold mb-4">Quick Links</h2>
-            <div className="flex flex-col space-y-2">
-              <a href="/upload" className="text-blue-600 hover:underline">Upload New Transcription</a>
-              <a href="/search" className="text-blue-600 hover:underline">Search Transcriptions</a>
-              <a href="/my-transcriptions" className="text-blue-600 hover:underline">My Transcriptions</a>
-              <a href="/profile" className="text-blue-600 hover:underline">Edit Profile</a>
-            </div>
+            <p>Total Transcriptions: {data?.userStatistics?.totalTranscriptions}</p>
+            <p>Average Rating: {data?.userStatistics?.averageRating?.toFixed(2)}</p>
+            <p>Total Play Time: {Math.floor((data?.userStatistics?.totalPlayTime || 0) / 3600)} hours</p>
           </div>
         </div>
 

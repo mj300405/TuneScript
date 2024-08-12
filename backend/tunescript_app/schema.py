@@ -14,7 +14,7 @@ class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     profiles = graphene.List(ProfileType)
     transcriptions = graphene.List(TranscriptionType, title=graphene.String(), composer=graphene.String(), genre=graphene.String(), player=graphene.String(), min_rating=graphene.Float(), visibility=graphene.String())
-    transcription = graphene.Field(TranscriptionType, id=graphene.Int(required=True))
+    transcription = graphene.Field(TranscriptionType, id=graphene.ID(required=True))
     tags = graphene.List(TagType)
     search_transcriptions = graphene.List(TranscriptionType, title=graphene.String(), composer=graphene.String(), is_public=graphene.Boolean())
     me = graphene.Field(UserType)
@@ -28,9 +28,16 @@ class Query(graphene.ObjectType):
     user_most_played_transcriptions = graphene.List(TranscriptionWithPlayCountType)
     recommended_transcriptions = graphene.List(TranscriptionType)
     user_statistics = graphene.Field(UserStatisticsType)
+    transcription_with_rating = graphene.Field(TranscriptionType, id=graphene.Int(required=True))
 
-    def resolve_highest_rated_transcriptions(self, info):
-        return Transcription.objects.filter(public=True).order_by('-rating')[:5]
+    def resolve_transcription_with_rating(self, info, id):
+        user = info.context.user
+        transcription = Transcription.objects.get(pk=id)
+        if user.is_authenticated:
+            rating = Rating.objects.filter(transcription=transcription, user=user).first()
+            if rating:
+                transcription.user_rating = rating.rating
+        return transcription
 
     def resolve_recent_transcriptions(self, info):
         return Transcription.objects.filter(public=True).order_by('-created_at')[:5]
@@ -66,21 +73,6 @@ class Query(graphene.ObjectType):
         else:
             return Transcription.objects.filter(public=True).order_by('?')[:5]
 
-    def resolve_user_statistics(self, info):
-        user = info.context.user
-        if not user.is_authenticated:
-            return None
-        
-        total_transcriptions = Transcription.objects.filter(user=user).count()
-        average_rating = Transcription.objects.filter(user=user).aggregate(Avg('rating'))['rating__avg'] or 0
-        total_play_time = UserPlayHistory.objects.filter(user=user).aggregate(Sum('play_time'))['play_time__sum'] or 0
-
-        return UserStatisticsType(
-            total_transcriptions=total_transcriptions,
-            average_rating=average_rating,
-            total_play_time=total_play_time
-        )
-
     
     def resolve_my_transcriptions(self, info):
         return Transcription.objects.filter(user=info.context.user).order_by('-created_at')
@@ -115,38 +107,12 @@ class Query(graphene.ObjectType):
         transcription = Transcription.objects.get(pk=id)
         return transcription.status
 
-    def resolve_transcriptions(self, info, title=None, composer=None, genre=None, player=None, min_rating=None, visibility=None):
-        user = info.context.user
-        qs = Transcription.objects.all()
-
-        if title:
-            qs = qs.filter(title__icontains=title)
-        if composer:
-            qs = qs.filter(composer__icontains=composer)
-        if genre:
-            qs = qs.filter(genre__icontains=genre)
-        if player:
-            qs = qs.filter(player__icontains=player)
-        if min_rating is not None:
-            qs = qs.filter(rating__gte=min_rating)
-        
-        if visibility:
-            if visibility.lower() == 'public':
-                qs = qs.filter(public=True)
-            elif visibility.lower() == 'private' and not user.is_anonymous:
-                qs = qs.filter(public=False, user=user)
-        else:
-            if user.is_anonymous:
-                qs = qs.filter(public=True)
-            else:
-                qs = qs.filter(Q(public=True) | Q(user=user))
-
-        return qs
-
     def resolve_transcription(self, info, id):
+        from graphql_relay import from_global_id
         try:
+            _, id = from_global_id(id)
             return Transcription.objects.get(pk=id)
-        except Transcription.DoesNotExist:
+        except (Transcription.DoesNotExist, ValueError, TypeError):
             return None
 
     def resolve_tags(self, info, **kwargs):
@@ -167,5 +133,55 @@ class Query(graphene.ObjectType):
         if user.is_anonymous:
             raise Exception("Not logged in!")
         return user
+    
+    def resolve_highest_rated_transcriptions(self, info):
+        return Transcription.objects.filter(public=True).annotate(
+            avg_rating=Avg('rating_set__rating')
+        ).order_by('-avg_rating')[:5]
+
+    def resolve_user_statistics(self, info):
+        user = info.context.user
+        if not user.is_authenticated:
+            return None
+        
+        total_transcriptions = Transcription.objects.filter(user=user).count()
+        average_rating = Transcription.objects.filter(user=user).annotate(
+            avg_rating=Avg('rating_set__rating')
+        ).aggregate(Avg('avg_rating'))['avg_rating__avg'] or 0
+        total_play_time = UserPlayHistory.objects.filter(user=user).aggregate(Sum('play_time'))['play_time__sum'] or 0
+
+        return UserStatisticsType(
+            total_transcriptions=total_transcriptions,
+            average_rating=average_rating,
+            total_play_time=total_play_time
+        )
+
+    def resolve_transcriptions(self, info, title=None, composer=None, genre=None, player=None, min_rating=None, visibility=None):
+        user = info.context.user
+        qs = Transcription.objects.annotate(avg_rating=Avg('rating_set__rating'))
+
+        if title:
+            qs = qs.filter(title__icontains=title)
+        if composer:
+            qs = qs.filter(composer__icontains=composer)
+        if genre:
+            qs = qs.filter(genre__icontains=genre)
+        if player:
+            qs = qs.filter(player__icontains=player)
+        if min_rating is not None:
+            qs = qs.filter(avg_rating__gte=min_rating)
+        
+        if visibility:
+            if visibility.lower() == 'public':
+                qs = qs.filter(public=True)
+            elif visibility.lower() == 'private' and not user.is_anonymous:
+                qs = qs.filter(public=False, user=user)
+        else:
+            if user.is_anonymous:
+                qs = qs.filter(public=True)
+            else:
+                qs = qs.filter(Q(public=True) | Q(user=user))
+
+        return qs
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

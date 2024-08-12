@@ -85,6 +85,9 @@ services:
       - BACKEND_SSE_URL=http://web:8000/sse-stream/
     networks:
       - tunescript-network
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
 
 volumes:
   postgres_data:
