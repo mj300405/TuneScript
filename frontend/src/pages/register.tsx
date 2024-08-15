@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import Layout from '../components/Layout';
+import Link from 'next/link';
 
 const REGISTER_MUTATION = gql`
   mutation Register($username: String!, $email: String!, $password: String!) {
@@ -64,6 +65,11 @@ export default function Register() {
           <button type="submit" className="bg-blue-500 text-white p-2 w-full rounded">
             {loading ? 'Loading...' : 'Register'}
           </button>
+          <div className="mt-4 text-center">
+            <Link href="/login" className="text-blue-500 hover:underline">
+              Already have an account? Login
+            </Link>
+          </div>
           {status && <p className={`mt-4 ${status.includes('successful') ? 'text-green-500' : 'text-red-500'}`}>{status}</p>}
         </form>
       </div>

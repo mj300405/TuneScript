@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
 import Image from 'next/image';
 import Layout from '../components/Layout';
+import PasswordChange from '../components/PasswordChange';
 
 const GET_PROFILE = gql`
   query GetProfile {
@@ -229,7 +230,6 @@ const ProfilePage = () => {
               </div>
             </div>
           </div>
-
           <div>
             <button
               type="submit"
@@ -270,6 +270,10 @@ const ProfilePage = () => {
             </div>
           )}
         </div>
+        <div className="mt-8">
+            <h2 className="text-xl font-semibold mb-2">Change Password</h2>
+            <PasswordChange />
+          </div>
       </div>
     </Layout>
   );

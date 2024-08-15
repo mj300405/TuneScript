@@ -3,6 +3,8 @@ import { useMutation, gql } from '@apollo/client';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import AuthContext from '../context/AuthContext';
+import Link from 'next/link';
+
 
 const LOGIN_MUTATION = gql`
   mutation TokenAuth($username: String!, $password: String!) {
@@ -63,6 +65,16 @@ export default function Login() {
           <button type="submit" className="bg-blue-500 text-white p-2 w-full rounded">
             {loading ? 'Loading...' : 'Login'}
           </button>
+          <div className="mt-4 text-center">
+            <Link href="/password-reset-request" className="text-blue-500 hover:underline">
+              Forgot your password?
+            </Link>
+          </div>
+          <div className="mt-4 text-center">
+            <Link href="/register" className="text-blue-500 hover:underline">
+              Don't have an account? Register
+            </Link>
+          </div>
           {error && <p className="text-red-500 mt-4">{error}</p>}
         </form>
       </div>
