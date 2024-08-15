@@ -15,7 +15,7 @@ const GET_MY_TRANSCRIPTIONS = gql`
       visibility
       status
       createdAt
-      averageRating
+      avgRating
     }
   }
 `;
@@ -29,7 +29,7 @@ interface Transcription {
   visibility: string;
   status: string;
   createdAt: string;
-  averageRating: number;
+  avgRating: number;
 }
 
 const MyTranscriptions = () => {
@@ -52,7 +52,7 @@ const MyTranscriptions = () => {
               <p>Player: {transcription.player}</p>
               <p>Visibility: {transcription.visibility}</p>
               <p>Status: {transcription.status}</p>
-              <p>Average Rating: {transcription.averageRating ? transcription.averageRating.toFixed(1) : 'No ratings'}</p>
+              <p>Average Rating: {transcription.avgRating ? transcription.avgRating.toFixed(1) : 'No ratings'}</p>
               <p>Created: {new Date(transcription.createdAt).toLocaleDateString()}</p>
               <button
                 onClick={() => setSelectedTranscriptionId(transcription.id)}

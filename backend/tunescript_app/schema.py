@@ -135,9 +135,8 @@ class Query(graphene.ObjectType):
         return user
     
     def resolve_highest_rated_transcriptions(self, info):
-        return Transcription.objects.filter(public=True).annotate(
-            avg_rating=Avg('rating_set__rating')
-        ).order_by('-avg_rating')[:5]
+        return Transcription.objects.filter(public=True).order_by('-avg_rating')[:5]
+
 
     def resolve_user_statistics(self, info):
         user = info.context.user
@@ -145,9 +144,7 @@ class Query(graphene.ObjectType):
             return None
         
         total_transcriptions = Transcription.objects.filter(user=user).count()
-        average_rating = Transcription.objects.filter(user=user).annotate(
-            avg_rating=Avg('rating_set__rating')
-        ).aggregate(Avg('avg_rating'))['avg_rating__avg'] or 0
+        average_rating = Transcription.objects.filter(user=user).aggregate(Avg('avg_rating'))['avg_rating__avg'] or 0
         total_play_time = UserPlayHistory.objects.filter(user=user).aggregate(Sum('play_time'))['play_time__sum'] or 0
 
         return UserStatisticsType(
@@ -158,7 +155,7 @@ class Query(graphene.ObjectType):
 
     def resolve_transcriptions(self, info, title=None, composer=None, genre=None, player=None, min_rating=None, visibility=None):
         user = info.context.user
-        qs = Transcription.objects.annotate(avg_rating=Avg('rating_set__rating'))
+        qs = Transcription.objects.all()
 
         if title:
             qs = qs.filter(title__icontains=title)

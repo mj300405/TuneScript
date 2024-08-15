@@ -117,7 +117,7 @@ const Search = () => {
                 <p>Genre: {transcription.genre}</p>
                 <p>Player: {transcription.player}</p>
                 <p>Visibility: {transcription.visibility}</p>
-                <p>Average Rating: {transcription.avgRating.toFixed(1)}</p>
+                <p>Average Rating: {transcription.avgRating ? transcription.avgRating.toFixed(1) : 'No ratings'}</p>
                 <p>Your Rating: {transcription.userRating ? transcription.userRating.toFixed(1) : 'Not rated'}</p>
                 <p>Number of Ratings: {transcription.numRatings}</p>
                 <button

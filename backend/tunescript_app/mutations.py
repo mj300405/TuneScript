@@ -181,41 +181,24 @@ class RateTranscription(graphene.Mutation):
         rating_value = graphene.Int(required=True)
         comment = graphene.String()
 
-    rating = graphene.Field(RatingType)
-    transcription = graphene.Field(TranscriptionType)
+    rating = graphene.Field('tunescript_app.types.RatingType')
+    transcription = graphene.Field('tunescript_app.types.TranscriptionType')
 
     @login_required
     def mutate(self, info, transcription_id, rating_value, comment=None):
-        logger.debug(f"Starting RateTranscription mutation with ID: {transcription_id}, value: {rating_value}")
-        
         user = info.context.user
-        logger.debug(f"User: {user.username}")
-        
-        _, transcription_id = from_global_id(transcription_id)
-        logger.debug(f"Decoded transcription ID: {transcription_id}")
-        
-        try:
-            transcription = Transcription.objects.get(pk=transcription_id)
-            logger.debug(f"Found transcription: {transcription.title}")
-        except Transcription.DoesNotExist:
-            logger.error(f"Transcription with ID {transcription_id} not found")
-            raise Exception(f"Transcription with ID {transcription_id} not found")
-        
-        try:
-            rating, created = Rating.objects.update_or_create(
-                transcription=transcription,
-                user=user,
-                defaults={'rating': rating_value, 'comment': comment}
-            )
-            logger.debug(f"Rating {'created' if created else 'updated'}: {rating.id}")
-            
-            # The save method of Rating will call the appropriate update method on Transcription
-        except Exception as e:
-            logger.error(f"Error creating/updating rating: {str(e)}")
-            raise
+        if not user.is_authenticated:
+            raise Exception("You must be logged in to rate a transcription.")
 
-        logger.debug(f"Updated rating. New avg: {transcription.avg_rating}, num_ratings: {transcription.num_ratings}")
-        
+        _, decoded_id = from_global_id(transcription_id)
+        transcription = Transcription.objects.get(pk=decoded_id)
+
+        rating, created = Rating.objects.update_or_create(
+            transcription=transcription,
+            user=user,
+            defaults={'rating': rating_value, 'comment': comment}
+        )
+
         return RateTranscription(rating=rating, transcription=transcription)
 
 class BookmarkTranscription(graphene.Mutation):
@@ -309,20 +292,22 @@ class UpdatePlayHistory(graphene.Mutation):
 
     success = graphene.Boolean()
 
-    @login_required
     def mutate(self, info, transcription_id, play_time):
         user = info.context.user
-        try:
-            transcription = Transcription.objects.get(pk=transcription_id)
-            play_history, created = UserPlayHistory.objects.get_or_create(
-                user=user,
-                transcription=transcription
-            )
-            play_history.play_time += play_time
-            play_history.save()
-            return UpdatePlayHistory(success=True)
-        except Transcription.DoesNotExist:
-            return UpdatePlayHistory(success=False)
+        if not user.is_authenticated:
+            raise Exception("You must be logged in to update play history.")
+
+        _, decoded_id = from_global_id(transcription_id)
+        transcription = Transcription.objects.get(pk=decoded_id)
+
+        play_history, created = UserPlayHistory.objects.get_or_create(
+            user=user,
+            transcription=transcription
+        )
+        play_history.play_time += play_time
+        play_history.save()
+
+        return UpdatePlayHistory(success=True)
         
     
 class Logout(graphene.Mutation):

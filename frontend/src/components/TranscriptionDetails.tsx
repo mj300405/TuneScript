@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client';
-import dynamic from 'next/dynamic';
-import RatingComponent, { RATE_TRANSCRIPTION } from './RatingComponent';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import RatingComponent from './RatingComponent';
 
-const PDF = dynamic(() => import('react-pdf-js'), {
-  ssr: false,
-});
+// Set the workerSrc to the correct path
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const GET_TRANSCRIPTION_DETAILS = gql`
   query GetTranscriptionDetails($id: ID!) {
@@ -19,8 +19,8 @@ const GET_TRANSCRIPTION_DETAILS = gql`
       status
       avgRating
       userRating
-      createdAt
       numRatings
+      createdAt
       midiFile {
         downloadUrl
       }
@@ -29,6 +29,23 @@ const GET_TRANSCRIPTION_DETAILS = gql`
       }
       audioFile {
         audioFile
+      }
+    }
+  }
+`;
+
+const RATE_TRANSCRIPTION = gql`
+  mutation RateTranscription($transcriptionId: ID!, $ratingValue: Int!, $comment: String) {
+    rateTranscription(transcriptionId: $transcriptionId, ratingValue: $ratingValue, comment: $comment) {
+      rating {
+        id
+        rating
+        comment
+      }
+      transcription {
+        id
+        avgRating
+        numRatings
       }
     }
   }
@@ -44,33 +61,38 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const { loading, error, data, refetch } = useQuery(GET_TRANSCRIPTION_DETAILS, {
     variables: { id: transcriptionId },
   });
 
-  const [updateRating] = useMutation(RATE_TRANSCRIPTION);
+  const [rateTranscription] = useMutation(RATE_TRANSCRIPTION);
 
-  function onDocumentComplete(pages: number) {
-    setNumPages(pages);
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
     setPageNumber(1);
-  }
+  };
 
   const handlePlayPause = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
-        audioRef.current.play();
+        audioRef.current.play().catch(e => {
+          console.error("Error playing audio:", e);
+          setAudioError(e.message);
+        });
+        setIsPlaying(true);
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
   const handleRatingChange = async (newRating: number, newComment: string | null) => {
     try {
-      await updateRating({
+      await rateTranscription({
         variables: {
           transcriptionId,
           ratingValue: newRating,
@@ -84,6 +106,18 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
   };
 
   useEffect(() => {
+    if (data?.transcription?.audioFile?.audioFile) {
+      const audioUrl = `/media/${data.transcription.audioFile.audioFile}`;
+      console.log("Audio URL:", audioUrl);
+      
+      if (audioRef.current) {
+        audioRef.current.src = audioUrl;
+        audioRef.current.load();
+      }
+    }
+  }, [data]);
+
+  useEffect(() => {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -91,6 +125,10 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
       }
     };
   }, []);
+
+  const handlePageChange = (newPage: number) => {
+    setPageNumber(newPage);
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -109,6 +147,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
           <p><strong>Genre:</strong> {transcription.genre}</p>
           <p><strong>Visibility:</strong> {transcription.visibility}</p>
           <p><strong>Status:</strong> {transcription.status}</p>
+          <p><strong>Average Rating:</strong> {transcription.avgRating.toFixed(1)} ({transcription.numRatings} ratings)</p>
           <p><strong>Created At:</strong> {new Date(transcription.createdAt).toLocaleDateString()}</p>
         </div>
         <div className="mb-4">
@@ -156,13 +195,15 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
             </button>
           )}
         </div>
+        {audioError && <p className="text-red-500 mb-4">Error playing audio: {audioError}</p>}
         {showPdfPreview && transcription.sheetMusic?.downloadUrl && (
           <div className="mt-4">
-            <PDF
+            <Document
               file={transcription.sheetMusic.downloadUrl}
-              onDocumentComplete={onDocumentComplete}
-              page={pageNumber}
-            />
+              onLoadSuccess={onDocumentLoadSuccess}
+            >
+              <Page pageNumber={pageNumber} />
+            </Document>
             <p className="text-center mt-2">
               Page {pageNumber} of {numPages}
             </p>
@@ -170,14 +211,14 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
               <div className="flex justify-center mt-2">
                 <button
                   disabled={pageNumber <= 1}
-                  onClick={() => setPageNumber(pageNumber - 1)}
+                  onClick={() => handlePageChange(pageNumber - 1)}
                   className="bg-blue-500 text-white px-2 py-1 rounded mr-2 disabled:bg-gray-300"
                 >
                   Previous
                 </button>
                 <button
-                  disabled={pageNumber >= (numPages || 0)}
-                  onClick={() => setPageNumber(pageNumber + 1)}
+                  disabled={pageNumber >= numPages}
+                  onClick={() => handlePageChange(pageNumber + 1)}
                   className="bg-blue-500 text-white px-2 py-1 rounded disabled:bg-gray-300"
                 >
                   Next
@@ -192,14 +233,11 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
         >
           Close
         </button>
-        {transcription.audioFile?.audioFile && (
-          <audio
-            ref={audioRef}
-            src={`/media/${transcription.audioFile.audioFile}`}
-            onEnded={() => setIsPlaying(false)}
-            className="hidden"
-          />
-        )}
+        <audio
+          ref={audioRef}
+          onEnded={() => setIsPlaying(false)}
+          className="hidden"
+        />
       </div>
     </div>
   );

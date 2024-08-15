@@ -7,24 +7,7 @@ from .models import Transcription
 from django.views.decorators.http import require_GET
 import time
 from django.conf import settings
-
-@method_decorator(csrf_exempt, name='dispatch')
-class WebhookView(View):
-    def post(self, request, *args, **kwargs):
-        try:
-            data = json.loads(request.body)
-            transcription_id = data.get('transcription_id')
-            status = data.get('status')
-            message = data.get('message')
-            
-            if transcription_id and status:
-                transcription = Transcription.objects.get(id=transcription_id)
-                transcription.status = status
-                transcription.save()
-
-            return JsonResponse({'status': 'success', 'message': message})
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+from graphql_relay import from_global_id
 
 @require_GET
 @csrf_exempt
@@ -32,12 +15,14 @@ def sse_stream(request, transcription_id):
     def event_stream():
         while True:
             try:
-                transcription = Transcription.objects.get(pk=transcription_id)
+                # Convert global ID to database ID
+                _, db_id = from_global_id(transcription_id)
+                transcription = Transcription.objects.get(pk=db_id)
                 midi_file = transcription.midifile_set.first()
                 sheet_music = transcription.sheetmusic_set.first()
                 
                 data = {
-                    'transcription_id': transcription.id,
+                    'transcription_id': transcription_id,  # Use the global ID
                     'status': transcription.status,
                     'message': getattr(transcription, 'error_message', '') or '',
                     'title': transcription.title,

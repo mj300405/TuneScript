@@ -1,6 +1,7 @@
 import React, { useState, useRef, useContext } from 'react';
 import { useQuery, useMutation, gql, useApolloClient } from '@apollo/client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import AuthContext from '../context/AuthContext';
@@ -32,7 +33,7 @@ const LOGOUT_MUTATION = gql`
   }
 `;
 
-const DEFAULT_PROFILE_PICTURE = '/static/images/default_profile_picture.png';
+const DEFAULT_PROFILE_PICTURE = 'http://localhost:8000/static/images/default_profile_picture.png';
 
 const Header = () => {
   const { isAuthenticated, logout: authLogout } = useContext(AuthContext);
@@ -64,7 +65,8 @@ const Header = () => {
       const { data } = await logoutMutation();
       if (data.logout.success) {
         await client.resetStore();
-        authLogout(); // Call the logout function from AuthContext
+        authLogout();
+        router.push('/login');
       } else {
         console.error('Logout failed');
       }
@@ -73,13 +75,7 @@ const Header = () => {
     }
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = DEFAULT_PROFILE_PICTURE;
-  };
-
-  const profilePictureUrl = data?.profile?.profilePicture
-    ? `${process.env.NEXT_PUBLIC_API_URL}${data.profile.profilePicture}`
-    : DEFAULT_PROFILE_PICTURE;
+  const profilePictureUrl = data?.profile?.profilePicture || DEFAULT_PROFILE_PICTURE;
 
   return (
     <header className="bg-white shadow-md">
@@ -119,11 +115,13 @@ const Header = () => {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     className="w-10 h-10 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <img
+                    <Image
                       src={profilePictureUrl}
                       alt="Profile"
+                      width={40}
+                      height={40}
+                      unoptimized
                       className="w-full h-full object-cover"
-                      onError={handleImageError}
                     />
                     {data?.profile?.isPremium && (
                       <span className="absolute top-0 right-0 bg-yellow-400 text-xs font-bold px-1 rounded-full">P</span>
@@ -141,7 +139,9 @@ const Header = () => {
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         My Transcriptions
                       </Link>
-                      <a href="#" onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                      <button onClick={handleLogout} className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Logout
+                      </button>
                     </div>
                   )}
                   <input

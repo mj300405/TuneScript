@@ -9,13 +9,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    const backendSseUrl = `${process.env.NEXT_PUBLIC_BACKEND_SSE_URL}${id}/`;
+    
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
       'Connection': 'keep-alive',
     });
 
-    const response = await fetch(`http://localhost:8000/sse-stream/${id}/`);
+    const response = await fetch(backendSseUrl);
   
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

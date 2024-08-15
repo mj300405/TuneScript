@@ -59,6 +59,7 @@ services:
       - ../backend:/app
       - ../backend/staticfiles:/app/staticfiles
       - ../backend/media:/app/media
+      - ../backend/static:/app/static
     depends_on:
       - db
       - redis
@@ -81,6 +82,7 @@ services:
       - web
     environment:
       - NEXT_PUBLIC_API_URL=http://web:8000/graphql/
+      - NEXT_PUBLIC_BROWSER_API_URL= /graphql/
       - WEBHOOK_SECRET=your-very-secure-secret
       - BACKEND_SSE_URL=http://web:8000/sse-stream/
     networks:
@@ -88,10 +90,12 @@ services:
     volumes:
       - ../frontend:/app
       - /app/node_modules
+      - frontend_node_modules:/app/node_modules
 
 volumes:
   postgres_data:
   media:
+  frontend_node_modules:
 
 networks:
   tunescript-network:

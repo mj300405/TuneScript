@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
+import Image from 'next/image';
 import Layout from '../components/Layout';
 
 const GET_PROFILE = gql`
@@ -66,6 +67,7 @@ const ProfilePage = () => {
   const [emailNotifications, setEmailNotifications] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [profilePictureUrl, setProfilePictureUrl] = useState(DEFAULT_PROFILE_PICTURE);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -76,6 +78,7 @@ const ProfilePage = () => {
       const preferences = JSON.parse(data.profile.preferences || '{}');
       setEmailNotifications(preferences.emailNotifications || false);
       setDarkMode(preferences.darkMode || false);
+      setProfilePictureUrl(data.profile.profilePicture || DEFAULT_PROFILE_PICTURE);
     }
   }, [data]);
 
@@ -102,6 +105,7 @@ const ProfilePage = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setProfilePicture(e.target.files[0]);
+      setProfilePictureUrl(URL.createObjectURL(e.target.files[0]));
     }
   };
 
@@ -127,16 +131,12 @@ const ProfilePage = () => {
     }
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = DEFAULT_PROFILE_PICTURE;
+  const handleImageError = () => {
+    setProfilePictureUrl(DEFAULT_PROFILE_PICTURE);
   };
 
   if (loading) return <Layout title="Profile">Loading...</Layout>;
   if (error) return <Layout title="Profile">Error: {error.message}</Layout>;
-
-  const profilePictureUrl = data.profile.profilePicture
-    ? `${process.env.NEXT_PUBLIC_API_URL}${data.profile.profilePicture}`
-    : DEFAULT_PROFILE_PICTURE;
 
   return (
     <Layout title="Profile">
@@ -146,10 +146,13 @@ const ProfilePage = () => {
           <div>
             <h2 className="text-xl font-semibold mb-2">Profile Picture</h2>
             <div className="flex items-center space-x-4">
-              <img
+              <Image
                 src={profilePictureUrl}
                 alt="Profile"
-                className="w-24 h-24 rounded-full object-cover"
+                width={96}
+                height={96}
+                className="rounded-full object-cover"
+                unoptimized
                 onError={handleImageError}
               />
               <input

@@ -38,44 +38,47 @@ class ProfileType(DjangoObjectType):
     
     def resolve_profile_picture(self, info):
         if self.profile_picture and hasattr(self.profile_picture, 'url'):
-            return self.profile_picture.url
-        return static('images/default_profile_picture.png')
-    
-class AudioFileType(DjangoObjectType):
-    class Meta:
-        model = AudioFile
-
-    audio_file = graphene.String()
-
-    def resolve_audio_file(self, info):
-        if self.audio_file:
-            return self.audio_file.name  # This returns the relative path
-        return None
+            return f"{settings.BASE_URL}{self.profile_picture.url}"
+        return f"{settings.BASE_URL}{settings.STATIC_URL}images/default_profile_picture.png"
 
 class FavoriteType(DjangoObjectType):
     class Meta:
         model = Favorite
 
+class AudioFileType(DjangoObjectType):
+    class Meta:
+        model = AudioFile
+        interfaces = (relay.Node, )
+
+    audio_file = graphene.String()
+
+    def resolve_audio_file(self, info):
+        if self.audio_file:
+            return self.audio_file.name
+        return None
+
 class MIDIFileType(DjangoObjectType):
     class Meta:
         model = MIDIFile
-    
-    download_url = String()
+        interfaces = (relay.Node, )
+
+    download_url = graphene.String()
 
     def resolve_download_url(self, info):
         if self.midi_file:
-            return f"{settings.BASE_URL}{self.midi_file.url}"
+            return info.context.build_absolute_uri(self.midi_file.url)
         return None
 
 class SheetMusicType(DjangoObjectType):
     class Meta:
         model = SheetMusic
-    
-    download_url = String()
+        interfaces = (relay.Node, )
+
+    download_url = graphene.String()
 
     def resolve_download_url(self, info):
         if self.pdf_file:
-            return f"{settings.BASE_URL}{self.pdf_file.url}"
+            return info.context.build_absolute_uri(self.pdf_file.url)
         return None
 
 class TagType(DjangoObjectType):
@@ -104,14 +107,13 @@ class TranscriptionType(DjangoObjectType):
         interfaces = (relay.Node,)
 
     visibility = graphene.String()
-    average_rating = graphene.Float()
     user_rating = graphene.Int()
     genre = graphene.String()
     player = graphene.String()
     status = graphene.String()
-    midi_file = graphene.Field('tunescript_app.types.MIDIFileType')
-    sheet_music = graphene.Field('tunescript_app.types.SheetMusicType')
-    audio_file = graphene.Field('tunescript_app.types.AudioFileType')
+    midi_file = graphene.Field(MIDIFileType)
+    sheet_music = graphene.Field(SheetMusicType)
+    audio_file = graphene.Field(AudioFileType)
     num_ratings = graphene.Int()
     rating_set = graphene.List('tunescript_app.types.RatingType')
 
@@ -143,16 +145,10 @@ class TranscriptionType(DjangoObjectType):
     def resolve_audio_file(self, info):
         return self.audio_file
     
-    def resolve_average_rating(self, info):
-        logger.debug(f"Resolving average_rating for transcription {self.id}: {self.avg_rating}")
-        return self.avg_rating
-
     def resolve_num_ratings(self, info):
-        logger.debug(f"Resolving num_ratings for transcription {self.id}: {self.num_ratings}")
         return self.num_ratings
 
     def resolve_rating_set(self, info):
-        logger.debug(f"Resolving rating_set for transcription {self.id}")
         return self.rating_set.all()
     
 class RatingType(DjangoObjectType):
