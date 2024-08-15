@@ -12,12 +12,14 @@ import graphql_jwt
 from graphql_jwt.decorators import login_required
 import logging
 from django.core.files.uploadedfile import SimpleUploadedFile, InMemoryUploadedFile
-from .utils import send_confirmation_email
+from .utils import send_confirmation_email, send_password_reset_email
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from graphql_jwt import JSONWebTokenMutation
 from django.db.models import F, Avg
 from graphql_relay import from_global_id
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
 logger = logging.getLogger(__name__)
 
@@ -348,6 +350,67 @@ class ObtainJSONWebToken(JSONWebTokenMutation):
     def resolve(cls, root, info, **kwargs):
         return cls(user=info.context.user)
 
+
+class PasswordReset(graphene.Mutation):
+    class Arguments:
+        email = graphene.String(required=True)
+
+    success = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(self, info, email):
+        User = get_user_model()
+        user = User.objects.filter(email=email).first()
+        if user:
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            reset_url = f"{info.context.META['HTTP_ORIGIN']}/reset-password/{uid}/{token}"
+            send_password_reset_email(user.email, reset_url)
+            return PasswordReset(success=True, message="Password reset email sent")
+        return PasswordReset(success=False, message="Email not found")
+
+class PasswordChange(graphene.Mutation):
+    class Arguments:
+        uid = graphene.String(required=True)
+        token = graphene.String(required=True)
+        new_password = graphene.String(required=True)
+
+    success = graphene.Boolean()
+    message = graphene.String()
+
+    def mutate(self, info, uid, token, new_password):
+        User = get_user_model()
+        try:
+            uid = force_str(urlsafe_base64_decode(uid))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist) as e:
+            return PasswordChange(success=False, message="Invalid reset link")
+
+        if default_token_generator.check_token(user, token):
+            user.set_password(new_password)
+            user.save()
+            return PasswordChange(success=True, message="Password successfully changed")
+        else:
+            return PasswordChange(success=False, message="Invalid or expired reset link")
+
+class UpdatePassword(graphene.Mutation):
+    class Arguments:
+        current_password = graphene.String(required=True)
+        new_password = graphene.String(required=True)
+
+    success = graphene.Boolean()
+    message = graphene.String()
+
+    @login_required
+    def mutate(self, info, current_password, new_password):
+        user = info.context.user
+        if user.check_password(current_password):
+            user.set_password(new_password)
+            user.save()
+            return UpdatePassword(success=True, message="Password successfully updated")
+        else:
+            return UpdatePassword(success=False, message="Current password is incorrect")
+
 class Mutation(graphene.ObjectType):
     transcribe_audio = TranscribeAudio.Field()
     upload_audio_file = UploadAudioFile.Field()
@@ -367,3 +430,6 @@ class Mutation(graphene.ObjectType):
     update_play_history = UpdatePlayHistory.Field()
     logout = Logout.Field()
     confirm_email = ConfirmEmail.Field()
+    password_reset = PasswordReset.Field()
+    password_change = PasswordChange.Field()
+    update_password = UpdatePassword.Field()

@@ -44,3 +44,9 @@ def send_confirmation_email(user):
         [user.email],
         fail_silently=False,
     )
+
+
+def send_password_reset_email(email, reset_url):
+    subject = "Reset your TuneScript password"
+    message = f"Click the link below to reset your password:\n\n{reset_url}"
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False)
