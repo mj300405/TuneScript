@@ -103,9 +103,9 @@ const Search = () => {
             <option value="private">Private</option>
           </select>
         </div>
-        <button onClick={handleSearch} className="bg-blue-500 text-white p-2 w-full rounded mb-4">
+        {/* <button onClick={handleSearch} className="bg-blue-500 text-white p-2 w-full rounded mb-4">
           Search
-        </button>
+        </button> */}
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-500">{error.message}</p>}
         {data && (

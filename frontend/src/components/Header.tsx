@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { useQuery, useMutation, gql, useApolloClient } from '@apollo/client';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -36,22 +36,42 @@ const LOGOUT_MUTATION = gql`
 const DEFAULT_PROFILE_PICTURE = 'http://localhost:8000/static/images/default_profile_picture.png';
 
 const Header = () => {
-  const { isAuthenticated, logout: authLogout } = useContext(AuthContext);
-  const { data, refetch } = useQuery(GET_PROFILE_PICTURE, {
-    skip: !isAuthenticated
-  });
-  const [updateProfilePicture] = useMutation(UPDATE_PROFILE_PICTURE);
-  const [logoutMutation] = useMutation(LOGOUT_MUTATION);
+  const { isAuthenticated, logout: authLogout, user } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [profileData, setProfileData] = useState<any>(null);
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const client = useApolloClient();
 
+  const { refetch } = useQuery(GET_PROFILE_PICTURE, {
+    skip: true, // We'll manually call this query in useEffect
+  });
+
+  const [updateProfilePicture] = useMutation(UPDATE_PROFILE_PICTURE);
+  const [logoutMutation] = useMutation(LOGOUT_MUTATION);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      refetch()
+        .then(({ data }) => {
+          setProfileData(data);
+          setIsLoading(false);
+        })
+        .catch(error => {
+          console.error('Error fetching profile picture:', error);
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+    }
+  }, [isAuthenticated, user, refetch]);
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       try {
-        await updateProfilePicture({ variables: { profilePicture: file } });
+        const { data } = await updateProfilePicture({ variables: { profilePicture: file } });
         refetch();
       } catch (err) {
         console.error('Failed to update profile picture:', err);
@@ -75,7 +95,11 @@ const Header = () => {
     }
   };
 
-  const profilePictureUrl = data?.profile?.profilePicture || DEFAULT_PROFILE_PICTURE;
+  const profilePictureUrl = profileData?.profile?.profilePicture || DEFAULT_PROFILE_PICTURE;
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <header className="bg-white shadow-md">
@@ -86,25 +110,19 @@ const Header = () => {
         <nav>
           <ul className="flex space-x-4 items-center">
             <li>
-              <Link
-                href="/search"
-                className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+              <Link href="/search" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
                 Search
               </Link>
             </li>
-            {isAuthenticated ? (
+            {isAuthenticated && user ? (
               <>
                 <li>
-                  <Link
-                    href="/dashboard"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                  <Link href="/dashboard" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
                     Dashboard
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/upload"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                  <Link href="/upload" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
                     Upload MP3
                   </Link>
                 </li>
@@ -123,20 +141,16 @@ const Header = () => {
                       unoptimized
                       className="w-full h-full object-cover"
                     />
-                    {data?.profile?.isPremium && (
+                    {profileData?.profile?.isPremium && (
                       <span className="absolute top-0 right-0 bg-yellow-400 text-xs font-bold px-1 rounded-full">P</span>
                     )}
                   </motion.button>
                   {isDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                      <Link
-                        href="/profile"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         Profile
                       </Link>
-                      <Link
-                        href="/my-transcriptions"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <Link href="/my-transcriptions" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         My Transcriptions
                       </Link>
                       <button onClick={handleLogout} className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -156,16 +170,12 @@ const Header = () => {
             ) : (
               <>
                 <li>
-                  <Link
-                    href="/login"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                  <Link href="/login" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
                     Login
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="/register"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
+                  <Link href="/register" className="text-gray-600 hover:text-blue-600 transition-colors duration-200">
                     Register
                   </Link>
                 </li>

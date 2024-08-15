@@ -5,7 +5,6 @@ import Layout from '../components/Layout';
 import AuthContext from '../context/AuthContext';
 import Link from 'next/link';
 
-
 const LOGIN_MUTATION = gql`
   mutation TokenAuth($username: String!, $password: String!) {
     tokenAuth(username: $username, password: $password) {
@@ -31,14 +30,20 @@ export default function Login() {
     e.preventDefault();
     try {
       const response = await login({ variables: { username, password } });
+      console.log('Login response:', response);  // Debug log
+      
       if (!response.data.tokenAuth.user.emailConfirmed) {
         setError('Please confirm your email before logging in.');
         return;
       }
-      contextLogin(response.data.tokenAuth.token);
+      
+      const { token, user } = response.data.tokenAuth;
+      contextLogin(token, user);
+      console.log('Login successful, user:', user);  // Debug log
+      
       router.push('/dashboard');
     } catch (err) {
-      console.error(err);
+      console.error('Login error:', err);
       setError('Login failed. Please check your credentials.');
     }
   };

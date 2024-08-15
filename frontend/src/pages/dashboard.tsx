@@ -1,8 +1,8 @@
-// src/pages/dashboard.tsx
 import { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import Layout from '../components/Layout';
 import TranscriptionDetails from '../components/TranscriptionDetails';
+import Link from 'next/link';
 
 const GET_DASHBOARD_DATA = gql`
   query GetDashboardData {
@@ -88,43 +88,60 @@ const Dashboard = () => {
           {/* User's Most Played Transcriptions */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Your Most Played</h2>
-            <ul>
-              {data?.userMostPlayedTranscriptions?.map((t: any) => (
-                <li key={t.id} className="mb-2">
-                  <button 
-                    onClick={() => setSelectedTranscription(t.id)}
-                    className="text-blue-600 hover:underline"
-                  >
-                    {t.title} by {t.composer} - Played {t.playCount} times
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {data?.userMostPlayedTranscriptions?.length > 0 ? (
+              <ul>
+                {data.userMostPlayedTranscriptions.map((t: any) => (
+                  <li key={t.id} className="mb-2">
+                    <button 
+                      onClick={() => setSelectedTranscription(t.id)}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {t.title} by {t.composer} - Played {t.playCount} times
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="text-center">
+                <p className="text-gray-500 mb-4">You haven't played any transcriptions yet.</p>
+                <p className="mb-4">Start your musical journey today!</p>
+                <Link href="/search" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+                  Discover Transcriptions
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Recommended Transcriptions */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Recommended for You</h2>
-            <ul>
-              {data?.recommendedTranscriptions?.map((t: any) => (
-                <li key={t.id} className="mb-2">
-                  <button 
-                    onClick={() => setSelectedTranscription(t.id)}
-                    className="text-blue-600 hover:underline"
-                  >
-                    {t.title} by {t.composer} - {t.genre}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {data?.recommendedTranscriptions?.length > 0 ? (
+              <ul>
+                {data.recommendedTranscriptions.map((t: any) => (
+                  <li key={t.id} className="mb-2">
+                    <button 
+                      onClick={() => setSelectedTranscription(t.id)}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {t.title} by {t.composer} - {t.genre}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500">Start playing transcriptions to get personalized recommendations!</p>
+            )}
           </div>
 
           {/* User Statistics */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Your Statistics</h2>
-            <p>Total Transcriptions: {data?.userStatistics?.totalTranscriptions}</p>
-            <p>Average Rating: {data?.userStatistics?.averageRating?.toFixed(2)}</p>
+            <p>Total Transcriptions: {data?.userStatistics?.totalTranscriptions || 0}</p>
+            <p>Average Rating: {data?.userStatistics?.averageRating?.toFixed(2) || 'N/A'}</p>
             <p>Total Play Time: {Math.floor((data?.userStatistics?.totalPlayTime || 0) / 3600)} hours</p>
+            {data?.userStatistics?.totalTranscriptions === 0 && (
+              <p className="mt-4 text-gray-500">Start playing to see your statistics grow!</p>
+            )}
           </div>
         </div>
 

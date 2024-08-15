@@ -9,6 +9,9 @@ from django.db import models
 from django.conf import settings
 from django.db.models import Q
 from django.db.models import Count, Avg, Sum
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Query(graphene.ObjectType):
     users = graphene.List(UserType)
@@ -45,12 +48,19 @@ class Query(graphene.ObjectType):
     def resolve_user_most_played_transcriptions(self, info):
         user = info.context.user
         if not user.is_authenticated:
+            logger.info(f"User not authenticated when fetching most played transcriptions")
             return []
         
-        return (Transcription.objects
+        most_played = (Transcription.objects
                 .filter(userplayhistory__user=user)
                 .annotate(play_count=Count('userplayhistory'))
                 .order_by('-play_count')[:5])
+        
+        logger.info(f"Fetched {len(most_played)} most played transcriptions for user {user.id}")
+        for transcription in most_played:
+            logger.info(f"Transcription {transcription.id}: {transcription.title} - Played {transcription.play_count} times")
+        
+        return most_played
 
     def resolve_recommended_transcriptions(self, info):
         user = info.context.user
