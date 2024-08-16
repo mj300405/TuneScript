@@ -2,7 +2,7 @@
 
 import graphene
 from graphene_django.types import DjangoObjectType
-from .models import Profile, AudioFile, Transcription, Favorite, MIDIFile, SheetMusic, Tag, TranscriptionTag, Rating
+from .models import Profile, AudioFile, Transcription, Favorite, MIDIFile, SheetMusic, Tag, TranscriptionTag, Rating, UserPlayHistory
 from django.contrib.auth import get_user_model
 from graphene import String, relay
 from django.conf import settings
@@ -89,12 +89,6 @@ class TranscriptionTagType(DjangoObjectType):
     class Meta:
         model = TranscriptionTag
 
-class TranscriptionWithPlayCountType(DjangoObjectType):
-    class Meta:
-        model = Transcription
-
-    play_count = graphene.Int()
-
 class UserStatisticsType(graphene.ObjectType):
     total_transcriptions = graphene.Int()
     average_rating = graphene.Float()
@@ -150,7 +144,8 @@ class TranscriptionType(DjangoObjectType):
 
     def resolve_rating_set(self, info):
         return self.rating_set.all()
-    
+
+
 class RatingType(DjangoObjectType):
     class Meta:
         model = Rating

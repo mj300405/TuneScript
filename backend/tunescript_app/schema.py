@@ -1,10 +1,10 @@
 # tunescript_app/schema.py
 
 import graphene
-from .types import UserType, ProfileType, AudioFileType, TranscriptionType, FavoriteType, MIDIFileType, SheetMusicType, TagType, TranscriptionTagType, RatingType, TranscriptionWithPlayCountType, UserStatisticsType
+from .types import UserType, ProfileType, AudioFileType, TranscriptionType, TagType, UserStatisticsType
 from .mutations import Mutation  # Import the Mutation class from mutations.py
 from django.contrib.auth import get_user_model
-from .models import Profile, AudioFile, Transcription, Favorite, MIDIFile, SheetMusic, Tag, TranscriptionTag, Rating, UserPlayHistory
+from .models import Profile, AudioFile, Transcription, Tag, Rating, UserPlayHistory
 from django.db import models
 from django.conf import settings
 from django.db.models import Q
@@ -28,7 +28,6 @@ class Query(graphene.ObjectType):
     my_transcriptions = graphene.List(TranscriptionType)
     highest_rated_transcriptions = graphene.List(TranscriptionType)
     recent_transcriptions = graphene.List(TranscriptionType)
-    user_most_played_transcriptions = graphene.List(TranscriptionWithPlayCountType)
     recommended_transcriptions = graphene.List(TranscriptionType)
     user_statistics = graphene.Field(UserStatisticsType)
     transcription_with_rating = graphene.Field(TranscriptionType, id=graphene.Int(required=True))

@@ -51,14 +51,6 @@ const RATE_TRANSCRIPTION = gql`
   }
 `;
 
-const UPDATE_PLAY_HISTORY = gql`
-  mutation UpdatePlayHistory($transcriptionId: ID!, $playTime: Int!) {
-    updatePlayHistory(transcriptionId: $transcriptionId, playTime: $playTime) {
-      success
-    }
-  }
-`;
-
 interface TranscriptionDetailsProps {
   transcriptionId: string;
   onClose: () => void;
@@ -71,16 +63,15 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
   const [pdfError, setPdfError] = useState<string | null>(null);
-  const [isAudioLoaded, setIsAudioLoaded] = useState(false);
+  const [audioLoadingStatus, setAudioLoadingStatus] = useState<'loading' | 'loaded' | 'error'>('loading');
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const playStartTimeRef = useRef<number | null>(null);
+  const isMountedRef = useRef(true);
 
   const { loading, error, data, refetch } = useQuery(GET_TRANSCRIPTION_DETAILS, {
     variables: { id: transcriptionId },
   });
 
   const [rateTranscription] = useMutation(RATE_TRANSCRIPTION);
-  const [updatePlayHistory] = useMutation(UPDATE_PLAY_HISTORY);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -94,34 +85,17 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
   }
 
   const handlePlayPause = () => {
-    if (audioRef.current) {
+    if (audioRef.current && audioLoadingStatus === 'loaded') {
       if (isPlaying) {
-        console.log('Pausing audio');
         audioRef.current.pause();
         setIsPlaying(false);
-        if (playStartTimeRef.current !== null) {
-          const playTime = Math.floor((Date.now() - playStartTimeRef.current) / 1000);
-          updatePlayHistory({
-            variables: {
-              transcriptionId,
-              playTime: Math.max(playTime, 1),
-            },
-          });
-          playStartTimeRef.current = null;
-        }
       } else {
-        console.log('Playing audio');
-        audioRef.current.play().then(() => {
-          console.log('Audio playback started successfully');
-          setIsPlaying(true);
-          playStartTimeRef.current = Date.now();
-        }).catch(e => {
+        audioRef.current.play().catch(e => {
           console.error("Error playing audio:", e);
           setAudioError(e.message);
         });
+        setIsPlaying(true);
       }
-    } else {
-      console.error('Audio element not found');
     }
   };
 
@@ -141,43 +115,72 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
   };
 
   useEffect(() => {
-    if (data?.transcription?.audioFile?.audioFile) {
-      const audioUrl = `/media/${data.transcription.audioFile.audioFile}`;
-      console.log("Audio URL:", audioUrl);
-      
-      const audio = new Audio(audioUrl);
-      audio.addEventListener('loadeddata', () => {
-        console.log('Audio loaded successfully');
-        setIsAudioLoaded(true);
-      });
-      audio.addEventListener('error', (e) => {
-        console.error('Error loading audio:', e);
-        setAudioError('Failed to load audio file');
-      });
-      audioRef.current = audio;
+    isMountedRef.current = true;
+    let cleanup: (() => void) | undefined;
 
-      return () => {
-        audio.pause();
-        audio.src = '';
-      };
-    }
+    const loadAudio = async () => {
+      if (data?.transcription?.audioFile?.audioFile) {
+        const audioUrl = `/media/${data.transcription.audioFile.audioFile}`;
+        console.log("Audio URL:", audioUrl);
+
+        try {
+          const audio = new Audio(audioUrl);
+          
+          const handleLoadedData = () => {
+            if (isMountedRef.current) {
+              console.log('Audio loaded successfully');
+              setAudioLoadingStatus('loaded');
+            }
+          };
+
+          const handleError = (e: Event) => {
+            if (isMountedRef.current) {
+              console.error('Error loading audio:', e);
+              setAudioLoadingStatus('error');
+              setAudioError('Failed to load audio file');
+            }
+          };
+
+          audio.addEventListener('loadeddata', handleLoadedData);
+          audio.addEventListener('error', handleError);
+
+          audioRef.current = audio;
+
+          cleanup = () => {
+            audio.removeEventListener('loadeddata', handleLoadedData);
+            audio.removeEventListener('error', handleError);
+            audio.pause();
+            audio.src = '';
+          };
+        } catch (error) {
+          console.error('Unexpected error while setting up audio:', error);
+          if (isMountedRef.current) {
+            setAudioLoadingStatus('error');
+            setAudioError('Unexpected error while setting up audio');
+          }
+        }
+      }
+    };
+
+    loadAudio();
+
+    return () => {
+      isMountedRef.current = false;
+      if (cleanup) cleanup();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+        audioRef.current = null;
+      }
+    };
   }, [data]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
       const handleEnded = () => {
-        console.log('Audio playback ended');
-        setIsPlaying(false);
-        if (playStartTimeRef.current !== null) {
-          const playTime = Math.floor((Date.now() - playStartTimeRef.current) / 1000);
-          updatePlayHistory({
-            variables: {
-              transcriptionId,
-              playTime: Math.max(playTime, 1),
-            },
-          });
-          playStartTimeRef.current = null;
+        if (isMountedRef.current) {
+          setIsPlaying(false);
         }
       };
 
@@ -187,7 +190,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
         audio.removeEventListener('ended', handleEnded);
       };
     }
-  }, [transcriptionId, updatePlayHistory]);
+  }, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -255,7 +258,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
                   </button>
                 </>
               )}
-              {isAudioLoaded && (
+              {audioLoadingStatus === 'loaded' && (
                 <button
                   onClick={handlePlayPause}
                   className="bg-purple-500 text-white px-4 py-2 rounded inline-block hover:bg-purple-600"
@@ -264,7 +267,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
                 </button>
               )}
             </div>
-            {audioError && <p className="text-red-500 mb-4">Error with audio: {audioError}</p>}
+            {audioLoadingStatus === 'error' && <p className="text-red-500 mb-4">Error with audio: {audioError}</p>}
           </div>
           {showPdfPreview && transcription.sheetMusic?.downloadUrl && (
             <div className="mt-4 p-4 border-t">
@@ -323,11 +326,3 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
 };
 
 export default TranscriptionDetails;
-
-
-
-// {When closing TranscriptionDetails i get this:
-
-//   Error loading audio: Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}isTrusted: truebubbles: falsecancelBubble: falsecancelable: truecomposed: falsecurrentTarget: nulldefaultPrevented: falseeventPhase: 0returnValue: truesrcElement: nulltarget: nulltimeStamp: 60980.299999952316type: "error"[[Prototype]]: Event
-  
-//   Also In your most played the numbser of played impoes is not being incremented (its either 0 or 1)}

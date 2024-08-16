@@ -286,30 +286,6 @@ class UpdateProfile(graphene.Mutation):
 
         profile.save()
         return UpdateProfile(profile=profile)
-
-class UpdatePlayHistory(graphene.Mutation):
-    class Arguments:
-        transcription_id = graphene.ID(required=True)
-        play_time = graphene.Int(required=True)
-
-    success = graphene.Boolean()
-
-    def mutate(self, info, transcription_id, play_time):
-        user = info.context.user
-        if not user.is_authenticated:
-            raise Exception("You must be logged in to update play history.")
-
-        _, decoded_id = from_global_id(transcription_id)
-        transcription = Transcription.objects.get(pk=decoded_id)
-
-        play_history, created = UserPlayHistory.objects.get_or_create(
-            user=user,
-            transcription=transcription
-        )
-        play_history.play_time += play_time
-        play_history.save()
-
-        return UpdatePlayHistory(success=True)
         
     
 class Logout(graphene.Mutation):
@@ -427,7 +403,6 @@ class Mutation(graphene.ObjectType):
     activate_premium = ActivatePremium.Field()
     deactivate_premium = DeactivatePremium.Field()
     update_profile = UpdateProfile.Field()
-    update_play_history = UpdatePlayHistory.Field()
     logout = Logout.Field()
     confirm_email = ConfirmEmail.Field()
     password_reset = PasswordReset.Field()

@@ -191,6 +191,7 @@ class UserPlayHistory(models.Model):
     transcription = models.ForeignKey(Transcription, on_delete=models.CASCADE)
     play_time = models.PositiveIntegerField(default=0)  # in seconds
     last_played = models.DateTimeField(auto_now=True)
+    play_count = models.PositiveIntegerField(default=0)
 
     class Meta:
         unique_together = ('user', 'transcription')
