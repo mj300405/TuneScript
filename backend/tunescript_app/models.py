@@ -90,12 +90,6 @@ class Transcription(models.Model):
     def __str__(self):
         return f"Transcription for {self.audio_file.title}"
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.status == 'PENDING':
-            from .tasks import process_transcription
-            process_transcription.delay(self.id)
-
     def update_rating(self, new_rating):
         with transaction.atomic():
             self.num_ratings = F('num_ratings') + 1

@@ -1,13 +1,49 @@
 import os
 from celery import shared_task
 from piano_transcription_inference import PianoTranscription, sample_rate, load_audio
-from .models import Transcription, MIDIFile, SheetMusic
+from .models import Transcription, MIDIFile, SheetMusic, AudioFile
 from .utils import convert_midi_to_pdf
 import tempfile
 import logging
-from django.conf import settings
+from django.core.files import File
+import yt_dlp
+
 
 logger = logging.getLogger(__name__)
+
+@shared_task(bind=True, max_retries=3)
+def download_youtube_audio(self, youtube_url, audio_file_id, transcription_id):
+    try:
+        audio_file = AudioFile.objects.get(id=audio_file_id)
+        
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+            'outtmpl': '%(title)s.%(ext)s',
+        }
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(youtube_url, download=True)
+            filename = ydl.prepare_filename(info).replace('.webm', '.mp3')
+        
+        with open(filename, 'rb') as f:
+            audio_file.audio_file.save(os.path.basename(filename), File(f))
+        
+        audio_file.save()
+        
+        os.remove(filename)
+        
+        # Trigger transcription process
+        process_transcription.delay(transcription_id)
+    
+    except Exception as e:
+        logger.error(f"Error downloading YouTube audio: {str(e)}")
+        raise self.retry(exc=e, countdown=60)
+
 
 @shared_task(bind=True, max_retries=3)
 def process_transcription(self, transcription_id):
@@ -67,3 +103,7 @@ def process_transcription(self, transcription_id):
         except self.MaxRetriesExceededError:
             logger.error(f"Max retries exceeded for transcription {transcription_id}")
         raise e
+    
+
+# Ensure all tasks are imported at the module level
+__all__ = ['download_youtube_audio', 'process_transcription']

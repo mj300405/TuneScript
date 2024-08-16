@@ -16,8 +16,8 @@ const UPLOAD_AUDIO_FILE = gql`
 `;
 
 const CREATE_TRANSCRIPTION = gql`
-  mutation CreateTranscription($audioFileId: Int!, $title: String!, $genre: String, $composer: String, $player: String, $isPublic: Boolean!) {
-    createTranscription(audioFileId: $audioFileId, title: $title, genre: $genre, composer: $composer, player: $player, isPublic: $isPublic) {
+  mutation CreateTranscription($audioFileId: Int, $youtubeUrl: String, $title: String!, $genre: String, $composer: String, $player: String, $isPublic: Boolean!) {
+    createTranscription(audioFileId: $audioFileId, youtubeUrl: $youtubeUrl, title: $title, genre: $genre, composer: $composer, player: $player, isPublic: $isPublic) {
       transcription {
         id
         title
@@ -42,6 +42,7 @@ const Upload: React.FC = () => {
   const [player, setPlayer] = useState('');
   const [isPublic, setIsPublic] = useState(true);
   const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [youtubeUrl, setYoutubeUrl] = useState('');
   const [transcriptionId, setTranscriptionId] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -56,7 +57,13 @@ const Upload: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       setAudioFile(file);
+      setYoutubeUrl('');  // Clear YouTube URL when file is selected
     }
+  };
+
+  const handleYoutubeUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setYoutubeUrl(e.target.value);
+    setAudioFile(null);  // Clear audio file when YouTube URL is entered
   };
 
   const initSSEConnection = (transcriptionId: string) => {
@@ -109,30 +116,37 @@ const Upload: React.FC = () => {
   }, []);
 
   const handleUpload = async () => {
-    if (!audioFile) {
-      alert('Please select an audio file.');
+    if (!audioFile && !youtubeUrl) {
+      alert('Please select an audio file or enter a YouTube URL.');
       return;
     }
 
     try {
       setButtonDisabled(true);
-      setStatusMessage('Uploading audio file...');
-      const { data: uploadData } = await uploadAudioFile({
-        variables: { title, file: audioFile },
-      });
+      setStatusMessage('Processing...');
 
-      console.log('Upload response:', uploadData);
+      let audioFileId: number | null = null;
 
-      if (!uploadData || !uploadData.uploadAudioFile || !uploadData.uploadAudioFile.audioFile) {
-        throw new Error('Invalid upload response');
+      if (audioFile) {
+        setStatusMessage('Uploading audio file...');
+        const { data: uploadData } = await uploadAudioFile({
+          variables: { title, file: audioFile },
+        });
+
+        console.log('Upload response:', uploadData);
+
+        if (!uploadData || !uploadData.uploadAudioFile || !uploadData.uploadAudioFile.audioFile) {
+          throw new Error('Invalid upload response');
+        }
+
+        audioFileId = parseInt(fromGlobalId(uploadData.uploadAudioFile.audioFile.id).id);
       }
-
-      const audioFileId = parseInt(fromGlobalId(uploadData.uploadAudioFile.audioFile.id).id);
 
       setStatusMessage('Creating transcription...');
       const { data: transcriptionData } = await createTranscription({
         variables: {
           audioFileId,
+          youtubeUrl: youtubeUrl || null,
           title,
           genre,
           composer,
@@ -161,6 +175,7 @@ const Upload: React.FC = () => {
       setPlayer('');
       setIsPublic(true);
       setAudioFile(null);
+      setYoutubeUrl('');
     } catch (error: unknown) {
       console.error('Upload or transcription creation failed:', error);
       setButtonDisabled(false);
@@ -189,6 +204,15 @@ const Upload: React.FC = () => {
             accept="audio/*"
             onChange={handleAudioFileChange}
             className="border p-2 mb-2 w-full rounded"
+            disabled={!!youtubeUrl}
+          />
+          <input
+            type="text"
+            placeholder="YouTube URL"
+            value={youtubeUrl}
+            onChange={handleYoutubeUrlChange}
+            className="border p-2 mb-2 w-full rounded"
+            disabled={!!audioFile}
           />
           <input
             type="text"

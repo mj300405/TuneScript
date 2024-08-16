@@ -6,7 +6,7 @@ from django.db import IntegrityError, transaction, models
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from .models import AudioFile, Transcription, Favorite, Rating, Profile, UserPlayHistory
-from .tasks import process_transcription
+from .tasks import process_transcription, download_youtube_audio
 from .types import UserType, AudioFileType, TranscriptionType, FavoriteType, RatingType, ProfileType
 import graphql_jwt
 from graphql_jwt.decorators import login_required
@@ -78,7 +78,8 @@ class UploadAudioFile(graphene.Mutation):
 
 class CreateTranscription(graphene.Mutation):
     class Arguments:
-        audio_file_id = graphene.Int(required=True)
+        audio_file_id = graphene.Int()
+        youtube_url = graphene.String()
         title = graphene.String(required=True)
         genre = graphene.String()
         composer = graphene.String()
@@ -87,29 +88,52 @@ class CreateTranscription(graphene.Mutation):
 
     transcription = graphene.Field(TranscriptionType)
 
-    def mutate(self, info, audio_file_id, title, genre=None, composer=None, player=None, is_public=False):
+    @login_required
+    def mutate(self, info, title, genre=None, composer=None, player=None, is_public=False, audio_file_id=None, youtube_url=None):
         user = info.context.user
 
-        if user.is_anonymous:
-            raise Exception("Not logged in!")
+        if audio_file_id and youtube_url:
+            raise Exception("Please provide either an audio file ID or a YouTube URL, not both.")
+        
+        if not audio_file_id and not youtube_url:
+            raise Exception("Please provide either an audio file ID or a YouTube URL.")
 
-        try:
-            audio_file = AudioFile.objects.get(id=audio_file_id)
-        except AudioFile.DoesNotExist:
-            raise Exception("Audio file not found")
+        if audio_file_id:
+            try:
+                audio_file = AudioFile.objects.get(id=audio_file_id)
+            except AudioFile.DoesNotExist:
+                raise Exception("Audio file not found")
+        else:
+            # Handle YouTube URL
+            audio_file = AudioFile.objects.create(
+                user=user,
+                title=f"YouTube Audio: {title}",
+                audio_file=None  # We'll update this later
+            )
 
-        transcription = Transcription(
+        transcription = Transcription.objects.create(
             audio_file=audio_file,
             user=user,
             title=title,
             genre=genre or "",
             composer=composer or "",
             player=player or "",
-            public=is_public
+            public=is_public,
+            status='PENDING'
         )
-        transcription.save()
+
+        if youtube_url:
+            # For YouTube URLs, we'll download the audio first
+            from .tasks import download_youtube_audio
+            download_youtube_audio.delay(youtube_url, audio_file.id, transcription.id)
+        else:
+            # For uploaded files, we can start the transcription process immediately
+            from .tasks import process_transcription
+            process_transcription.delay(transcription.id)
 
         return CreateTranscription(transcription=transcription)
+    
+
 class PasswordReset(graphene.Mutation):
     class Arguments:
         email = graphene.String(required=True)

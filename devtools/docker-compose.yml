@@ -54,7 +54,7 @@ services:
     build:
       context: ..
       dockerfile: devtools/Dockerfile.backend
-    command: poetry run celery -A tunescript_project worker --loglevel=info
+    command: poetry run celery -A tunescript_project worker --loglevel=info --concurrency=1
     volumes:
       - ../backend:/app
       - ../backend/staticfiles:/app/staticfiles

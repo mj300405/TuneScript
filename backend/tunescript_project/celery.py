@@ -14,6 +14,9 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
 
+# Set concurrency to 1
+app.conf.worker_concurrency = 1
+
 @app.task(bind=True)
 def debug_task(self):
     print(f'Request: {self.request!r}')
