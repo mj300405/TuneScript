@@ -21,6 +21,7 @@ const GET_TRANSCRIPTION_DETAILS = gql`
       userRating
       numRatings
       createdAt
+      isOwner
       midiFile {
         downloadUrl
       }
@@ -51,6 +52,14 @@ const RATE_TRANSCRIPTION = gql`
   }
 `;
 
+const DELETE_TRANSCRIPTION = gql`
+  mutation DeleteTranscription($id: ID!) {
+    deleteTranscription(id: $id) {
+      success
+    }
+  }
+`;
+
 interface TranscriptionDetailsProps {
   transcriptionId: string;
   onClose: () => void;
@@ -72,6 +81,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
   });
 
   const [rateTranscription] = useMutation(RATE_TRANSCRIPTION);
+  const [deleteTranscription] = useMutation(DELETE_TRANSCRIPTION);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -111,6 +121,26 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
       refetch();
     } catch (error) {
       console.error('Error updating rating:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this transcription?')) {
+      try {
+        const { data } = await deleteTranscription({
+          variables: { id: transcriptionId },
+        });
+        
+        if (data.deleteTranscription.success) {
+          alert('Transcription deleted successfully');
+          onClose();
+        } else {
+          throw new Error('Deletion was not successful');
+        }
+      } catch (error) {
+        console.error('Error deleting transcription:', error);
+        alert('Failed to delete transcription');
+      }
     }
   };
 
@@ -264,6 +294,14 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
                   className="bg-purple-500 text-white px-4 py-2 rounded inline-block hover:bg-purple-600"
                 >
                   {isPlaying ? 'Pause Preview' : 'Play Preview'}
+                </button>
+              )}
+              {transcription.isOwner && (
+                <button
+                  onClick={handleDelete}
+                  className="bg-red-500 text-white px-4 py-2 rounded inline-block hover:bg-red-600"
+                >
+                  Delete Transcription
                 </button>
               )}
             </div>

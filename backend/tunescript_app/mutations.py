@@ -411,6 +411,26 @@ class UpdatePassword(graphene.Mutation):
         else:
             return UpdatePassword(success=False, message="Current password is incorrect")
 
+class DeleteTranscription(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+
+    success = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, root, info, id):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+
+        try:
+            _, local_id = from_global_id(id)
+            transcription = Transcription.objects.get(pk=local_id, user=user)
+            transcription.delete()
+            return DeleteTranscription(success=True)
+        except Exception as e:
+            return DeleteTranscription(success=False, message=str(e))
+
 class Mutation(graphene.ObjectType):
     transcribe_audio = TranscribeAudio.Field()
     upload_audio_file = UploadAudioFile.Field()
@@ -432,3 +452,4 @@ class Mutation(graphene.ObjectType):
     password_reset = PasswordReset.Field()
     password_change = PasswordChange.Field()
     update_password = UpdatePassword.Field()
+    delete_transcription = DeleteTranscription.Field()

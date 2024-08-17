@@ -110,6 +110,11 @@ class TranscriptionType(DjangoObjectType):
     audio_file = graphene.Field(AudioFileType)
     num_ratings = graphene.Int()
     rating_set = graphene.List('tunescript_app.types.RatingType')
+    is_owner = graphene.Boolean()
+
+    def resolve_is_owner(self, info):
+        user = info.context.user
+        return user.is_authenticated and self.user == user
 
     def resolve_visibility(self, info):
         return "public" if self.public else "private"
