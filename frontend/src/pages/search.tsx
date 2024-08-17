@@ -1,4 +1,3 @@
-// src/pages/search.tsx
 import { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import Layout from '../components/Layout';
@@ -48,6 +47,10 @@ const Search = () => {
 
   const handleSearch = () => {
     refetch({ title, composer, genre, player, minRating, visibility });
+  };
+
+  const handleDeleteTranscription = () => {
+    refetch(); // Refetch the transcriptions list after deletion
   };
 
   return (
@@ -103,9 +106,6 @@ const Search = () => {
             <option value="private">Private</option>
           </select>
         </div>
-        {/* <button onClick={handleSearch} className="bg-blue-500 text-white p-2 w-full rounded mb-4">
-          Search
-        </button> */}
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-500">{error.message}</p>}
         {data && (
@@ -134,6 +134,7 @@ const Search = () => {
           <TranscriptionDetails
             transcriptionId={selectedTranscription}
             onClose={() => setSelectedTranscription(null)}
+            onDelete={handleDeleteTranscription}
           />
         )}
       </div>

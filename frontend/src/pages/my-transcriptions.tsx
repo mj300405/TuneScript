@@ -1,4 +1,3 @@
-// src/pages/my-transcriptions.tsx
 import { useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import Layout from '../components/Layout';
@@ -34,7 +33,11 @@ interface Transcription {
 
 const MyTranscriptions = () => {
   const [selectedTranscriptionId, setSelectedTranscriptionId] = useState<string | null>(null);
-  const { loading, error, data } = useQuery(GET_MY_TRANSCRIPTIONS);
+  const { loading, error, data, refetch } = useQuery(GET_MY_TRANSCRIPTIONS);
+
+  const handleDeleteTranscription = () => {
+    refetch(); // Refetch the transcriptions list after deletion
+  };
 
   if (loading) return <Layout title="My Transcriptions"><p>Loading...</p></Layout>;
   if (error) return <Layout title="My Transcriptions"><p>Error: {error.message}</p></Layout>;
@@ -67,6 +70,7 @@ const MyTranscriptions = () => {
           <TranscriptionDetails
             transcriptionId={selectedTranscriptionId}
             onClose={() => setSelectedTranscriptionId(null)}
+            onDelete={handleDeleteTranscription}
           />
         )}
       </div>

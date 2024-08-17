@@ -63,9 +63,10 @@ const DELETE_TRANSCRIPTION = gql`
 interface TranscriptionDetailsProps {
   transcriptionId: string;
   onClose: () => void;
+  onDelete: () => void;
 }
 
-const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcriptionId, onClose }) => {
+const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcriptionId, onClose, onDelete }) => {
   const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState(1);
@@ -133,7 +134,8 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
         
         if (data.deleteTranscription.success) {
           alert('Transcription deleted successfully');
-          onClose();
+          onDelete(); // Call the onDelete prop to trigger refetch in parent component
+          onClose(); // Close the modal
         } else {
           throw new Error('Deletion was not successful');
         }
