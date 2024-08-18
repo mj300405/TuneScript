@@ -187,6 +187,12 @@ const Upload: React.FC = () => {
     }
   };
 
+  const handleDeleteTranscription = () => {
+    setShowTranscriptionDetails(false);
+    setTranscriptionId(null);
+    setStatusMessage('Transcription deleted');
+  };
+
   return (
     <Layout title="Upload Audio">
       <div className="max-w-md mx-auto p-8">
@@ -261,6 +267,7 @@ const Upload: React.FC = () => {
         <TranscriptionDetails
           transcriptionId={transcriptionId}
           onClose={() => setShowTranscriptionDetails(false)}
+          onDelete={handleDeleteTranscription}
         />
       )}
     </Layout>

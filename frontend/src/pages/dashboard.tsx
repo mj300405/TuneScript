@@ -34,7 +34,12 @@ const GET_DASHBOARD_DATA = gql`
 
 const Dashboard = () => {
   const [selectedTranscription, setSelectedTranscription] = useState<string | null>(null);
-  const { loading, error, data } = useQuery(GET_DASHBOARD_DATA);
+  const { loading, error, data, refetch } = useQuery(GET_DASHBOARD_DATA);
+
+  const handleDeleteTranscription = () => {
+    refetch(); // Refetch the dashboard data after deletion
+    setSelectedTranscription(null);
+  };
 
   if (loading) return <Layout title="Dashboard"><p>Loading...</p></Layout>;
   if (error) return <Layout title="Dashboard"><p>Error: {error.message}</p></Layout>;
@@ -116,6 +121,7 @@ const Dashboard = () => {
           <TranscriptionDetails
             transcriptionId={selectedTranscription}
             onClose={() => setSelectedTranscription(null)}
+            onDelete={handleDeleteTranscription}
           />
         )}
       </div>
