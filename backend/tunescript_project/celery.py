@@ -1,15 +1,17 @@
 from __future__ import absolute_import, unicode_literals
+
 import os
+
 from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tunescript_project.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tunescript_project.settings")
 
-app = Celery('tunescript_project')
+app = Celery("tunescript_project")
 
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.
-app.config_from_object('django.conf:settings', namespace='CELERY')
+app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
@@ -17,6 +19,7 @@ app.autodiscover_tasks()
 # Set concurrency to 1
 app.conf.worker_concurrency = 1
 
+
 @app.task(bind=True)
 def debug_task(self):
-    print(f'Request: {self.request!r}')
+    print(f"Request: {self.request!r}")

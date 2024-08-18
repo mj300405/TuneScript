@@ -1,26 +1,40 @@
 # backend/tunescript_app/types.py
 
-import graphene
-from graphene_django.types import DjangoObjectType
-from .models import Profile, AudioFile, Transcription, Favorite, MIDIFile, SheetMusic, Tag, TranscriptionTag, Rating, UserPlayHistory
-from django.contrib.auth import get_user_model
-from graphene import String, relay
-from django.conf import settings
-from django.templatetags.static import static
-from graphene import Float, Int, List
-from django.db.models import Avg
 import logging
 
+import graphene
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.db.models import Avg
+from django.templatetags.static import static
+from graphene import Float, Int, List, String, relay
+from graphene_django.types import DjangoObjectType
+
+from .models import (AudioFile, Favorite, MIDIFile, Profile, Rating,
+                     SheetMusic, Tag, Transcription, TranscriptionTag,
+                     UserPlayHistory)
+
 logger = logging.getLogger(__name__)
+
 
 class UserType(DjangoObjectType):
     class Meta:
         model = get_user_model()
 
+
 class ProfileType(DjangoObjectType):
     class Meta:
         model = Profile
-        fields = ('id', 'user', 'bio', 'preferences', 'public', 'is_premium', 'premium_start_date', 'premium_end_date')
+        fields = (
+            "id",
+            "user",
+            "bio",
+            "preferences",
+            "public",
+            "is_premium",
+            "premium_start_date",
+            "premium_end_date",
+        )
 
     is_premium = graphene.Boolean()
     premium_start_date = graphene.DateTime()
@@ -35,20 +49,22 @@ class ProfileType(DjangoObjectType):
 
     def resolve_premium_end_date(self, info):
         return self.premium_end_date
-    
+
     def resolve_profile_picture(self, info):
-        if self.profile_picture and hasattr(self.profile_picture, 'url'):
+        if self.profile_picture and hasattr(self.profile_picture, "url"):
             return f"{settings.BASE_URL}{self.profile_picture.url}"
         return f"{settings.BASE_URL}{settings.STATIC_URL}images/default_profile_picture.png"
+
 
 class FavoriteType(DjangoObjectType):
     class Meta:
         model = Favorite
 
+
 class AudioFileType(DjangoObjectType):
     class Meta:
         model = AudioFile
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node,)
 
     audio_file = graphene.String()
 
@@ -57,10 +73,11 @@ class AudioFileType(DjangoObjectType):
             return self.audio_file.name
         return None
 
+
 class MIDIFileType(DjangoObjectType):
     class Meta:
         model = MIDIFile
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node,)
 
     download_url = graphene.String()
 
@@ -69,10 +86,11 @@ class MIDIFileType(DjangoObjectType):
             return info.context.build_absolute_uri(self.midi_file.url)
         return None
 
+
 class SheetMusicType(DjangoObjectType):
     class Meta:
         model = SheetMusic
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node,)
 
     download_url = graphene.String()
 
@@ -81,23 +99,38 @@ class SheetMusicType(DjangoObjectType):
             return info.context.build_absolute_uri(self.pdf_file.url)
         return None
 
+
 class TagType(DjangoObjectType):
     class Meta:
         model = Tag
 
+
 class TranscriptionTagType(DjangoObjectType):
     class Meta:
         model = TranscriptionTag
+
 
 class UserStatisticsType(graphene.ObjectType):
     total_transcriptions = graphene.Int()
     average_rating = graphene.Float()
     total_play_time = graphene.Int()
 
+
 class TranscriptionType(DjangoObjectType):
     class Meta:
         model = Transcription
-        fields = ("id", "title", "composer", "genre", "player", "public", "created_at", "status", "avg_rating", "num_ratings")
+        fields = (
+            "id",
+            "title",
+            "composer",
+            "genre",
+            "player",
+            "public",
+            "created_at",
+            "status",
+            "avg_rating",
+            "num_ratings",
+        )
         interfaces = (relay.Node,)
 
     visibility = graphene.String()
@@ -109,7 +142,7 @@ class TranscriptionType(DjangoObjectType):
     sheet_music = graphene.Field(SheetMusicType)
     audio_file = graphene.Field(AudioFileType)
     num_ratings = graphene.Int()
-    rating_set = graphene.List('tunescript_app.types.RatingType')
+    rating_set = graphene.List("tunescript_app.types.RatingType")
     is_owner = graphene.Boolean()
 
     def resolve_is_owner(self, info):
@@ -143,7 +176,7 @@ class TranscriptionType(DjangoObjectType):
 
     def resolve_audio_file(self, info):
         return self.audio_file
-    
+
     def resolve_num_ratings(self, info):
         return self.num_ratings
 
@@ -154,11 +187,11 @@ class TranscriptionType(DjangoObjectType):
 class RatingType(DjangoObjectType):
     class Meta:
         model = Rating
-        fields = ('id', 'rating', 'comment', 'user', 'created_at', 'transcription')
+        fields = ("id", "rating", "comment", "user", "created_at", "transcription")
         interfaces = (graphene.relay.Node,)
 
-    user = graphene.Field('tunescript_app.types.UserType')
-    transcription = graphene.Field('tunescript_app.types.TranscriptionType')
+    user = graphene.Field("tunescript_app.types.UserType")
+    transcription = graphene.Field("tunescript_app.types.TranscriptionType")
 
     def resolve_user(self, info):
         return self.user

@@ -1,6 +1,8 @@
 # tunescript_app/admin.py
 from django.contrib import admin
-from .models import Profile, AudioFile, Transcription, MIDIFile, SheetMusic, Favorite
+
+from .models import (AudioFile, Favorite, MIDIFile, Profile, SheetMusic,
+                     Transcription)
 
 admin.site.register(Profile)
 admin.site.register(AudioFile)
