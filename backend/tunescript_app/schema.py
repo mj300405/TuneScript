@@ -50,6 +50,13 @@ class Query(graphene.ObjectType):
     transcription_with_rating = graphene.Field(
         TranscriptionType, id=graphene.Int(required=True)
     )
+    transcription_by_share_token = graphene.Field(TranscriptionType, token=graphene.UUID(required=True))
+
+    def resolve_transcription_by_share_token(self, info, token):
+        try:
+            return Transcription.objects.get(share_token=token)
+        except Transcription.DoesNotExist:
+            return None
 
     def resolve_transcription_with_rating(self, info, id):
         user = info.context.user

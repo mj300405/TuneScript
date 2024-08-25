@@ -7,6 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
 from django.db.models import Avg, F
 from django.templatetags.static import static
+import uuid
 
 
 class User(AbstractUser):
@@ -93,6 +94,13 @@ class Transcription(models.Model):
     rating = models.FloatField(default=0.0)
     num_ratings = models.IntegerField(default=0)
     avg_rating = models.FloatField(default=0.0)
+    share_token = models.UUIDField(null=True, blank=True, unique=True)
+
+    def generate_share_token(self):
+        if not self.share_token:
+            self.share_token = uuid.uuid4()
+            self.save()
+        return self.share_token
 
     def __str__(self):
         return f"Transcription for {self.audio_file.title}"

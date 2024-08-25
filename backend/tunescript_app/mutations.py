@@ -23,6 +23,7 @@ from .tasks import download_youtube_audio, process_transcription
 from .types import (AudioFileType, FavoriteType, ProfileType, RatingType,
                     TranscriptionType, UserType)
 from .utils import send_confirmation_email, send_password_reset_email
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -484,6 +485,31 @@ class DeleteTranscription(graphene.Mutation):
         except Exception as e:
             return DeleteTranscription(success=False, message=str(e))
 
+class ShareTranscription(graphene.Mutation):
+    class Arguments:
+        transcription_id = graphene.ID(required=True)
+
+    share_url = graphene.String()
+
+    @login_required
+    def mutate(self, info, transcription_id):
+        user = info.context.user
+        
+        # Decode the global ID
+        _, decoded_id = from_global_id(transcription_id)
+        
+        try:
+            transcription = Transcription.objects.get(pk=decoded_id)
+        except Transcription.DoesNotExist:
+            raise Exception("Transcription not found")
+
+        if transcription.user != user:
+            raise Exception("You don't have permission to share this transcription")
+
+        share_token = transcription.generate_share_token()
+        share_url = f"http://localhost:3000/transcription/{share_token}"
+        return ShareTranscription(share_url=share_url)
+
 
 class Mutation(graphene.ObjectType):
     transcribe_audio = TranscribeAudio.Field()
@@ -507,3 +533,4 @@ class Mutation(graphene.ObjectType):
     password_change = PasswordChange.Field()
     update_password = UpdatePassword.Field()
     delete_transcription = DeleteTranscription.Field()
+    share_transcription = ShareTranscription.Field()

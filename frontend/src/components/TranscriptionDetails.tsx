@@ -4,6 +4,8 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import RatingComponent from './RatingComponent';
+import ShareComponent from './ShareComponent';
+import { FileMusic, FileText, Eye, EyeOff, Play, Pause, Trash2 } from 'lucide-react';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -233,7 +235,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
-      <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden relative flex flex-col">
+      <div className="bg-white rounded-lg w-full max-w-2xl overflow-hidden relative flex flex-col">
         <div className="p-4 border-b flex justify-between items-center sticky top-0 bg-white z-10">
           <h2 className="text-2xl font-bold truncate">{transcription.title}</h2>
           <button
@@ -243,74 +245,86 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
             ✕
           </button>
         </div>
-        <div className="overflow-y-auto flex-grow">
-          <div className="p-4">
-            <div className="mb-4 grid grid-cols-2 gap-4">
-              <p><strong>Composer:</strong> {transcription.composer}</p>
-              <p><strong>Player:</strong> {transcription.player}</p>
-              <p><strong>Genre:</strong> {transcription.genre}</p>
-              <p><strong>Visibility:</strong> {transcription.visibility}</p>
-              <p><strong>Status:</strong> {transcription.status}</p>
-              <p><strong>Average Rating:</strong> {transcription.avgRating.toFixed(1)} ({transcription.numRatings} ratings)</p>
-              <p><strong>Created At:</strong> {new Date(transcription.createdAt).toLocaleDateString()}</p>
-            </div>
-            <div className="mb-4">
-              <RatingComponent
-                transcriptionId={transcriptionId}
-                initialRating={transcription.userRating}
-                averageRating={transcription.avgRating}
-                numRatings={transcription.numRatings}
-                onRatingChange={handleRatingChange}
-              />
-            </div>
-            <div className="mb-4 flex flex-wrap gap-2">
+        <div className="overflow-y-auto flex-grow p-4">
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <p><strong>Composer:</strong> {transcription.composer}</p>
+            <p><strong>Player:</strong> {transcription.player || 'Unknown'}</p>
+            <p><strong>Genre:</strong> {transcription.genre}</p>
+            <p><strong>Visibility:</strong> {transcription.visibility}</p>
+            <p><strong>Status:</strong> {transcription.status}</p>
+            <p><strong>Average Rating:</strong> {transcription.avgRating.toFixed(1)} ({transcription.numRatings} ratings)</p>
+            <p><strong>Created At:</strong> {new Date(transcription.createdAt).toLocaleDateString()}</p>
+          </div>
+          
+          <div className="mb-4">
+            <RatingComponent
+              transcriptionId={transcriptionId}
+              initialRating={transcription.userRating}
+              averageRating={transcription.avgRating}
+              numRatings={transcription.numRatings}
+              onRatingChange={handleRatingChange}
+            />
+          </div>
+          
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex space-x-2">
               {transcription.midiFile?.downloadUrl && (
                 <a 
                   href={transcription.midiFile.downloadUrl}
-                  className="bg-blue-500 text-white px-4 py-2 rounded inline-block hover:bg-blue-600"
+                  className="bg-blue-500 text-white p-2 rounded inline-flex items-center justify-center hover:bg-blue-600"
                   download
+                  title="Download MIDI"
                 >
-                  Download MIDI
+                  <FileMusic size={24} />
                 </a>
               )}
               {transcription.sheetMusic?.downloadUrl && (
-                <>
-                  <a 
-                    href={transcription.sheetMusic.downloadUrl}
-                    className="bg-green-500 text-white px-4 py-2 rounded inline-block hover:bg-green-600"
-                    download
-                  >
-                    Download PDF
-                  </a>
-                  <button
-                    onClick={() => setShowPdfPreview(!showPdfPreview)}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded inline-block hover:bg-yellow-600"
-                  >
-                    {showPdfPreview ? 'Hide PDF Preview' : 'Show PDF Preview'}
-                  </button>
-                </>
+                <a 
+                  href={transcription.sheetMusic.downloadUrl}
+                  className="bg-green-500 text-white p-2 rounded inline-flex items-center justify-center hover:bg-green-600"
+                  download
+                  title="Download PDF"
+                >
+                  <FileText size={24} />
+                </a>
+              )}
+              {transcription.sheetMusic?.downloadUrl && (
+                <button
+                  onClick={() => setShowPdfPreview(!showPdfPreview)}
+                  className="bg-yellow-500 text-white p-2 rounded inline-flex items-center justify-center hover:bg-yellow-600"
+                  title={showPdfPreview ? "Hide PDF Preview" : "Show PDF Preview"}
+                >
+                  {showPdfPreview ? <EyeOff size={24} /> : <Eye size={24} />}
+                </button>
               )}
               {audioLoadingStatus === 'loaded' && (
                 <button
                   onClick={handlePlayPause}
-                  className="bg-purple-500 text-white px-4 py-2 rounded inline-block hover:bg-purple-600"
+                  className="bg-purple-500 text-white p-2 rounded inline-flex items-center justify-center hover:bg-purple-600"
+                  title={isPlaying ? "Pause Preview" : "Play Preview"}
                 >
-                  {isPlaying ? 'Pause Preview' : 'Play Preview'}
-                </button>
-              )}
-              {transcription.isOwner && (
-                <button
-                  onClick={handleDelete}
-                  className="bg-red-500 text-white px-4 py-2 rounded inline-block hover:bg-red-600"
-                >
-                  Delete Transcription
+                  {isPlaying ? <Pause size={24} /> : <Play size={24} />}
                 </button>
               )}
             </div>
-            {audioLoadingStatus === 'error' && <p className="text-red-500 mb-4">Error with audio: {audioError}</p>}
+            <div className="flex space-x-2">
+              <ShareComponent transcriptionId={transcriptionId} />
+              {transcription.isOwner && (
+                <button
+                  onClick={handleDelete}
+                  className="bg-red-500 text-white p-2 rounded inline-flex items-center justify-center hover:bg-red-600"
+                  title="Delete Transcription"
+                >
+                  <Trash2 size={24} />
+                </button>
+              )}
+            </div>
           </div>
+
+          {audioLoadingStatus === 'error' && <p className="text-red-500 mt-4">Error with audio: {audioError}</p>}
+          
           {showPdfPreview && transcription.sheetMusic?.downloadUrl && (
-            <div className="mt-4 p-4 border-t">
+            <div className="mt-4 border-t pt-4">
               <Document
                 file={transcription.sheetMusic.downloadUrl}
                 onLoadSuccess={onDocumentLoadSuccess}
@@ -332,7 +346,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
                   </div>
                 )}
               </Document>
-              {!pdfError && (
+              {!pdfError && numPages > 0 && (
                 <>
                   <p className="text-center mt-2">
                     Page {pageNumber} of {numPages}
