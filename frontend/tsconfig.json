@@ -21,8 +21,17 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node", "react", "react-dom", "apollo-upload-client"]
+    "types": ["node", "react", "react-dom", "apollo-upload-client", "jest", "@testing-library/jest-dom"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/**/*", "types/**/*", "src/types/**/*"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/**/*",
+    "types/**/*",
+    "src/types/**/*",
+    "jest.setup.ts"
+  ],
   "exclude": ["node_modules"]
 }
