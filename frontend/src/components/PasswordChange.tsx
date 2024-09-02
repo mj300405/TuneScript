@@ -43,7 +43,6 @@ const PasswordChange = () => {
         setMessage(data.updatePassword.message);
       }
     } catch (error) {
-      console.error('Password update error:', error);
       setMessage('An error occurred. Please try again.');
     }
   };
