@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 
-const UPDATE_PASSWORD_MUTATION = gql`
+export const UPDATE_PASSWORD_MUTATION = gql`
   mutation UpdatePassword($currentPassword: String!, $newPassword: String!) {
     updatePassword(currentPassword: $currentPassword, newPassword: $newPassword) {
       success
