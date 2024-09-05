@@ -9,7 +9,7 @@ import { FileMusic, FileText, Eye, EyeOff, Play, Pause, Trash2 } from 'lucide-re
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const GET_TRANSCRIPTION_DETAILS = gql`
+export const GET_TRANSCRIPTION_DETAILS = gql`
   query GetTranscriptionDetails($id: ID!) {
     transcription(id: $id) {
       id
@@ -37,7 +37,7 @@ const GET_TRANSCRIPTION_DETAILS = gql`
   }
 `;
 
-const RATE_TRANSCRIPTION = gql`
+export const RATE_TRANSCRIPTION = gql`
   mutation RateTranscription($transcriptionId: ID!, $ratingValue: Int!, $comment: String) {
     rateTranscription(transcriptionId: $transcriptionId, ratingValue: $ratingValue, comment: $comment) {
       rating {
@@ -54,7 +54,7 @@ const RATE_TRANSCRIPTION = gql`
   }
 `;
 
-const DELETE_TRANSCRIPTION = gql`
+export const DELETE_TRANSCRIPTION = gql`
   mutation DeleteTranscription($id: ID!) {
     deleteTranscription(id: $id) {
       success
