@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { Share2, Check } from 'lucide-react';
 
-const SHARE_TRANSCRIPTION = gql`
+export const SHARE_TRANSCRIPTION = gql`
   mutation ShareTranscription($transcriptionId: ID!) {
     shareTranscription(transcriptionId: $transcriptionId) {
       shareUrl
