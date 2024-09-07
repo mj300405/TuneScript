@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import RatingComponent, { RATE_TRANSCRIPTION } from '../components/RatingComponent';
+import RatingComponent, { RATE_TRANSCRIPTION } from '../../components/RatingComponent';
 import { useMutation } from '@apollo/client';
 
 jest.mock('@apollo/client');

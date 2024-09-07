@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import ShareComponent from '../components/ShareComponent';
+import ShareComponent from '../../components/ShareComponent';
 import { useMutation } from '@apollo/client';
 
 jest.mock('@apollo/client');

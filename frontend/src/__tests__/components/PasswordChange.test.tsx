@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import PasswordChange from '../components/PasswordChange';
+import PasswordChange from '../../components/PasswordChange';
 import { useMutation } from '@apollo/client';
 
 jest.mock('@apollo/client');

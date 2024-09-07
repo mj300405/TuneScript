@@ -1,27 +1,26 @@
-# Use the official Node.js image as the base image
-FROM node:18-alpine
+FROM node:18-bullseye
 
-RUN apk add --no-cache \
-    build-base \
-    g++ \
-    cairo-dev \
-    jpeg-dev \
-    pango-dev \
-    giflib-dev
+# Install dependencies for canvas
+RUN apt-get update && apt-get install -y \
+    libcairo2-dev \
+    libpango1.0-dev \
+    libjpeg-dev \
+    libgif-dev \
+    librsvg2-dev \
+    libpixman-1-dev
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package.json, package-lock.json, and Jest setup
-COPY frontend/package*.json frontend/jest.setup.ts frontend/tsconfig.jest.json ./
+# Copy package.json and package-lock.json
+COPY frontend/package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
-# Copy the rest of the application code from the frontend directory
+# Copy the rest of the application code
 COPY frontend/ .
 
-# Build the Next.js application
+# Build the application
 RUN npm run build
 
 # Expose the port the app runs on
@@ -29,4 +28,3 @@ EXPOSE 3000
 
 # Start the application
 CMD ["npm", "run", "dev"]
-#CMD ["npm", "start"]

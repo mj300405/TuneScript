@@ -5,6 +5,7 @@ const config: Config.InitialOptions = {
   ...defaults,
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
+  setupFiles: ['jest-canvas-mock'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
@@ -16,7 +17,8 @@ const config: Config.InitialOptions = {
     '^@apollo/client$': '<rootDir>/__mocks__/@apollo-client.ts',
     '^graphql-upload$': '<rootDir>/__mocks__/graphql-upload.ts',
     '^framer-motion$': '<rootDir>/__mocks__/framer-motion.ts',
-    "^lucide-react$": "<rootDir>/__mocks__/lucide-react.tsx"
+    "^lucide-react$": "<rootDir>/__mocks__/lucide-react.tsx",
+    '^canvas$': '<rootDir>/__mocks__/canvas.js',
   },
   moduleDirectories: ['node_modules', '<rootDir>'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],

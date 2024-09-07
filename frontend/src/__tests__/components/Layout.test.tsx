@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 
 // Mock the Header component
-jest.mock('../components/Header', () => {
+jest.mock('../../components/Header', () => {
   return function MockHeader() {
     return <div data-testid="mock-header">Mock Header</div>;
   };

@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import TranscriptionDetails from '../components/TranscriptionDetails';
+import TranscriptionDetails from '../../components/TranscriptionDetails';
 import * as apolloClient from '@apollo/client';
 
 // Mock RatingComponent and ShareComponent
-jest.mock('../components/RatingComponent', () => () => <div data-testid="rating-component">Mock Rating Component</div>);
-jest.mock('../components/ShareComponent', () => () => <div data-testid="share-component">Mock Share Component</div>);
+jest.mock('../../components/RatingComponent', () => () => <div data-testid="rating-component">Mock Rating Component</div>);
+jest.mock('../../components/ShareComponent', () => () => <div data-testid="share-component">Mock Share Component</div>);
 
 // Mock react-pdf
 jest.mock('react-pdf', () => ({

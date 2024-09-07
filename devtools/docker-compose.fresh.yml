@@ -89,7 +89,6 @@ services:
       - tunescript-network
     volumes:
       - ../frontend:/app
-      - /app/node_modules
 
 networks:
   tunescript-network:

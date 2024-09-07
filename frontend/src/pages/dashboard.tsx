@@ -4,7 +4,7 @@ import Layout from '../components/Layout';
 import TranscriptionDetails from '../components/TranscriptionDetails';
 import Link from 'next/link';
 
-const GET_DASHBOARD_DATA = gql`
+export const GET_DASHBOARD_DATA = gql`
   query GetDashboardData {
     highestRatedTranscriptions {
       id

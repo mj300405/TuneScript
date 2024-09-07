@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom';
+import 'jest-canvas-mock';
+import { ReadableStream } from 'web-streams-polyfill';
 
 // Mock Next.js router
 jest.mock('next/router', () => ({
@@ -148,3 +150,25 @@ jest.mock('@apollo/client', () => ({
     resetStore: jest.fn(),
   }),
 }));
+
+
+global.ReadableStream = ReadableStream as any;
+
+if (typeof TextEncoder === 'undefined') {
+  global.TextEncoder = class {
+    encode(input: string): Uint8Array {
+      return new Uint8Array(Buffer.from(input));
+    }
+  } as any;
+}
+
+if (typeof TextDecoder === 'undefined') {
+  global.TextDecoder = class {
+    decode(input?: BufferSource): string {
+      if (input instanceof Uint8Array) {
+        return Buffer.from(input).toString('utf-8');
+      }
+      return '';
+    }
+  } as any;
+}

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { gql, useMutation } from '@apollo/client';
 import Layout from '../../../components/Layout';
 
-const CONFIRM_EMAIL = gql`
+export const CONFIRM_EMAIL = gql`
   mutation ConfirmEmail($uid: String!, $token: String!) {
     confirmEmail(uid: $uid, token: $token) {
       success
@@ -18,20 +18,25 @@ const ConfirmEmail = () => {
   const [status, setStatus] = useState('Confirming your email...');
 
   useEffect(() => {
-    if (uid && token) {
-      confirmEmail({ variables: { uid, token } })
-        .then(({ data }) => {
-          if (data.confirmEmail.success) {
+    const confirmEmailWrapper = async () => {
+      if (uid && token && typeof uid === 'string' && typeof token === 'string') {
+        try {
+          const { data } = await confirmEmail({ variables: { uid, token } });
+          if (data && data.confirmEmail && data.confirmEmail.success) {
             setStatus('Email confirmed successfully! You can now log in.');
           } else {
             setStatus('Email confirmation failed. The link may be invalid or expired.');
           }
-        })
-        .catch((error) => {
+        } catch (error) {
           setStatus('An error occurred while confirming your email.');
           console.error(error);
-        });
-    }
+        }
+      } else {
+        setStatus('Invalid confirmation link. Please check your email for the correct link.');
+      }
+    };
+
+    confirmEmailWrapper();
   }, [uid, token, confirmEmail]);
 
   return (

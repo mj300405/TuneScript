@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
-import AuthContext from '../context/AuthContext';
-import Header from '../components/Header';
+import AuthContext from '../../context/AuthContext';
+import Header from '../../components/Header';
 import * as apolloClient from '@apollo/client';
 
 jest.mock('@apollo/client');
