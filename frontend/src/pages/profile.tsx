@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Layout from '../components/Layout';
 import PasswordChange from '../components/PasswordChange';
 
-const GET_PROFILE = gql`
+export const GET_PROFILE = gql`
   query GetProfile {
     profile {
       id
@@ -19,7 +19,7 @@ const GET_PROFILE = gql`
   }
 `;
 
-const UPDATE_PROFILE = gql`
+export const UPDATE_PROFILE = gql`
   mutation UpdateProfile($bio: String, $public: Boolean, $preferences: JSONString, $profilePicture: Upload) {
     updateProfile(bio: $bio, public: $public, preferences: $preferences, profilePicture: $profilePicture) {
       profile {
@@ -33,7 +33,7 @@ const UPDATE_PROFILE = gql`
   }
 `;
 
-const ACTIVATE_PREMIUM = gql`
+export const ACTIVATE_PREMIUM = gql`
   mutation ActivatePremium {
     activatePremium {
       profile {
@@ -45,7 +45,7 @@ const ACTIVATE_PREMIUM = gql`
   }
 `;
 
-const DEACTIVATE_PREMIUM = gql`
+export const DEACTIVATE_PREMIUM = gql`
   mutation DeactivatePremium {
     deactivatePremium {
       profile {
