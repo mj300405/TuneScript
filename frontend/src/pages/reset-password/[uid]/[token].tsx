@@ -3,7 +3,7 @@ import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import Layout from '../../../components/Layout';
 
-const PASSWORD_CHANGE_MUTATION = gql`
+export const PASSWORD_CHANGE_MUTATION = gql`
   mutation PasswordChange($uid: String!, $token: String!, $newPassword: String!) {
     passwordChange(uid: $uid, token: $token, newPassword: $newPassword) {
       success
