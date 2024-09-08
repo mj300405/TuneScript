@@ -82,13 +82,18 @@ services:
       - web
     environment:
       - NEXT_PUBLIC_API_URL=http://web:8000/graphql/
-      - NEXT_PUBLIC_BROWSER_API_URL= /graphql/
+      - NEXT_PUBLIC_BROWSER_API_URL=/graphql/
       - WEBHOOK_SECRET=your-very-secure-secret
       - BACKEND_SSE_URL=http://web:8000/sse-stream/
     networks:
       - tunescript-network
     volumes:
       - ../frontend:/app
+      - /app/node_modules
+    working_dir: /app
+    tty: true
+    stdin_open: true
+    command: npm run dev
 
 networks:
   tunescript-network:

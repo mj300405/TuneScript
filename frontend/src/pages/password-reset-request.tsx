@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import Layout from '../components/Layout';
 
-const PASSWORD_RESET_MUTATION = gql`
+export const PASSWORD_RESET_MUTATION = gql`
   mutation PasswordReset($email: String!) {
     passwordReset(email: $email) {
       success

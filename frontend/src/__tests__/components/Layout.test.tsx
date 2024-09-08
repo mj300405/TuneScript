@@ -20,17 +20,29 @@ jest.mock('next/head', () => {
 });
 
 // Mock the framer-motion library
-jest.mock('framer-motion', () => ({
-  motion: {
-    main: jest.fn().mockImplementation(({ children, ...props }) => (
-      <main data-testid="mock-motion-main" {...props}>
-        {children}
-      </main>
-    )),
-  },
-}));
+jest.mock('framer-motion', () => {
+  const mockMotionMain = jest.fn().mockImplementation(({ children, ...props }) => (
+    <main data-testid="mock-motion-main" {...props}>
+      {children}
+    </main>
+  ));
+
+  return {
+    motion: {
+      main: mockMotionMain,
+    },
+  };
+});
 
 describe('Layout Component', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   it('renders without crashing', () => {
     render(<Layout>Test Content</Layout>);
     expect(screen.getByText('Test Content')).toBeInTheDocument();

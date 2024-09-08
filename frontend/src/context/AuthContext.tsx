@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const parsedUser = JSON.parse(storedUser);
         setIsAuthenticated(true);
         setUser(parsedUser);
-        console.log('Auth state restored from localStorage:', { isAuthenticated: true, user: parsedUser });
       } catch (error) {
         console.error('Failed to parse stored user data:', error);
         localStorage.removeItem('user');
@@ -48,7 +47,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('user', JSON.stringify(userData));
     setIsAuthenticated(true);
     setUser(userData);
-    console.log('Login successful:', { isAuthenticated: true, user: userData });
   };
 
   const logout = () => {
@@ -57,7 +55,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(false);
     setUser(null);
     router.push('/');
-    console.log('Logout successful');
   };
 
   return (

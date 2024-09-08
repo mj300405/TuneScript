@@ -1,0 +1,22 @@
+# Dependencies
+frontend/node_modules
+
+# Next.js build output
+frontend/.next
+frontend/out
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.swp
+*.swo
+
+# Devtools
+devtools/node_modules

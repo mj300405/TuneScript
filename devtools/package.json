@@ -1,17 +1,20 @@
 {
-    "name": "tunescript-devtools",
-    "version": "1.0.0",
-    "description": "Development tools for TuneScript",
-    "scripts": {
-      "start:persistent": "docker-compose -f docker-compose.persistent.yml up -d",
-      "stop:persistent": "docker-compose -f docker-compose.persistent.yml down",
-      "start": "docker-compose -f docker-compose.fresh.yml up -d",
-      "stop": "docker-compose -f docker-compose.fresh.yml down -v",
-      "restart:persistent": "npm run stop:persistent && npm run start:persistent",
-      "restart:fresh": "npm run stop:fresh && npm run start:fresh",
-      "logs": "docker-compose logs -f",
-      "test": "docker-compose -f docker-compose.persistent.yml run --rm frontend npm run test",
-      "test:watch": "docker-compose -f docker-compose.persistent.yml run --rm frontend npm run test:watch",
-      "test:coverage": "docker-compose -f docker-compose.persistent.yml run --rm frontend npm run test:coverage"
-    }
+  "name": "tunescript-devtools",
+  "version": "1.0.0",
+  "description": "Development tools for TuneScript",
+  "scripts": {
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down",
+    "start:persistent": "docker-compose -f docker-compose.persistent.yml up -d",
+    "stop:persistent": "docker-compose -f docker-compose.persistent.yml down",
+    "start:fresh": "docker-compose -f docker-compose.fresh.yml up -d",
+    "stop:fresh": "docker-compose -f docker-compose.fresh.yml down -v",
+    "restart": "npm run stop && npm run start",
+    "restart:persistent": "npm run stop:persistent && npm run start:persistent",
+    "restart:fresh": "npm run stop:fresh && npm run start:fresh",
+    "logs": "docker-compose logs -f",
+    "test": "docker-compose exec frontend npm run test",
+    "test:watch": "docker-compose exec frontend npm run test:watch",
+    "test:coverage": "docker-compose exec frontend npm run test:coverage"
   }
+}
