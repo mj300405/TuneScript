@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import ShareComponent from '../../components/ShareComponent';
 import { useMutation } from '@apollo/client';
 
@@ -60,8 +60,10 @@ describe('ShareComponent', () => {
       expect(screen.getByTestId('check-icon')).toBeInTheDocument();
     });
 
-    // Fast-forward time to test the reset
-    jest.advanceTimersByTime(3000);
+    // Fast-forward time to test the reset, wrapped in act
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
 
     // Wait for the UI to reset
     await waitFor(() => {

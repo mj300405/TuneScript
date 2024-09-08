@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 import Layout from '../components/Layout';
 import TranscriptionDetails from '../components/TranscriptionDetails';
 
-const GET_MY_TRANSCRIPTIONS = gql`
+export const GET_MY_TRANSCRIPTIONS = gql`
   query GetMyTranscriptions {
     myTranscriptions {
       id
