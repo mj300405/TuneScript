@@ -3,7 +3,7 @@ import { useQuery, gql } from '@apollo/client';
 import Layout from '../../components/Layout';
 import TranscriptionDetails from '../../components/TranscriptionDetails';
 
-const GET_TRANSCRIPTION_BY_SHARE_TOKEN = gql`
+export const GET_TRANSCRIPTION_BY_SHARE_TOKEN = gql`
   query GetTranscriptionByShareToken($token: UUID!) {
     transcriptionByShareToken(token: $token) {
       id
