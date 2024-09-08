@@ -3,7 +3,7 @@ import { useMutation, gql } from '@apollo/client';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 
-const REGISTER_MUTATION = gql`
+export const REGISTER_MUTATION = gql`
   mutation Register($username: String!, $email: String!, $password: String!) {
     register(username: $username, email: $email, password: $password) {
       user {
