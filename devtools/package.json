@@ -4,7 +4,7 @@
   "description": "Development tools for TuneScript",
   "scripts": {
     "start": "docker-compose up -d",
-    "stop": "docker-compose down",
+    "stop": "docker-compose down -v",
     "start:persistent": "docker-compose -f docker-compose.persistent.yml up -d",
     "stop:persistent": "docker-compose -f docker-compose.persistent.yml down",
     "start:fresh": "docker-compose -f docker-compose.fresh.yml up -d",
@@ -15,6 +15,7 @@
     "logs": "docker-compose logs -f",
     "test": "docker-compose exec frontend npm run test",
     "test:watch": "docker-compose exec frontend npm run test:watch",
-    "test:coverage": "docker-compose exec frontend npm run test:coverage"
+    "test:coverage": "docker-compose exec frontend npm run test:coverage",
+    "test:backend": "docker-compose exec web poetry run pytest tunescript_app/tests"
   }
 }
