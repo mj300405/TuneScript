@@ -1,5 +1,3 @@
-# tunescript_app/schema.py
-
 import logging
 
 import graphene
@@ -101,7 +99,7 @@ class Query(graphene.ObjectType):
         if not user.is_authenticated:
             return Transcription.objects.filter(public=True).order_by("?")[:5]
 
-        # Simple recommendation based on user's most played genres
+        # Get the user's favorite genres based on play history
         favorite_genres = (
             UserPlayHistory.objects.filter(user=user)
             .values("transcription__genre")
@@ -111,23 +109,26 @@ class Query(graphene.ObjectType):
         )
 
         if favorite_genres:
-            return (
+            recommended = (
                 Transcription.objects.filter(public=True, genre__in=favorite_genres[:3])
                 .exclude(userplayhistory__user=user)
                 .order_by("?")[:5]
             )
         else:
-            return Transcription.objects.filter(public=True).order_by("?")[:5]
+            recommended = Transcription.objects.filter(public=True).order_by("?")[:5]
+
+        return recommended
 
     def resolve_my_transcriptions(self, info):
-        return Transcription.objects.filter(user=info.context.user).order_by(
-            "-created_at"
-        )
+        user = info.context.user
+        if user.is_anonymous:
+            return Transcription.objects.none()
+        return Transcription.objects.filter(user=user).order_by("-created_at")
 
     def resolve_profile(self, info):
         user = info.context.user
         if user.is_anonymous:
-            raise Exception("Not logged in!")
+            return None
         return Profile.objects.get(user=user)
 
     def resolve_download_midi(self, info, transcription_id):
@@ -181,7 +182,7 @@ class Query(graphene.ObjectType):
     def resolve_me(self, info):
         user = info.context.user
         if user.is_anonymous:
-            raise Exception("Not logged in!")
+            return None
         return user
 
     def resolve_highest_rated_transcriptions(self, info):
