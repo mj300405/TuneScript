@@ -85,6 +85,7 @@ django-auth0 = "^0.0.3"
 black = "^24.8.0"
 isort = "^5.13.2"
 flake8 = "^7.1.1"
+flake8-pyproject = "1.2.3"
 
 [tool.poetry.dev-dependencies]
 poetry = "1.8.3"
@@ -102,3 +103,27 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tunescript_project.settings"
 python_files = ["test_*.py", "*_test.py"]
+
+[tool.black]
+line-length = 88
+extend-exclude = '''
+/(
+  AI
+  | media
+  | static
+  | tunescript_app/__pycache__
+  | tunescript_project/__pycache__
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+extend_skip = [
+    "AI",
+    "media",
+    "static",
+    "tunescript_app/__pycache__",
+    "tunescript_project/__pycache__"
+]

@@ -16,6 +16,7 @@
     "test": "docker-compose exec frontend npm run test",
     "test:watch": "docker-compose exec frontend npm run test:watch",
     "test:coverage": "docker-compose exec frontend npm run test:coverage",
-    "test:backend": "docker-compose exec web poetry run pytest tunescript_app/tests"
+    "test:backend": "docker-compose exec web poetry run pytest tunescript_app/tests",
+    "format": "docker-compose exec web /app/format.sh"
   }
 }

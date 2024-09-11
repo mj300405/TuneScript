@@ -18,6 +18,11 @@ RUN pip install poetry
 
 # Copy only the necessary files to install dependencies
 COPY ../backend/pyproject.toml ../backend/poetry.lock /app/
+COPY ../backend/.flake8 /app/.flake8
+COPY ../backend/format.sh /app/format.sh
+
+# Make sure the script is executable
+RUN chmod +x /app/format.sh
 
 # Install dependencies
 RUN poetry config virtualenvs.create false && poetry install --no-dev --no-interaction --no-ansi

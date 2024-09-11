@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 88
+extend-exclude = 
+    AI/*,
+    media/*,
+    static/*,
+    tunescript_app/__pycache__/*,
+    tunescript_project/__pycache__/*
