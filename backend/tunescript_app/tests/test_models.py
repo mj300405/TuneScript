@@ -104,7 +104,6 @@ class TestRatingModel:
         assert rating.user
         assert rating.transcription
         assert 1 <= rating.rating <= 5
-        assert rating.comment
         assert rating.created_at
         assert rating.updated_at
 

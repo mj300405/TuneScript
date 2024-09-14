@@ -110,7 +110,6 @@ class Command(BaseCommand):
                 user=user,
                 transcription=transcription,
                 rating=random.randint(1, 5),
-                comment=f"Sample comment for {transcription_data['title']} by {user.username}"
             )
 
         # Add favorites (ensure no duplicates)

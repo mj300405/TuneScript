@@ -51,7 +51,6 @@ class RatingFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
     transcription = factory.SubFactory(TranscriptionFactory)
     rating = factory.Faker('random_int', min=1, max=5)
-    comment = factory.Faker('paragraph')
 
 class FavoriteFactory(factory.django.DjangoModelFactory):
     class Meta:

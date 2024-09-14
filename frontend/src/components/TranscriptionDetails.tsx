@@ -38,12 +38,11 @@ export const GET_TRANSCRIPTION_DETAILS = gql`
 `;
 
 export const RATE_TRANSCRIPTION = gql`
-  mutation RateTranscription($transcriptionId: ID!, $ratingValue: Int!, $comment: String) {
-    rateTranscription(transcriptionId: $transcriptionId, ratingValue: $ratingValue, comment: $comment) {
+  mutation RateTranscription($transcriptionId: ID!, $ratingValue: Int!) {
+    rateTranscription(transcriptionId: $transcriptionId, ratingValue: $ratingValue) {
       rating {
         id
         rating
-        comment
       }
       transcription {
         id
@@ -112,13 +111,12 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
     }
   };
 
-  const handleRatingChange = async (newRating: number, newComment: string | null) => {
+  const handleRatingChange = async (newRating: number) => {
     try {
       await rateTranscription({
         variables: {
           transcriptionId,
           ratingValue: newRating,
-          comment: newComment,
         },
       });
       refetch();
@@ -136,8 +134,8 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
         
         if (data.deleteTranscription.success) {
           alert('Transcription deleted successfully');
-          onDelete(); // Call the onDelete prop to trigger refetch in parent component
-          onClose(); // Close the modal
+          onDelete();
+          onClose();
         } else {
           throw new Error('Deletion was not successful');
         }

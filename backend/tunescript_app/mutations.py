@@ -237,13 +237,12 @@ class RateTranscription(graphene.Mutation):
     class Arguments:
         transcription_id = graphene.ID(required=True)
         rating_value = graphene.Int(required=True)
-        comment = graphene.String()
 
     rating = graphene.Field("tunescript_app.types.RatingType")
     transcription = graphene.Field("tunescript_app.types.TranscriptionType")
 
     @login_required
-    def mutate(self, info, transcription_id, rating_value, comment=None):
+    def mutate(self, info, transcription_id, rating_value):
         user = info.context.user
         if not user.is_authenticated:
             raise Exception("You must be logged in to rate a transcription.")
@@ -254,7 +253,7 @@ class RateTranscription(graphene.Mutation):
         rating, created = Rating.objects.update_or_create(
             transcription=transcription,
             user=user,
-            defaults={"rating": rating_value, "comment": comment},
+            defaults={"rating": rating_value},
         )
 
         return RateTranscription(rating=rating, transcription=transcription)

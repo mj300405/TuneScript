@@ -193,7 +193,7 @@ class TranscriptionType(DjangoObjectType):
 class RatingType(DjangoObjectType):
     class Meta:
         model = Rating
-        fields = ("id", "rating", "comment", "user", "created_at", "transcription")
+        fields = ("id", "rating", "user", "created_at", "transcription")
         interfaces = (graphene.relay.Node,)
 
     user = graphene.Field("tunescript_app.types.UserType")

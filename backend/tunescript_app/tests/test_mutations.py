@@ -134,11 +134,10 @@ class TestMutations:
     def test_rate_transcription_mutation(self, graphql_client, user):
         transcription = TranscriptionFactory()
         mutation = '''
-        mutation($transcriptionId: ID!, $ratingValue: Int!, $comment: String) {
-            rateTranscription(transcriptionId: $transcriptionId, ratingValue: $ratingValue, comment: $comment) {
+        mutation($transcriptionId: ID!, $ratingValue: Int!) {
+            rateTranscription(transcriptionId: $transcriptionId, ratingValue: $ratingValue) {
                 rating {
                     rating
-                    comment
                 }
                 transcription {
                     avgRating
@@ -150,12 +149,10 @@ class TestMutations:
         variables = {
             'transcriptionId': to_global_id('TranscriptionType', transcription.id),
             'ratingValue': 4,
-            'comment': 'Great transcription!'
         }
         response = self.execute_mutation(graphql_client, mutation, variables)
         assert 'errors' not in response
         assert response['data']['rateTranscription']['rating']['rating'] == 4
-        assert response['data']['rateTranscription']['rating']['comment'] == 'Great transcription!'
 
     def test_register_mutation(self, graphql_client):
         mutation = '''

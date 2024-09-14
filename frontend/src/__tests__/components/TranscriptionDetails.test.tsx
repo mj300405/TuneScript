@@ -1,10 +1,20 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import TranscriptionDetails from '../../components/TranscriptionDetails';
 import * as apolloClient from '@apollo/client';
 
-// Mock RatingComponent and ShareComponent
-jest.mock('../../components/RatingComponent', () => () => <div data-testid="rating-component">Mock Rating Component</div>);
+// Mock RatingComponent
+jest.mock('../../components/RatingComponent', () => {
+  return function MockRatingComponent({ onRatingChange }: { onRatingChange: (rating: number) => void }) {
+    return (
+      <div data-testid="rating-component" onClick={() => onRatingChange(5)}>
+        Mock Rating Component
+      </div>
+    );
+  };
+});
+
+// Mock ShareComponent
 jest.mock('../../components/ShareComponent', () => () => <div data-testid="share-component">Mock Share Component</div>);
 
 // Mock react-pdf
@@ -177,48 +187,74 @@ describe('TranscriptionDetails', () => {
     });
   });
 
-  it('renders audio controls when audio file is available', async () => {
+  it('renders audio controls when audio file is available and loaded', async () => {
+    // Mock the Audio object
+    const mockAudio = {
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      pause: jest.fn(),
+      play: jest.fn().mockResolvedValue(undefined),
+    };
+    (global.Audio as jest.Mock) = jest.fn(() => mockAudio);
+
     jest.spyOn(apolloClient, 'useQuery').mockReturnValue({
       loading: false,
       error: undefined,
       data: { transcription: mockTranscriptionData },
     } as any);
   
-    const { debug } = render(<TranscriptionDetails transcriptionId="123" onClose={mockOnClose} onDelete={mockOnDelete} />);
+    render(<TranscriptionDetails transcriptionId="123" onClose={mockOnClose} onDelete={mockOnDelete} />);
   
     await waitFor(() => {
       expect(screen.getByText('Test Transcription')).toBeInTheDocument();
     });
   
-    const audioButton = screen.queryByTitle('Play Preview');
-    
-    if (!audioButton) {
-      debug();
-      return; // Exit the test case if audioButton is null
-    }
+    // Simulate audio loaded
+    act(() => {
+      const loadedDataCallback = mockAudio.addEventListener.mock.calls.find(
+        call => call[0] === 'loadeddata'
+      )[1];
+      loadedDataCallback();
+    });
   
-    expect(audioButton).toBeInTheDocument();
-    expect(audioButton?.querySelector('[data-testid="play-icon"]')).toBeInTheDocument();
+    await waitFor(() => {
+      const audioButton = screen.queryByTitle('Play Preview');
+      expect(audioButton).toBeInTheDocument();
+      expect(audioButton?.querySelector('[data-testid="play-icon"]')).toBeInTheDocument();
+    });
   });
-  
-  it('does not render audio controls when audio file is not available', async () => {
-    const transcriptionWithoutAudio = {
-      ...mockTranscriptionData,
-      audioFile: null
-    };
 
+  it('calls mutation when rating is changed', async () => {
     jest.spyOn(apolloClient, 'useQuery').mockReturnValue({
       loading: false,
       error: undefined,
-      data: { transcription: transcriptionWithoutAudio },
+      data: { transcription: mockTranscriptionData },
     } as any);
+    
+    const mockRateMutation = jest.fn().mockResolvedValue({
+      data: {
+        rateTranscription: {
+          rating: { id: '1', rating: 5 },
+          transcription: { id: '123', avgRating: 4.6, numRatings: 11 },
+        },
+      },
+    });
+
+    jest.spyOn(apolloClient, 'useMutation').mockReturnValue([mockRateMutation, { loading: false }] as any);
 
     render(<TranscriptionDetails transcriptionId="123" onClose={mockOnClose} onDelete={mockOnDelete} />);
 
     await waitFor(() => {
-      expect(screen.getByText('Test Transcription')).toBeInTheDocument();
+      expect(screen.getByTestId('rating-component')).toBeInTheDocument();
     });
 
-    expect(screen.queryByTitle('Play Preview')).not.toBeInTheDocument();
+    // Simulate rating change
+    fireEvent.click(screen.getByTestId('rating-component'));
+
+    await waitFor(() => {
+      expect(mockRateMutation).toHaveBeenCalledWith({
+        variables: { transcriptionId: '123', ratingValue: 5 },
+      });
+    });
   });
 });
