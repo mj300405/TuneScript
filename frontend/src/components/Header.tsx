@@ -153,6 +153,9 @@ const Header = () => {
                       <Link href="/my-transcriptions" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         My Transcriptions
                       </Link>
+                      <Link href="/favorite-transcriptions" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Favorite Transcriptions
+                      </Link>
                       <button onClick={handleLogout} className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         Logout
                       </button>

@@ -94,3 +94,11 @@ class UserPlayHistoryFactory(factory.django.DjangoModelFactory):
     transcription = factory.SubFactory(TranscriptionFactory)
     play_time = factory.Faker('random_int', min=1, max=3600)
     play_count = factory.Faker('random_int', min=1, max=100)
+
+
+class FavoriteFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Favorite
+
+    user = factory.SubFactory(UserFactory)
+    transcription = factory.SubFactory(TranscriptionFactory)

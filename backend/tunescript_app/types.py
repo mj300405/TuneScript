@@ -145,6 +145,13 @@ class TranscriptionType(DjangoObjectType):
     rating_set = graphene.List("tunescript_app.types.RatingType")
     is_owner = graphene.Boolean()
     share_url = graphene.String()
+    is_favorited = graphene.Boolean()
+
+    def resolve_is_favorited(self, info):
+        user = info.context.user
+        if user.is_authenticated:
+            return Favorite.objects.filter(user=user, transcription=self).exists()
+        return False
 
     def resolve_share_url(self, info):
         if self.share_token:

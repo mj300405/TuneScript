@@ -5,8 +5,9 @@ from django.contrib.auth import get_user_model
 from graphql_relay import to_global_id
 from tunescript_app.schema import schema
 from .factories import (
-    UserFactory, ProfileFactory, AudioFileFactory, TranscriptionFactory
+    UserFactory, ProfileFactory, AudioFileFactory, TranscriptionFactory, FavoriteFactory
 )
+from tunescript_app.models import Favorite
 from graphql_relay import to_global_id, from_global_id
 
 User = get_user_model()
@@ -58,26 +59,6 @@ class TestMutations:
         response = self.execute_mutation(graphql_client, mutation)
         assert 'errors' not in response
         assert response['data']['activatePremium']['profile']['isPremium'] is True
-
-    def test_bookmark_transcription_mutation(self, graphql_client, user):
-        transcription = TranscriptionFactory()
-        mutation = '''
-        mutation($transcriptionId: Int!) {
-            bookmarkTranscription(transcriptionId: $transcriptionId) {
-                favorite {
-                    transcription {
-                        id
-                    }
-                }
-            }
-        }
-        '''
-        variables = {'transcriptionId': transcription.id}
-        response = self.execute_mutation(graphql_client, mutation, variables)
-        assert 'errors' not in response
-        returned_id = response['data']['bookmarkTranscription']['favorite']['transcription']['id']
-        _, decoded_id = from_global_id(returned_id)
-        assert int(decoded_id) == transcription.id
 
     def test_create_transcription_mutation(self, graphql_client, user):
         audio_file = AudioFileFactory(user=user)
@@ -226,3 +207,40 @@ class TestMutations:
         assert 'errors' not in response
         assert response['data']['updateTranscription']['transcription']['title'] == 'Updated Title'
         assert response['data']['updateTranscription']['transcription']['public'] is False
+
+    def test_add_to_favorites_mutation(self, graphql_client, user):
+        transcription = TranscriptionFactory()
+        mutation = '''
+        mutation($transcriptionId: ID!) {
+            addToFavorites(transcriptionId: $transcriptionId) {
+                favorite {
+                    transcription {
+                        id
+                    }
+                    user {
+                        username
+                    }
+                }
+            }
+        }
+        '''
+        variables = {'transcriptionId': to_global_id('TranscriptionType', transcription.id)}
+        response = self.execute_mutation(graphql_client, mutation, variables)
+        assert 'errors' not in response
+        assert response['data']['addToFavorites']['favorite']['transcription']['id'] == to_global_id('TranscriptionType', transcription.id)
+        assert response['data']['addToFavorites']['favorite']['user']['username'] == user.username
+
+    def test_remove_from_favorites_mutation(self, graphql_client, user):
+        favorite = FavoriteFactory(user=user)
+        mutation = '''
+        mutation($transcriptionId: ID!) {
+            removeFromFavorites(transcriptionId: $transcriptionId) {
+                success
+            }
+        }
+        '''
+        variables = {'transcriptionId': to_global_id('TranscriptionType', favorite.transcription.id)}
+        response = self.execute_mutation(graphql_client, mutation, variables)
+        assert 'errors' not in response
+        assert response['data']['removeFromFavorites']['success'] is True
+        assert not Favorite.objects.filter(user=user, transcription=favorite.transcription).exists()

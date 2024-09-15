@@ -5,7 +5,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import RatingComponent from './RatingComponent';
 import ShareComponent from './ShareComponent';
-import { FileMusic, FileText, Eye, EyeOff, Play, Pause, Trash2 } from 'lucide-react';
+import { FileMusic, FileText, Eye, EyeOff, Play, Pause, Trash2, Star } from 'lucide-react';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -24,6 +24,7 @@ export const GET_TRANSCRIPTION_DETAILS = gql`
       numRatings
       createdAt
       isOwner
+      isFavorited
       midiFile {
         downloadUrl
       }
@@ -61,6 +62,24 @@ export const DELETE_TRANSCRIPTION = gql`
   }
 `;
 
+export const ADD_TO_FAVORITES = gql`
+  mutation AddToFavorites($transcriptionId: ID!) {
+    addToFavorites(transcriptionId: $transcriptionId) {
+      favorite {
+        id
+      }
+    }
+  }
+`;
+
+export const REMOVE_FROM_FAVORITES = gql`
+  mutation RemoveFromFavorites($transcriptionId: ID!) {
+    removeFromFavorites(transcriptionId: $transcriptionId) {
+      success
+    }
+  }
+`;
+
 interface TranscriptionDetailsProps {
   transcriptionId: string;
   onClose: () => void;
@@ -84,6 +103,16 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
 
   const [rateTranscription] = useMutation(RATE_TRANSCRIPTION);
   const [deleteTranscription] = useMutation(DELETE_TRANSCRIPTION);
+  const [addToFavorites] = useMutation(ADD_TO_FAVORITES);
+  const [removeFromFavorites] = useMutation(REMOVE_FROM_FAVORITES);
+
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    if (data?.transcription) {
+      setIsFavorite(data.transcription.isFavorited);
+    }
+  }, [data]);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
@@ -143,6 +172,19 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
         console.error('Error deleting transcription:', error);
         alert('Failed to delete transcription');
       }
+    }
+  };
+
+  const handleFavoriteToggle = async () => {
+    try {
+      if (isFavorite) {
+        await removeFromFavorites({ variables: { transcriptionId } });
+      } else {
+        await addToFavorites({ variables: { transcriptionId } });
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
     }
   };
 
@@ -306,6 +348,15 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
               )}
             </div>
             <div className="flex space-x-2">
+              <button
+                onClick={handleFavoriteToggle}
+                className={`p-2 rounded inline-flex items-center justify-center ${
+                  isFavorite ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              >
+                <Star size={24} fill={isFavorite ? "white" : "none"} />
+              </button>
               <ShareComponent transcriptionId={transcriptionId} />
               {transcription.isOwner && (
                 <button
@@ -354,7 +405,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
                       <button
                         disabled={pageNumber <= 1}
                         onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}
-                        className="bg-blue-500 text-white px-2 py-1 rounded mr-2 disabled:bg-gray-300"
+                        className="bg-blue-500 text-white px-2 py-1 rounded mr-2disabled:bg-gray-300"
                       >
                         Previous
                       </button>

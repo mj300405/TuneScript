@@ -259,24 +259,34 @@ class RateTranscription(graphene.Mutation):
         return RateTranscription(rating=rating, transcription=transcription)
 
 
-class BookmarkTranscription(graphene.Mutation):
+class AddToFavorites(graphene.Mutation):
     favorite = graphene.Field(FavoriteType)
 
     class Arguments:
-        transcription_id = graphene.Int(required=True)
+        transcription_id = graphene.ID(required=True)
 
+    @login_required
     def mutate(self, info, transcription_id):
         user = info.context.user
-        if user.is_anonymous:
-            raise Exception("Not logged in!")
-
-        transcription = Transcription.objects.get(pk=transcription_id)
+        _, local_id = from_global_id(transcription_id)
+        transcription = Transcription.objects.get(pk=local_id)
         favorite, created = Favorite.objects.get_or_create(
             transcription=transcription, user=user
         )
+        return AddToFavorites(favorite=favorite)
 
-        return BookmarkTranscription(favorite=favorite)
+class RemoveFromFavorites(graphene.Mutation):
+    class Arguments:
+        transcription_id = graphene.ID(required=True)
 
+    success = graphene.Boolean()
+
+    @login_required
+    def mutate(self, info, transcription_id):
+        user = info.context.user
+        _, local_id = from_global_id(transcription_id)
+        Favorite.objects.filter(user=user, transcription_id=local_id).delete()
+        return RemoveFromFavorites(success=True)
 
 class Register(graphene.Mutation):
     user = graphene.Field(UserType)
@@ -519,7 +529,6 @@ class Mutation(graphene.ObjectType):
     update_transcription = UpdateTranscription.Field()
     delete_transcription = DeleteTranscription.Field()
     rate_transcription = RateTranscription.Field()
-    bookmark_transcription = BookmarkTranscription.Field()
     token_auth = ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
@@ -533,3 +542,5 @@ class Mutation(graphene.ObjectType):
     update_password = UpdatePassword.Field()
     delete_transcription = DeleteTranscription.Field()
     share_transcription = ShareTranscription.Field()
+    add_to_favorites = AddToFavorites.Field()
+    remove_from_favorites = RemoveFromFavorites.Field()

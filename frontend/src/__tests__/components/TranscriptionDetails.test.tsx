@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
-import TranscriptionDetails from '../../components/TranscriptionDetails';
+import TranscriptionDetails, { ADD_TO_FAVORITES, REMOVE_FROM_FAVORITES } from '../../components/TranscriptionDetails';
 import * as apolloClient from '@apollo/client';
 
 // Mock RatingComponent
@@ -33,6 +33,7 @@ jest.mock('lucide-react', () => ({
   Play: () => <div data-testid="play-icon">Play Icon</div>,
   Pause: () => <div data-testid="pause-icon">Pause Icon</div>,
   Trash2: () => <div data-testid="trash2-icon">Trash2 Icon</div>,
+  Star: () => <div data-testid="star-icon">Star Icon</div>,
 }));
 
 const mockTranscriptionData = {
@@ -48,6 +49,7 @@ const mockTranscriptionData = {
   numRatings: 10,
   createdAt: '2023-09-01T00:00:00Z',
   isOwner: true,
+  isFavorited: false,
   midiFile: { downloadUrl: 'http://example.com/midi' },
   sheetMusic: { downloadUrl: 'http://example.com/pdf' },
   audioFile: { audioFile: 'test-audio.mp3' },
@@ -188,7 +190,6 @@ describe('TranscriptionDetails', () => {
   });
 
   it('renders audio controls when audio file is available and loaded', async () => {
-    // Mock the Audio object
     const mockAudio = {
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
@@ -209,7 +210,6 @@ describe('TranscriptionDetails', () => {
       expect(screen.getByText('Test Transcription')).toBeInTheDocument();
     });
   
-    // Simulate audio loaded
     act(() => {
       const loadedDataCallback = mockAudio.addEventListener.mock.calls.find(
         call => call[0] === 'loadeddata'
@@ -248,7 +248,6 @@ describe('TranscriptionDetails', () => {
       expect(screen.getByTestId('rating-component')).toBeInTheDocument();
     });
 
-    // Simulate rating change
     fireEvent.click(screen.getByTestId('rating-component'));
 
     await waitFor(() => {
@@ -257,4 +256,62 @@ describe('TranscriptionDetails', () => {
       });
     });
   });
+
+  it('toggles favorite status in UI', async () => {
+    let isFavorited = false;
+  
+    const mockUseQuery = jest.spyOn(apolloClient, 'useQuery').mockReturnValue({
+      loading: false,
+      error: undefined,
+      data: { transcription: { ...mockTranscriptionData, isFavorited } },
+      refetch: jest.fn().mockImplementation(() => {
+        isFavorited = !isFavorited;
+        return Promise.resolve({
+          data: { transcription: { ...mockTranscriptionData, isFavorited } },
+        });
+      }),
+    } as any);
+  
+    const mockAddToFavorites = jest.fn().mockResolvedValue({ data: { success: true } });
+    const mockRemoveFromFavorites = jest.fn().mockResolvedValue({ data: { success: true } });
+  
+    jest.spyOn(apolloClient, 'useMutation').mockImplementation((mutation) => {
+      if (mutation === ADD_TO_FAVORITES) {
+        return [mockAddToFavorites, { loading: false }] as any;
+      } else if (mutation === REMOVE_FROM_FAVORITES) {
+        return [mockRemoveFromFavorites, { loading: false }] as any;
+      } else {
+        return [jest.fn(), { loading: false }] as any;
+      }
+    });
+  
+    render(<TranscriptionDetails transcriptionId="123" onClose={mockOnClose} onDelete={mockOnDelete} />);
+  
+    // Initial state: not favorited
+    let starButton = await screen.findByTestId('star-icon');
+    expect(starButton.closest('button')).toHaveAttribute('title', 'Add to Favorites');
+  
+    // Click to add to favorites
+    fireEvent.click(starButton);
+  
+    // Wait for the UI to update
+    await waitFor(() => {
+      starButton = screen.getByTestId('star-icon');
+      expect(starButton.closest('button')).toHaveAttribute('title', 'Remove from Favorites');
+    });
+  
+    expect(mockAddToFavorites).toHaveBeenCalledTimes(1);
+  
+    // Click to remove from favorites
+    fireEvent.click(starButton);
+  
+    // Wait for the UI to update again
+    await waitFor(() => {
+      starButton = screen.getByTestId('star-icon');
+      expect(starButton.closest('button')).toHaveAttribute('title', 'Add to Favorites');
+    });
+  
+    expect(mockRemoveFromFavorites).toHaveBeenCalledTimes(1);
+  });
+  
 });

@@ -49,6 +49,13 @@ class Query(graphene.ObjectType):
         TranscriptionType, id=graphene.Int(required=True)
     )
     transcription_by_share_token = graphene.Field(TranscriptionType, token=graphene.UUID(required=True))
+    user_favorites = graphene.List(TranscriptionType)
+
+    def resolve_user_favorites(self, info):
+        user = info.context.user
+        if user.is_anonymous:
+            return []
+        return Transcription.objects.filter(favorite__user=user)
 
     def resolve_transcription_by_share_token(self, info, token):
         try:

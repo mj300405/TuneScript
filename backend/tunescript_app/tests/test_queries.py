@@ -5,9 +5,8 @@ from graphql_relay import to_global_id
 from tunescript_app.schema import schema
 from .factories import (
     UserFactory, ProfileFactory, TranscriptionFactory, RatingFactory, 
-    TagFactory, UserPlayHistoryFactory, AudioFileFactory, MIDIFileFactory, SheetMusicFactory
+    TagFactory, UserPlayHistoryFactory, FavoriteFactory
 )
-from tunescript_app.models import Transcription, Profile, Tag, UserPlayHistory
 
 User = get_user_model()
 
@@ -305,3 +304,25 @@ class TestQueries:
         response = self.execute_query(graphql_client, query, variables)
         assert 'errors' not in response
         assert response['data']['transcriptionByShareToken']['id'] == to_global_id('TranscriptionType', transcription.id)
+
+    def test_user_favorites_query(self, graphql_client, user):
+        favorite_transcriptions = TranscriptionFactory.create_batch(3)
+        for transcription in favorite_transcriptions:
+            FavoriteFactory(user=user, transcription=transcription)
+        
+        TranscriptionFactory.create_batch(2)  # Non-favorite transcriptions
+
+        query = '''
+        query {
+            userFavorites {
+                id
+                title
+            }
+        }
+        '''
+        response = self.execute_query(graphql_client, query)
+        assert 'errors' not in response
+        assert len(response['data']['userFavorites']) == 3
+        favorite_ids = [to_global_id('TranscriptionType', t.id) for t in favorite_transcriptions]
+        returned_ids = [t['id'] for t in response['data']['userFavorites']]
+        assert set(returned_ids) == set(favorite_ids)
