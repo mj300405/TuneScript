@@ -86,6 +86,12 @@ black = "^24.8.0"
 isort = "^5.13.2"
 flake8 = "^7.1.1"
 flake8-pyproject = "1.2.3"
+langchain = "0.0.284"
+faiss-cpu = "^1.7.3"
+sentence-transformers = "^2.2.2"
+transformers = "^4.28.1"
+accelerate = "^0.34.2"
+chromadb = "0.4.15"
 
 [tool.poetry.dev-dependencies]
 poetry = "1.8.3"

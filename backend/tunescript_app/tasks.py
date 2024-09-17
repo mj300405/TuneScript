@@ -5,8 +5,7 @@ import tempfile
 import yt_dlp
 from celery import shared_task
 from django.core.files import File
-from piano_transcription_inference import (PianoTranscription, load_audio,
-                                           sample_rate)
+from piano_transcription_inference import PianoTranscription, load_audio, sample_rate
 
 from .models import AudioFile, MIDIFile, SheetMusic, Transcription
 from .utils import convert_midi_to_pdf

@@ -45,6 +45,7 @@ services:
       - FRONTEND_WEBHOOK_URL=http://frontend:3000/api/sse-stream
       - WEBHOOK_SECRET=your-very-secure-secret
       - EMAIL_HOST_PASSWORD=pajt qvan xnhw ssnt
+      - PYTHONPATH=/app
     networks:
       - tunescript-network
     dns:
@@ -64,12 +65,15 @@ services:
     depends_on:
       - db
       - redis
+    env_file:
+      - ../backend/.env
     environment:
       - DATABASE_URL=postgres://root:root@db:5432/tunescript_db
       - REDIS_URL=redis://redis:6379/0
       - DISPLAY=:99
       - FRONTEND_WEBHOOK_URL=http://frontend:3000/api/sse-stream
       - WEBHOOK_SECRET=your-very-secure-secret
+      - PYTHONPATH=/app
     networks:
       - tunescript-network
 

@@ -6,11 +6,16 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Avg, Count, Q, Sum
 
-from .models import (AudioFile, Profile, Rating, Tag, Transcription,
-                     UserPlayHistory)
+from .models import AudioFile, Profile, Rating, Tag, Transcription, UserPlayHistory
 from .mutations import Mutation  # Import the Mutation class from mutations.py
-from .types import (AudioFileType, ProfileType, TagType, TranscriptionType,
-                    UserStatisticsType, UserType)
+from .types import (
+    AudioFileType,
+    ProfileType,
+    TagType,
+    TranscriptionType,
+    UserStatisticsType,
+    UserType,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +53,9 @@ class Query(graphene.ObjectType):
     transcription_with_rating = graphene.Field(
         TranscriptionType, id=graphene.Int(required=True)
     )
-    transcription_by_share_token = graphene.Field(TranscriptionType, token=graphene.UUID(required=True))
+    transcription_by_share_token = graphene.Field(
+        TranscriptionType, token=graphene.UUID(required=True)
+    )
     user_favorites = graphene.List(TranscriptionType)
 
     def resolve_user_favorites(self, info):

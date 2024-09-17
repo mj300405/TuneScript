@@ -1,0 +1,49 @@
+TuneScript Feature Descriptions
+
+1. AI-Powered Transcription:
+   Our advanced AI technology accurately transcribes piano music from audio files or YouTube videos into sheet music and MIDI.
+
+2. Sheet Music Generation:
+   Automatically create beautiful, printable sheet music from your transcriptions.
+
+3. MIDI Export:
+   Download MIDI files of your transcriptions for use in digital audio workstations or other music software.
+
+4. Transcription Management:
+   Easily organize, edit, and delete your transcriptions through an intuitive user interface.
+
+5. Smart Search:
+   Find transcriptions quickly using our powerful search feature. Filter by title, composer, genre, and more.
+
+6. Rating System:
+   Rate transcriptions and see average ratings from other users to find the best quality content.
+
+7. Favorites:
+   Save your favorite transcriptions for quick access and create personalized collections.
+
+8. Public and Private Transcriptions:
+   Choose to keep your transcriptions private or share them with the TuneScript community.
+
+9. User Profiles:
+   Customize your profile, showcase your transcriptions, and connect with other music enthusiasts.
+
+10. Premium Features:
+    - Unlimited transcriptions
+    - Priority processing for faster results
+    - Advanced editing tools for fine-tuning transcriptions
+    - High-quality sheet music exports with customizable layouts
+
+11. YouTube Integration:
+    Transcribe music directly from YouTube videos by simply pasting the URL.
+
+12. Mobile Responsiveness:
+    Access TuneScript on any device with our responsive design, perfect for on-the-go musicians.
+
+13. Community Feedback:
+    Provide and receive feedback on transcriptions to help improve accuracy and quality.
+
+14. Learning Tools:
+    Use practice mode to learn pieces at your own pace, with features like tempo adjustment and loop sections.
+
+15. Analytics Dashboard:
+    Track your progress, see your most-played pieces, and get insights into your music learning journey.

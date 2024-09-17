@@ -28,7 +28,7 @@ RUN chmod +x /app/format.sh
 RUN poetry config virtualenvs.create false && poetry install --no-dev --no-interaction --no-ansi
 
 # Explicitly install psycopg2-binary and redis
-RUN poetry add psycopg2-binary redis
+RUN poetry add psycopg2-binary redis accelerate
 
 # Install test dependencies
 RUN poetry add pytest@^7.3.1 pytest-django@^4.5.2 factory-boy@^3.2.1 pytest-cov@^4.0.0
@@ -42,6 +42,9 @@ EXPOSE 8000
 # Create necessary directories
 RUN mkdir -p /app/static/images /app/staticfiles /app/media
 RUN chmod -R 755 /app/static /app/staticfiles /app/media
+
+# Set Python path
+ENV PYTHONPATH=/app:$PYTHONPATH
 
 # Run the application
 CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]

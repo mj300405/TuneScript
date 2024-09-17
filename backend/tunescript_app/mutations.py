@@ -2,11 +2,11 @@ import logging
 
 import graphene
 import graphql_jwt
+from django.conf import settings
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.core.files.storage import default_storage
-from django.core.files.uploadedfile import (InMemoryUploadedFile,
-                                            SimpleUploadedFile)
+from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
 from django.core.mail import send_mail
 from django.db import IntegrityError, models, transaction
 from django.db.models import Avg, F
@@ -17,13 +17,17 @@ from graphql_jwt import JSONWebTokenMutation
 from graphql_jwt.decorators import login_required
 from graphql_relay import from_global_id
 
-from .models import (AudioFile, Favorite, Profile, Rating, Transcription,
-                     UserPlayHistory)
+from .models import AudioFile, Favorite, Profile, Rating, Transcription, UserPlayHistory
 from .tasks import download_youtube_audio, process_transcription
-from .types import (AudioFileType, FavoriteType, ProfileType, RatingType,
-                    TranscriptionType, UserType)
+from .types import (
+    AudioFileType,
+    FavoriteType,
+    ProfileType,
+    RatingType,
+    TranscriptionType,
+    UserType,
+)
 from .utils import send_confirmation_email, send_password_reset_email
-from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -275,6 +279,7 @@ class AddToFavorites(graphene.Mutation):
         )
         return AddToFavorites(favorite=favorite)
 
+
 class RemoveFromFavorites(graphene.Mutation):
     class Arguments:
         transcription_id = graphene.ID(required=True)
@@ -287,6 +292,7 @@ class RemoveFromFavorites(graphene.Mutation):
         _, local_id = from_global_id(transcription_id)
         Favorite.objects.filter(user=user, transcription_id=local_id).delete()
         return RemoveFromFavorites(success=True)
+
 
 class Register(graphene.Mutation):
     user = graphene.Field(UserType)
@@ -494,6 +500,7 @@ class DeleteTranscription(graphene.Mutation):
         except Exception as e:
             return DeleteTranscription(success=False, message=str(e))
 
+
 class ShareTranscription(graphene.Mutation):
     class Arguments:
         transcription_id = graphene.ID(required=True)
@@ -503,10 +510,10 @@ class ShareTranscription(graphene.Mutation):
     @login_required
     def mutate(self, info, transcription_id):
         user = info.context.user
-        
+
         # Decode the global ID
         _, decoded_id = from_global_id(transcription_id)
-        
+
         try:
             transcription = Transcription.objects.get(pk=decoded_id)
         except Transcription.DoesNotExist:

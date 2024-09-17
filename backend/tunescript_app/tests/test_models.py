@@ -1,13 +1,25 @@
+from datetime import timedelta
+
 import pytest
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from datetime import timedelta
-from .factories import (
-    UserFactory, ProfileFactory, AudioFileFactory, TranscriptionFactory,
-    RatingFactory, FavoriteFactory, MIDIFileFactory, SheetMusicFactory,
-    TagFactory, TranscriptionTagFactory, UserPlayHistoryFactory
-)
+
 from tunescript_app.models import Rating
+
+from .factories import (
+    AudioFileFactory,
+    FavoriteFactory,
+    MIDIFileFactory,
+    ProfileFactory,
+    RatingFactory,
+    SheetMusicFactory,
+    TagFactory,
+    TranscriptionFactory,
+    TranscriptionTagFactory,
+    UserFactory,
+    UserPlayHistoryFactory,
+)
+
 
 @pytest.mark.django_db
 class TestUserModel:
@@ -15,12 +27,13 @@ class TestUserModel:
         user = UserFactory()
         assert user.username
         assert user.email
-        assert user.check_password('password')
+        assert user.check_password("password")
         assert user.email_confirmed
 
     def test_user_str(self):
-        user = UserFactory(username='testuser')
-        assert str(user) == 'testuser'
+        user = UserFactory(username="testuser")
+        assert str(user) == "testuser"
+
 
 @pytest.mark.django_db
 class TestProfileModel:
@@ -40,7 +53,11 @@ class TestProfileModel:
         assert profile.premium_end_date > profile.premium_start_date
 
     def test_deactivate_premium(self):
-        profile = ProfileFactory(is_premium=True, premium_start_date=timezone.now(), premium_end_date=timezone.now() + timedelta(days=30))
+        profile = ProfileFactory(
+            is_premium=True,
+            premium_start_date=timezone.now(),
+            premium_end_date=timezone.now() + timedelta(days=30),
+        )
         profile.deactivate_premium()
         assert not profile.is_premium
         assert not profile.premium_start_date
@@ -48,7 +65,8 @@ class TestProfileModel:
 
     def test_get_profile_picture_url(self):
         profile = ProfileFactory()
-        assert 'default_profile_picture.png' in profile.get_profile_picture_url()
+        assert "default_profile_picture.png" in profile.get_profile_picture_url()
+
 
 @pytest.mark.django_db
 class TestAudioFileModel:
@@ -60,8 +78,9 @@ class TestAudioFileModel:
         assert audio_file.uploaded_at
 
     def test_audio_file_str(self):
-        audio_file = AudioFileFactory(title='Test Audio')
-        assert str(audio_file) == 'Test Audio'
+        audio_file = AudioFileFactory(title="Test Audio")
+        assert str(audio_file) == "Test Audio"
+
 
 @pytest.mark.django_db
 class TestTranscriptionModel:
@@ -70,7 +89,7 @@ class TestTranscriptionModel:
         assert transcription.audio_file
         assert transcription.user
         assert transcription.title
-        assert transcription.status in ['PENDING', 'COMPLETED', 'FAILED']
+        assert transcription.status in ["PENDING", "COMPLETED", "FAILED"]
 
     def test_update_rating(self):
         transcription = TranscriptionFactory()
@@ -96,6 +115,7 @@ class TestTranscriptionModel:
         token = transcription.generate_share_token()
         assert token
         assert transcription.share_token == token
+
 
 @pytest.mark.django_db
 class TestRatingModel:
@@ -127,6 +147,7 @@ class TestRatingModel:
             rating = Rating(user=user, transcription=transcription, rating=6)
             rating.full_clean()
 
+
 @pytest.mark.django_db
 class TestFavoriteModel:
     def test_favorite_creation(self):
@@ -139,6 +160,7 @@ class TestFavoriteModel:
         favorite = FavoriteFactory()
         expected_str = f"User {favorite.user}'s favorite {favorite.transcription.title}"
         assert str(favorite) == expected_str
+
 
 @pytest.mark.django_db
 class TestMIDIFileModel:
@@ -153,6 +175,7 @@ class TestMIDIFileModel:
         expected_str = f"MIDI for {midi_file.transcription.audio_file.title}"
         assert str(midi_file) == expected_str
 
+
 @pytest.mark.django_db
 class TestSheetMusicModel:
     def test_sheet_music_creation(self):
@@ -166,6 +189,7 @@ class TestSheetMusicModel:
         expected_str = f"Sheet Music for {sheet_music.transcription.audio_file.title}"
         assert str(sheet_music) == expected_str
 
+
 @pytest.mark.django_db
 class TestTagModel:
     def test_tag_creation(self):
@@ -173,8 +197,9 @@ class TestTagModel:
         assert tag.name
 
     def test_tag_str(self):
-        tag = TagFactory(name='Jazz')
-        assert str(tag) == 'Jazz'
+        tag = TagFactory(name="Jazz")
+        assert str(tag) == "Jazz"
+
 
 @pytest.mark.django_db
 class TestTranscriptionTagModel:
@@ -182,6 +207,7 @@ class TestTranscriptionTagModel:
         transcription_tag = TranscriptionTagFactory()
         assert transcription_tag.transcription
         assert transcription_tag.tag
+
 
 @pytest.mark.django_db
 class TestUserPlayHistoryModel:
@@ -195,5 +221,7 @@ class TestUserPlayHistoryModel:
 
     def test_user_play_history_str(self):
         play_history = UserPlayHistoryFactory()
-        expected_str = f"{play_history.user.username} - {play_history.transcription.title}"
+        expected_str = (
+            f"{play_history.user.username} - {play_history.transcription.title}"
+        )
         assert str(play_history) == expected_str

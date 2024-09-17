@@ -1,0 +1,35 @@
+TuneScript Application Guide
+
+Welcome to TuneScript, your ultimate platform for piano transcription and music learning!
+
+Getting Started:
+1. Create an account or log in to your existing account.
+2. Navigate to the dashboard to see an overview of your transcriptions and activities.
+
+Uploading a Transcription:
+1. Click on the "Upload" button in the navigation bar.
+2. Choose an audio file (MP3 or WAV) from your device or provide a YouTube URL.
+3. Fill in the details like title, composer, and genre.
+4. Select whether you want the transcription to be public or private.
+5. Click "Create Transcription" to start the process.
+
+Viewing and Managing Transcriptions:
+1. Go to "My Transcriptions" to see all your uploaded transcriptions.
+2. Click on a transcription to view details, including the sheet music and MIDI file.
+3. Use the edit button to update transcription details.
+4. Use the delete button to remove a transcription.
+
+Searching for Transcriptions:
+1. Use the search bar to find transcriptions by title, composer, or genre.
+2. Apply filters to refine your search results.
+
+Rating and Favoriting:
+1. Rate transcriptions on a scale of 1 to 5 stars.
+2. Add transcriptions to your favorites for easy access.
+
+Premium Features:
+1. Upgrade to a premium account for unlimited transcriptions and advanced features.
+2. Premium users can access high-quality sheet music exports and advanced editing tools.
+
+Need Help?
+If you have any questions or issues, please refer to our FAQ section or contact our support team.

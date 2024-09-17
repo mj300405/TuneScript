@@ -1,0 +1,31 @@
+Frequently Asked Questions (FAQ)
+
+Q: What file formats does TuneScript support for transcription?
+A: TuneScript supports MP3 and WAV audio files. You can also provide YouTube URLs for transcription.
+
+Q: How long does the transcription process take?
+A: The transcription process typically takes a few minutes, depending on the length and complexity of the audio file.
+
+Q: Can I edit my transcriptions after they're created?
+A: Yes, you can edit the metadata (title, composer, genre) of your transcriptions. Premium users have access to more advanced editing tools.
+
+Q: What's the difference between public and private transcriptions?
+A: Public transcriptions can be seen and played by all TuneScript users, while private transcriptions are only visible to you.
+
+Q: How accurate are the transcriptions?
+A: Our AI-powered transcription system is highly accurate, but may occasionally make mistakes, especially with complex pieces. Users can provide feedback to help improve the system.
+
+Q: Can I download the sheet music or MIDI files?
+A: Yes, both sheet music (PDF) and MIDI files are available for download for each transcription.
+
+Q: What are the benefits of a premium account?
+A: Premium accounts offer unlimited transcriptions, high-quality sheet music exports, advanced editing tools, and priority processing.
+
+Q: How do I upgrade to a premium account?
+A: Go to your profile settings and click on "Upgrade to Premium". Follow the instructions to complete the payment process.
+
+Q: Can I share my transcriptions with others?
+A: Yes, you can share public transcriptions by using the share button, which provides a link that you can send to others.
+
+Q: How do I report a problem with a transcription?
+A: Each transcription has a "Report Issue" button. Click this to send feedback to our team about any problems you encounter.

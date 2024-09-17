@@ -10,9 +10,18 @@ from django.templatetags.static import static
 from graphene import Float, Int, List, String, relay
 from graphene_django.types import DjangoObjectType
 
-from .models import (AudioFile, Favorite, MIDIFile, Profile, Rating,
-                     SheetMusic, Tag, Transcription, TranscriptionTag,
-                     UserPlayHistory)
+from .models import (
+    AudioFile,
+    Favorite,
+    MIDIFile,
+    Profile,
+    Rating,
+    SheetMusic,
+    Tag,
+    Transcription,
+    TranscriptionTag,
+    UserPlayHistory,
+)
 
 logger = logging.getLogger(__name__)
 

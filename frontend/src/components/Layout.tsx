@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import Header from './Header';
 import { motion } from 'framer-motion';
+import ChatbotWidget from './ChatbotWidget';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'TuneScript' }) => {
         >
           {children}
         </motion.main>
+        <ChatbotWidget />
       </div>
     </>
   );

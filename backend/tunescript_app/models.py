@@ -1,5 +1,6 @@
 # backend/tunescript_app/models.py
 
+import uuid
 from datetime import datetime, timedelta
 
 from django.contrib.auth.models import AbstractUser
@@ -7,7 +8,6 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
 from django.db.models import Avg, F
 from django.templatetags.static import static
-import uuid
 
 
 class User(AbstractUser):
