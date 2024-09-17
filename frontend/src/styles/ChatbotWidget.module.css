@@ -1,0 +1,52 @@
+.dot-flashing {
+    position: relative;
+    width: 1em;
+    height: 1em;
+    margin-left: 0.5em;
+    border-radius: 50%;
+    background-color: gray;
+    color: gray;
+    animation: dot-flashing 1s infinite linear alternate;
+    animation-delay: .5s;
+  }
+  
+  @keyframes dot-flashing {
+    0% {
+      background-color: gray;
+    }
+    50%,
+    100% {
+      background-color: lightgray;
+    }
+  }
+  
+  .dot-flashing:before,
+  .dot-flashing:after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+  }
+  
+  .dot-flashing:before {
+    left: -1.5em;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background-color: gray;
+    color: gray;
+    animation: dot-flashing 1s infinite alternate;
+    animation-delay: 0s;
+  }
+  
+  .dot-flashing:after {
+    left: 1.5em;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background-color: gray;
+    color: gray;
+    animation: dot-flashing 1s infinite alternate;
+    animation-delay: 1s;
+  }
+  

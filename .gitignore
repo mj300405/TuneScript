@@ -16,7 +16,7 @@ frontend/build/
 frontend/public/static
 
 # Tailwind CSS
-frontend/src/**/*.css
+#frontend/src/**/*.css
 
 # Optional npm cache directory
 .npm

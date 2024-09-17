@@ -1,8 +1,7 @@
-// frontend/components/ChatbotWidget.tsx
-
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import AuthContext from '../context/AuthContext';
+import '../styles/ChatbotWidget.module.css';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -18,7 +17,7 @@ const ChatbotWidget: React.FC = () => {
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(scrollToBottom, [messages]);
@@ -45,7 +44,7 @@ const ChatbotWidget: React.FC = () => {
     if (input.trim() === '') return;
 
     const newMessage: Message = { role: 'user', content: input };
-    setMessages(prev => [...prev, newMessage]);
+    setMessages((prev) => [...prev, newMessage]);
     setInput('');
     setIsLoading(true);
 
@@ -67,11 +66,11 @@ const ChatbotWidget: React.FC = () => {
 
       const data = await response.json();
       const botMessage: Message = { role: 'assistant', content: data.answer };
-      setMessages(prev => [...prev, botMessage]);
+      setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Error:', error);
       const errorMessage: Message = { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
     }
@@ -95,6 +94,13 @@ const ChatbotWidget: React.FC = () => {
                 </span>
               </div>
             ))}
+            {isLoading && (
+              <div className="mb-2 text-left">
+                <div className="inline-block p-2 rounded-lg bg-gray-100">
+                  <div className="dot-flashing"></div>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
           <div className="p-4 border-t">
