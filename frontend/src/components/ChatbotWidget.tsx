@@ -1,12 +1,19 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import AuthContext from '../context/AuthContext';
-import '../styles/ChatbotWidget.module.css';
 
 interface Message {
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'error';
   content: string;
 }
+
+const ThinkingDots = () => (
+  <div className="flex space-x-1">
+    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+    <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+  </div>
+);
 
 const ChatbotWidget: React.FC = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
@@ -22,57 +29,72 @@ const ChatbotWidget: React.FC = () => {
 
   useEffect(scrollToBottom, [messages]);
 
-  useEffect(() => {
-    const loadChatHistory = async () => {
-      if (isAuthenticated && user) {
-        try {
-          const response = await fetch(`http://localhost:8000/api/chatbot/history/?user_id=${user.id}`);
-          if (response.ok) {
-            const data = await response.json();
-            setMessages(data.history);
-          }
-        } catch (error) {
-          console.error('Error loading chat history:', error);
+  const pollStatus = async (taskId: string) => {
+    const maxAttempts = 60; // 5 minutes (5 * 60 seconds)
+    let attempts = 0;
+
+    const poll = async () => {
+      if (attempts >= maxAttempts) {
+        setIsLoading(false);
+        setMessages(prev => [...prev, { role: 'error', content: 'Request timed out. Please try again.' }]);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/rag-status/${taskId}`);
+        const data = await response.json();
+
+        if (data.status === 'completed') {
+          setIsLoading(false);
+          setMessages(prev => [...prev, { role: 'assistant', content: data.answer }]);
+        } else if (data.status === 'error') {
+          setIsLoading(false);
+          setMessages(prev => [...prev, { role: 'error', content: 'An error occurred. Please try again.' }]);
+        } else {
+          attempts++;
+          setTimeout(poll, 5000); // Poll every 5 seconds
         }
+      } catch (error) {
+        console.error('Error polling status:', error);
+        setIsLoading(false);
+        setMessages(prev => [...prev, { role: 'error', content: 'An error occurred. Please try again.' }]);
       }
     };
 
-    loadChatHistory();
-  }, [isAuthenticated, user]);
+    poll();
+  };
 
   const handleSend = async () => {
     if (input.trim() === '') return;
 
     const newMessage: Message = { role: 'user', content: input };
-    setMessages((prev) => [...prev, newMessage]);
+    setMessages(prev => [...prev, newMessage]);
     setInput('');
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8000/api/chatbot/query/', {
+      const response = await fetch('/api/rag-query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_id: isAuthenticated && user ? user.id : 'anonymous',
           question: input,
+          user_id: isAuthenticated && user ? user.id : 'anonymous',
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
       const data = await response.json();
-      const botMessage: Message = { role: 'assistant', content: data.answer };
-      setMessages((prev) => [...prev, botMessage]);
+
+      if (data.task_id) {
+        pollStatus(data.task_id);
+      } else {
+        throw new Error('No task ID received');
+      }
     } catch (error) {
-      console.error('Error:', error);
-      const errorMessage: Message = { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
+      console.error('Error sending message:', error);
       setIsLoading(false);
+      setMessages(prev => [...prev, { role: 'error', content: 'An error occurred. Please try again.' }]);
     }
   };
 
@@ -89,7 +111,13 @@ const ChatbotWidget: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-4">
             {messages.map((message, index) => (
               <div key={index} className={`mb-2 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
-                <span className={`inline-block p-2 rounded-lg ${message.role === 'user' ? 'bg-blue-100' : 'bg-gray-100'}`}>
+                <span className={`inline-block p-2 rounded-lg ${
+                  message.role === 'user' 
+                    ? 'bg-blue-100' 
+                    : message.role === 'assistant'
+                    ? 'bg-gray-100'
+                    : 'bg-red-100'
+                }`}>
                   {message.content}
                 </span>
               </div>
@@ -97,7 +125,7 @@ const ChatbotWidget: React.FC = () => {
             {isLoading && (
               <div className="mb-2 text-left">
                 <div className="inline-block p-2 rounded-lg bg-gray-100">
-                  <div className="dot-flashing"></div>
+                  <ThinkingDots />
                 </div>
               </div>
             )}

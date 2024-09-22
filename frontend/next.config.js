@@ -34,8 +34,12 @@ const nextConfig = {
         destination: 'http://web:8000/graphql/:path*',
       },
       {
-        source: '/api/chatbot/:path*',
-        destination: 'http://web:8000/chatbot/:path*',
+        source: '/api/rag-query',
+        destination: 'http://rag:5000/query',
+      },
+      {
+        source: '/api/rag-status/:taskId',
+        destination: 'http://rag:5000/status/:taskId',
       },
     ];
   },

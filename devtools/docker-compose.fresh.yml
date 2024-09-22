@@ -99,6 +99,17 @@ services:
     stdin_open: true
     command: npm run dev
 
+  rag:
+    build:
+      context: ..
+      dockerfile: devtools/Dockerfile.rag
+    volumes:
+      - ../chatbot:/app
+    ports:
+      - "5000:5000"
+    networks:
+      - tunescript-network
+
 networks:
   tunescript-network:
     driver: bridge

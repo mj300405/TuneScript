@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     "graphene_file_upload",
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     "corsheaders",
-    "chatbot",
 ]
 
 MIDDLEWARE = [
