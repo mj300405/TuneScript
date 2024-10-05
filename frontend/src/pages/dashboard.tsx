@@ -22,7 +22,10 @@ export const GET_DASHBOARD_DATA = gql`
       id
       title
       composer
-      genre
+      tags {
+        id
+        name
+      }
     }
     userStatistics {
       totalTranscriptions
@@ -31,6 +34,20 @@ export const GET_DASHBOARD_DATA = gql`
     }
   }
 `;
+
+interface Tag {
+  id: string;
+  name: string;
+}
+
+interface Transcription {
+  id: string;
+  title: string;
+  composer: string;
+  avgRating?: number;
+  createdAt?: string;
+  tags?: Tag[];
+}
 
 const Dashboard = () => {
   const [selectedTranscription, setSelectedTranscription] = useState<string | null>(null);
@@ -54,7 +71,7 @@ const Dashboard = () => {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Highest Rated Transcriptions</h2>
             <ul>
-              {data?.highestRatedTranscriptions?.map((t: any) => (
+              {data?.highestRatedTranscriptions?.map((t: Transcription) => (
                 <li key={t.id} className="mb-2">
                   <button 
                     onClick={() => setSelectedTranscription(t.id)}
@@ -71,13 +88,13 @@ const Dashboard = () => {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-4">Recently Added</h2>
             <ul>
-              {data?.recentTranscriptions?.map((t: any) => (
+              {data?.recentTranscriptions?.map((t: Transcription) => (
                 <li key={t.id} className="mb-2">
                   <button 
                     onClick={() => setSelectedTranscription(t.id)}
                     className="text-blue-600 hover:underline"
                   >
-                    {t.title} by {t.composer} - {new Date(t.createdAt).toLocaleDateString()}
+                    {t.title} by {t.composer} - {new Date(t.createdAt || '').toLocaleDateString()}
                   </button>
                 </li>
               ))}
@@ -89,13 +106,18 @@ const Dashboard = () => {
             <h2 className="text-2xl font-semibold mb-4">Recommended for You</h2>
             {data?.recommendedTranscriptions?.length > 0 ? (
               <ul>
-                {data.recommendedTranscriptions.map((t: any) => (
+                {data.recommendedTranscriptions.map((t: Transcription) => (
                   <li key={t.id} className="mb-2">
                     <button 
                       onClick={() => setSelectedTranscription(t.id)}
                       className="text-blue-600 hover:underline"
                     >
-                      {t.title} by {t.composer} - {t.genre}
+                      {t.title} by {t.composer} - 
+                      {t.tags?.map(tag => (
+                        <span key={tag.id} className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                          {tag.name}
+                        </span>
+                      ))}
                     </button>
                   </li>
                 ))}

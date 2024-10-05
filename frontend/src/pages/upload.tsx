@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import Layout from '../components/Layout';
 import { fromGlobalId } from 'graphql-relay';
 import TranscriptionDetails from '../components/TranscriptionDetails';
@@ -16,13 +16,16 @@ const UPLOAD_AUDIO_FILE = gql`
 `;
 
 const CREATE_TRANSCRIPTION = gql`
-  mutation CreateTranscription($audioFileId: Int, $youtubeUrl: String, $title: String!, $genre: String, $composer: String, $player: String, $isPublic: Boolean!) {
-    createTranscription(audioFileId: $audioFileId, youtubeUrl: $youtubeUrl, title: $title, genre: $genre, composer: $composer, player: $player, isPublic: $isPublic) {
+  mutation CreateTranscription($audioFileId: Int, $youtubeUrl: String, $title: String!, $tagIds: [Int!], $composer: String, $player: String, $isPublic: Boolean!) {
+    createTranscription(audioFileId: $audioFileId, youtubeUrl: $youtubeUrl, title: $title, tagIds: $tagIds, composer: $composer, player: $player, isPublic: $isPublic) {
       transcription {
         id
         title
         composer
-        genre
+        tags {
+          id
+          name
+        }
         player
         visibility
         status
@@ -35,9 +38,57 @@ const CREATE_TRANSCRIPTION = gql`
   }
 `;
 
+const GET_ALL_TAGS = gql`
+  query GetAllTags {
+    allTags {
+      id
+      name
+    }
+  }
+`;
+
+interface Tag {
+  id: string;
+  name: string;
+}
+
+const TagSelection: React.FC<{ onTagsChange: (tagIds: number[]) => void }> = ({ onTagsChange }) => {
+  const [selectedTags, setSelectedTags] = useState<number[]>([]);
+  const { data, loading, error } = useQuery(GET_ALL_TAGS);
+
+  const handleTagToggle = (tagId: number) => {
+    setSelectedTags(prev => 
+      prev.includes(tagId) 
+        ? prev.filter(id => id !== tagId)
+        : [...prev, tagId]
+    );
+  };
+
+  useEffect(() => {
+    onTagsChange(selectedTags);
+  }, [selectedTags, onTagsChange]);
+
+  if (loading) return <p>Loading tags...</p>;
+  if (error) return <p>Error loading tags: {error.message}</p>;
+
+  return (
+    <div>
+      {data.allTags.map((tag: Tag) => (
+        <button
+          key={tag.id}
+          onClick={() => handleTagToggle(parseInt(tag.id))}
+          className={`m-1 p-1 border rounded ${selectedTags.includes(parseInt(tag.id)) ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        >
+          {tag.name}
+        </button>
+      ))}
+    </div>
+  );
+};
+
 const Upload: React.FC = () => {
   const [title, setTitle] = useState('');
-  const [genre, setGenre] = useState('');
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [composer, setComposer] = useState('');
   const [player, setPlayer] = useState('');
   const [isPublic, setIsPublic] = useState(true);
@@ -64,6 +115,10 @@ const Upload: React.FC = () => {
   const handleYoutubeUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setYoutubeUrl(e.target.value);
     setAudioFile(null);  // Clear audio file when YouTube URL is entered
+  };
+
+  const handleTagsChange = (tagIds: number[]) => {
+    setSelectedTagIds(tagIds.map(id => parseInt(id.toString())));
   };
 
   const initSSEConnection = (transcriptionId: string) => {
@@ -148,7 +203,7 @@ const Upload: React.FC = () => {
           audioFileId,
           youtubeUrl: youtubeUrl || null,
           title,
-          genre,
+          tagIds: selectedTagIds.map(id => parseInt(id.toString())), // Ensure all IDs are integers
           composer,
           player,
           isPublic,
@@ -170,7 +225,7 @@ const Upload: React.FC = () => {
 
       // Clear form
       setTitle('');
-      setGenre('');
+      setSelectedTagIds([]);
       setComposer('');
       setPlayer('');
       setIsPublic(true);
@@ -220,13 +275,9 @@ const Upload: React.FC = () => {
             className="border p-2 mb-2 w-full rounded"
             disabled={!!audioFile}
           />
-          <input
-            type="text"
-            placeholder="Genre"
-            value={genre}
-            onChange={(e) => setGenre(e.target.value)}
-            className="border p-2 mb-2 w-full rounded"
-          />
+          <div className="mb-2">
+            <TagSelection onTagsChange={handleTagsChange} />
+          </div>
           <input
             type="text"
             placeholder="Composer"
