@@ -19,3 +19,21 @@ export const SEARCH_TRANSCRIPTIONS = gql`
     }
   }
 `;
+
+export const GET_TITLE_SUGGESTIONS = gql`
+  query GetTitleSuggestions($prefix: String!) {
+    getTitleSuggestions(prefix: $prefix)
+  }
+`;
+
+export const GET_COMPOSER_SUGGESTIONS = gql`
+  query GetComposerSuggestions($prefix: String!) {
+    getComposerSuggestions(prefix: $prefix)
+  }
+`;
+
+export const GET_PLAYER_SUGGESTIONS = gql`
+  query GetPlayerSuggestions($prefix: String!) {
+    getPlayerSuggestions(prefix: $prefix)
+  }
+`;

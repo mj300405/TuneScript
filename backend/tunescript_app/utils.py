@@ -7,6 +7,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.db.models import Q
 
 
 def convert_midi_to_pdf(midi_data, pdf_file_path):
@@ -59,3 +60,13 @@ def send_password_reset_email(email, reset_url):
     send_mail(
         subject, message, settings.DEFAULT_FROM_EMAIL, [email], fail_silently=False
     )
+
+def get_suggestions(model, field, prefix, limit=10):
+    query = Q(**{f"{field}__istartswith": prefix})
+    suggestions = (
+        model.objects.filter(query)
+        .values_list(field, flat=True)
+        .distinct()
+        .order_by(field)[:limit]
+    )
+    return list(suggestions)

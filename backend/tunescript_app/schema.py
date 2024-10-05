@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Avg, Count, Q, Sum
 
 from .models import Profile, Rating, Tag, Transcription, UserPlayHistory
-from .mutations import Mutation  # Import the Mutation class from mutations.py
+from .mutations import Mutation
 from .types import (
     ProfileType,
     TagType,
@@ -14,6 +14,7 @@ from .types import (
     UserStatisticsType,
     UserType,
 )
+from .utils import get_suggestions
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +57,18 @@ class Query(graphene.ObjectType):
     )
     user_favorites = graphene.List(TranscriptionType)
     all_tags = graphene.List(TagType)
+    get_title_suggestions = graphene.List(graphene.String, prefix=graphene.String(required=True))
+    get_composer_suggestions = graphene.List(graphene.String, prefix=graphene.String(required=True))
+    get_player_suggestions = graphene.List(graphene.String, prefix=graphene.String(required=True))
+
+    def resolve_get_title_suggestions(self, info, prefix):
+        return get_suggestions(Transcription, 'title', prefix)
+
+    def resolve_get_composer_suggestions(self, info, prefix):
+        return get_suggestions(Transcription, 'composer', prefix)
+
+    def resolve_get_player_suggestions(self, info, prefix):
+        return get_suggestions(Transcription, 'player', prefix)
 
     def resolve_all_tags(self, info):
         return Tag.objects.all()
