@@ -19,8 +19,6 @@ from .models import (
     SheetMusic,
     Tag,
     Transcription,
-    TranscriptionTag,
-    UserPlayHistory,
 )
 
 logger = logging.getLogger(__name__)
@@ -114,11 +112,6 @@ class TagType(DjangoObjectType):
         model = Tag
 
 
-class TranscriptionTagType(DjangoObjectType):
-    class Meta:
-        model = TranscriptionTag
-
-
 class UserStatisticsType(graphene.ObjectType):
     total_transcriptions = graphene.Int()
     average_rating = graphene.Float()
@@ -132,7 +125,7 @@ class TranscriptionType(DjangoObjectType):
             "id",
             "title",
             "composer",
-            "genre",
+            "tags",
             "player",
             "public",
             "created_at",
@@ -144,7 +137,7 @@ class TranscriptionType(DjangoObjectType):
 
     visibility = graphene.String()
     user_rating = graphene.Int()
-    genre = graphene.String()
+    tags = graphene.List(TagType)
     player = graphene.String()
     status = graphene.String()
     midi_file = graphene.Field(MIDIFileType)
@@ -181,9 +174,6 @@ class TranscriptionType(DjangoObjectType):
             return rating.rating if rating else None
         return None
 
-    def resolve_genre(self, info):
-        return self.genre
-
     def resolve_player(self, info):
         return self.player
 
@@ -204,6 +194,9 @@ class TranscriptionType(DjangoObjectType):
 
     def resolve_rating_set(self, info):
         return self.rating_set.all()
+    
+    def resolve_tags(self, info):
+        return self.tags.all()
 
 
 class RatingType(DjangoObjectType):

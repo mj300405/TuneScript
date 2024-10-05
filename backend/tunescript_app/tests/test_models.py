@@ -15,7 +15,6 @@ from .factories import (
     SheetMusicFactory,
     TagFactory,
     TranscriptionFactory,
-    TranscriptionTagFactory,
     UserFactory,
     UserPlayHistoryFactory,
 )
@@ -90,6 +89,15 @@ class TestTranscriptionModel:
         assert transcription.user
         assert transcription.title
         assert transcription.status in ["PENDING", "COMPLETED", "FAILED"]
+        assert transcription.tags.count() > 0  # Check that at least one tag is created
+
+    def test_transcription_with_specific_tags(self):
+        tag1 = TagFactory(name="Jazz")
+        tag2 = TagFactory(name="Piano")
+        transcription = TranscriptionFactory(tags=(tag1, tag2))
+        assert transcription.tags.count() == 2
+        assert "Jazz" in transcription.tags.values_list('name', flat=True)
+        assert "Piano" in transcription.tags.values_list('name', flat=True)
 
     def test_update_rating(self):
         transcription = TranscriptionFactory()
@@ -199,14 +207,6 @@ class TestTagModel:
     def test_tag_str(self):
         tag = TagFactory(name="Jazz")
         assert str(tag) == "Jazz"
-
-
-@pytest.mark.django_db
-class TestTranscriptionTagModel:
-    def test_transcription_tag_creation(self):
-        transcription_tag = TranscriptionTagFactory()
-        assert transcription_tag.transcription
-        assert transcription_tag.tag
 
 
 @pytest.mark.django_db

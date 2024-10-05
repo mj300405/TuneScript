@@ -3,13 +3,11 @@ import logging
 import graphene
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db import models
 from django.db.models import Avg, Count, Q, Sum
 
-from .models import AudioFile, Profile, Rating, Tag, Transcription, UserPlayHistory
+from .models import Profile, Rating, Tag, Transcription, UserPlayHistory
 from .mutations import Mutation  # Import the Mutation class from mutations.py
 from .types import (
-    AudioFileType,
     ProfileType,
     TagType,
     TranscriptionType,
@@ -27,7 +25,7 @@ class Query(graphene.ObjectType):
         TranscriptionType,
         title=graphene.String(),
         composer=graphene.String(),
-        genre=graphene.String(),
+        tag=graphene.String(),
         player=graphene.String(),
         min_rating=graphene.Float(),
         visibility=graphene.String(),
@@ -57,6 +55,10 @@ class Query(graphene.ObjectType):
         TranscriptionType, token=graphene.UUID(required=True)
     )
     user_favorites = graphene.List(TranscriptionType)
+    all_tags = graphene.List(TagType)
+
+    def resolve_all_tags(self, info):
+        return Tag.objects.all()
 
     def resolve_user_favorites(self, info):
         user = info.context.user
@@ -113,18 +115,18 @@ class Query(graphene.ObjectType):
         if not user.is_authenticated:
             return Transcription.objects.filter(public=True).order_by("?")[:5]
 
-        # Get the user's favorite genres based on play history
-        favorite_genres = (
+        # Get the user's favorite tags based on play history
+        favorite_tags = (
             UserPlayHistory.objects.filter(user=user)
-            .values("transcription__genre")
+            .values("transcription__tags")
             .annotate(count=Count("id"))
             .order_by("-count")
-            .values_list("transcription__genre", flat=True)
+            .values_list("transcription__tags__name", flat=True)
         )
 
-        if favorite_genres:
+        if favorite_tags:
             recommended = (
-                Transcription.objects.filter(public=True, genre__in=favorite_genres[:3])
+                Transcription.objects.filter(public=True, tags__name__in=favorite_tags[:3])
                 .exclude(userplayhistory__user=user)
                 .order_by("?")[:5]
             )
@@ -232,7 +234,7 @@ class Query(graphene.ObjectType):
         info,
         title=None,
         composer=None,
-        genre=None,
+        tag=None,
         player=None,
         min_rating=None,
         visibility=None,
@@ -244,8 +246,8 @@ class Query(graphene.ObjectType):
             qs = qs.filter(title__icontains=title)
         if composer:
             qs = qs.filter(composer__icontains=composer)
-        if genre:
-            qs = qs.filter(genre__icontains=genre)
+        if tag:
+            qs = qs.filter(tags__name__icontains=tag)
         if player:
             qs = qs.filter(player__icontains=player)
         if min_rating is not None:

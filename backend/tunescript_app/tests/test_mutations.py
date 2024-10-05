@@ -1,8 +1,7 @@
 import pytest
 from django.contrib.auth import get_user_model
 from graphene.test import Client
-from graphql_jwt.testcases import JSONWebTokenTestCase
-from graphql_relay import from_global_id, to_global_id
+from graphql_relay import to_global_id
 
 from tunescript_app.models import Favorite
 from tunescript_app.schema import schema
@@ -11,6 +10,7 @@ from .factories import (
     AudioFileFactory,
     FavoriteFactory,
     ProfileFactory,
+    TagFactory,
     TranscriptionFactory,
     UserFactory,
 )
@@ -73,13 +73,18 @@ class TestMutations:
 
     def test_create_transcription_mutation(self, graphql_client, user):
         audio_file = AudioFileFactory(user=user)
+        tag1 = TagFactory(name="Jazz")
+        tag2 = TagFactory(name="Piano")
         mutation = """
-        mutation($audioFileId: Int!, $title: String!, $isPublic: Boolean!) {
-            createTranscription(audioFileId: $audioFileId, title: $title, isPublic: $isPublic) {
+        mutation($audioFileId: Int!, $title: String!, $isPublic: Boolean!, $tagIds: [Int!]) {
+            createTranscription(audioFileId: $audioFileId, title: $title, isPublic: $isPublic, tagIds: $tagIds) {
                 transcription {
                     id
                     title
                     status
+                    tags {
+                        name
+                    }
                 }
             }
         }
@@ -88,17 +93,45 @@ class TestMutations:
             "audioFileId": audio_file.id,
             "title": "Test Transcription",
             "isPublic": True,
+            "tagIds": [tag1.id, tag2.id],
         }
         response = self.execute_mutation(graphql_client, mutation, variables)
-        assert "errors" not in response
-        assert (
-            response["data"]["createTranscription"]["transcription"]["title"]
-            == "Test Transcription"
-        )
-        assert (
-            response["data"]["createTranscription"]["transcription"]["status"]
-            == "PENDING"
-        )
+        assert "errors" not in response, f"Unexpected errors: {response.get('errors')}"
+        assert response["data"]["createTranscription"]["transcription"]["title"] == "Test Transcription"
+        assert response["data"]["createTranscription"]["transcription"]["status"] == "PENDING"
+        assert len(response["data"]["createTranscription"]["transcription"]["tags"]) == 2
+        tag_names = [tag["name"] for tag in response["data"]["createTranscription"]["transcription"]["tags"]]
+        assert "Jazz" in tag_names
+        assert "Piano" in tag_names
+
+    def test_update_transcription_mutation(self, graphql_client, user):
+        transcription = TranscriptionFactory(user=user)
+        new_tag = TagFactory(name="Classical")
+        mutation = """
+        mutation($id: Int!, $title: String!, $isPublic: Boolean!, $tagIds: [Int!]) {
+            updateTranscription(id: $id, title: $title, isPublic: $isPublic, tagIds: $tagIds) {
+                transcription {
+                    title
+                    public
+                    tags {
+                        name
+                    }
+                }
+            }
+        }
+        """
+        variables = {
+            "id": transcription.id,
+            "title": "Updated Title",
+            "isPublic": False,
+            "tagIds": [new_tag.id],
+        }
+        response = self.execute_mutation(graphql_client, mutation, variables)
+        assert "errors" not in response, f"Unexpected errors: {response.get('errors')}"
+        assert response["data"]["updateTranscription"]["transcription"]["title"] == "Updated Title"
+        assert response["data"]["updateTranscription"]["transcription"]["public"] is False
+        assert len(response["data"]["updateTranscription"]["transcription"]["tags"]) == 1
+        assert response["data"]["updateTranscription"]["transcription"]["tags"][0]["name"] == "Classical"
 
     def test_deactivate_premium_mutation(self, graphql_client, profile):
         profile.activate_premium()
@@ -205,32 +238,6 @@ class TestMutations:
         assert response["data"]["updateProfile"]["profile"]["bio"] == "New bio"
         assert response["data"]["updateProfile"]["profile"]["public"] is True
 
-    def test_update_transcription_mutation(self, graphql_client, user):
-        transcription = TranscriptionFactory(user=user)
-        mutation = """
-        mutation($id: Int!, $title: String!, $isPublic: Boolean!) {
-            updateTranscription(id: $id, title: $title, isPublic: $isPublic) {
-                transcription {
-                    title
-                    public
-                }
-            }
-        }
-        """
-        variables = {
-            "id": transcription.id,
-            "title": "Updated Title",
-            "isPublic": False,
-        }
-        response = self.execute_mutation(graphql_client, mutation, variables)
-        assert "errors" not in response
-        assert (
-            response["data"]["updateTranscription"]["transcription"]["title"]
-            == "Updated Title"
-        )
-        assert (
-            response["data"]["updateTranscription"]["transcription"]["public"] is False
-        )
 
     def test_add_to_favorites_mutation(self, graphql_client, user):
         transcription = TranscriptionFactory()

@@ -84,7 +84,7 @@ class Transcription(models.Model):
 
     audio_file = models.ForeignKey("AudioFile", on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    genre = models.CharField(max_length=100, blank=True)
+    tags = models.ManyToManyField("Tag", related_name="transcriptions", blank=True)
     title = models.CharField(max_length=200)
     composer = models.CharField(max_length=200, blank=True)
     player = models.CharField(max_length=200, blank=True)
@@ -194,22 +194,10 @@ class SheetMusic(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.name
-
-
-class TranscriptionTag(models.Model):
-    transcription = models.ForeignKey(
-        Transcription, related_name="transcription_tags", on_delete=models.CASCADE
-    )
-    tag = models.ForeignKey(
-        Tag, related_name="transcription_tags", on_delete=models.CASCADE
-    )
-
-    class Meta:
-        unique_together = ("transcription", "tag")
 
 
 class UserPlayHistory(models.Model):
