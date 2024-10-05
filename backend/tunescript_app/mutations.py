@@ -518,9 +518,6 @@ class ShareTranscription(graphene.Mutation):
         except Transcription.DoesNotExist:
             raise Exception("Transcription not found")
 
-        if transcription.user != user:
-            raise Exception("You don't have permission to share this transcription")
-
         share_token = transcription.generate_share_token()
         share_url = f"http://localhost:3000/transcription/{share_token}"
         return ShareTranscription(share_url=share_url)
