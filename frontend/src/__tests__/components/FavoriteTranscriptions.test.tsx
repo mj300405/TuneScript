@@ -20,7 +20,7 @@ const mockFavoriteTranscriptions = [
     id: '1',
     title: 'Test Transcription 1',
     composer: 'Composer 1',
-    genre: 'Genre 1',
+    tags: [{ id: '1', name: 'Jazz' }, { id: '2', name: 'Piano' }],
     player: 'Player 1',
     visibility: 'public',
     status: 'COMPLETED',
@@ -31,7 +31,7 @@ const mockFavoriteTranscriptions = [
     id: '2',
     title: 'Test Transcription 2',
     composer: 'Composer 2',
-    genre: 'Genre 2',
+    tags: [{ id: '3', name: 'Classical' }, { id: '4', name: 'Violin' }],
     player: 'Player 2',
     visibility: 'private',
     status: 'PENDING',
@@ -83,7 +83,10 @@ describe('FavoriteTranscriptions Component', () => {
     expect(screen.getByText('Test Transcription 1')).toBeInTheDocument();
     expect(screen.getByText('Test Transcription 2')).toBeInTheDocument();
     expect(screen.getByText('Composer: Composer 1')).toBeInTheDocument();
-    expect(screen.getByText('Genre: Genre 2')).toBeInTheDocument();
+    expect(screen.getByText('Jazz')).toBeInTheDocument();
+    expect(screen.getByText('Piano')).toBeInTheDocument();
+    expect(screen.getByText('Classical')).toBeInTheDocument();
+    expect(screen.getByText('Violin')).toBeInTheDocument();
   });
 
   it('opens transcription details when "View Details" is clicked', async () => {

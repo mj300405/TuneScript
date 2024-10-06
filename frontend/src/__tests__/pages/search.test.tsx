@@ -28,7 +28,7 @@ const mockTranscriptions = [
     id: '1',
     title: 'Moonlight Sonata',
     composer: 'Beethoven',
-    genre: 'Classical',
+    tags: [{ id: '1', name: 'Classical' }, { id: '2', name: 'Piano' }],
     player: 'Piano',
     visibility: 'public',
     avgRating: 4.5,
@@ -39,7 +39,7 @@ const mockTranscriptions = [
     id: '2',
     title: 'Für Elise',
     composer: 'Beethoven',
-    genre: 'Classical',
+    tags: [{ id: '1', name: 'Classical' }, { id: '2', name: 'Piano' }],
     player: 'Piano',
     visibility: 'public',
     avgRating: 4.2,
@@ -61,7 +61,7 @@ describe('Search Component', () => {
 
     expect(screen.getByPlaceholderText('Title')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Composer')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Genre')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Tag')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Player')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Minimum Rating')).toBeInTheDocument();
     expect(screen.getByRole('combobox')).toBeInTheDocument();
@@ -94,6 +94,8 @@ describe('Search Component', () => {
     expect(screen.getByText('Moonlight Sonata')).toBeInTheDocument();
     expect(screen.getByText('Für Elise')).toBeInTheDocument();
     expect(screen.getAllByText('Composer: Beethoven')).toHaveLength(2);
+    expect(screen.getAllByText('Classical')).toHaveLength(2);
+    expect(screen.getAllByText('Piano')).toHaveLength(2);
     expect(screen.getByText('Average Rating: 4.5')).toBeInTheDocument();
     expect(screen.getByText('Your Rating: 5.0')).toBeInTheDocument();
     expect(screen.getByText('Your Rating: Not rated')).toBeInTheDocument();
@@ -107,14 +109,14 @@ describe('Search Component', () => {
 
     fireEvent.change(screen.getByPlaceholderText('Title'), { target: { value: 'Moonlight' } });
     fireEvent.change(screen.getByPlaceholderText('Composer'), { target: { value: 'Beethoven' } });
-    fireEvent.change(screen.getByPlaceholderText('Genre'), { target: { value: 'Classical' } });
+    fireEvent.change(screen.getByPlaceholderText('Tag'), { target: { value: 'Classical' } });
     fireEvent.change(screen.getByPlaceholderText('Player'), { target: { value: 'Piano' } });
     fireEvent.change(screen.getByPlaceholderText('Minimum Rating'), { target: { value: '4' } });
     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'public' } });
 
     expect(screen.getByPlaceholderText('Title')).toHaveValue('Moonlight');
     expect(screen.getByPlaceholderText('Composer')).toHaveValue('Beethoven');
-    expect(screen.getByPlaceholderText('Genre')).toHaveValue('Classical');
+    expect(screen.getByPlaceholderText('Tag')).toHaveValue('Classical');
     expect(screen.getByPlaceholderText('Player')).toHaveValue('Piano');
     expect(screen.getByPlaceholderText('Minimum Rating')).toHaveValue(4);
     expect(screen.getByRole('combobox')).toHaveValue('public');
