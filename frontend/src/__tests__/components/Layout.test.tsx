@@ -9,6 +9,13 @@ jest.mock('../../components/Header', () => {
   };
 });
 
+// Mock the ChatbotWidget component
+jest.mock('../../components/ChatbotWidget', () => {
+  return function MockChatbotWidget() {
+    return <div data-testid="mock-chatbot-widget">Mock Chatbot Widget</div>;
+  };
+});
+
 // Mock the Next.js Head component
 jest.mock('next/head', () => {
   return {
@@ -51,6 +58,11 @@ describe('Layout Component', () => {
   it('renders the Header component', () => {
     render(<Layout>Test Content</Layout>);
     expect(screen.getByTestId('mock-header')).toBeInTheDocument();
+  });
+
+  it('renders the ChatbotWidget component', () => {
+    render(<Layout>Test Content</Layout>);
+    expect(screen.getByTestId('mock-chatbot-widget')).toBeInTheDocument();
   });
 
   it('renders the children content', () => {

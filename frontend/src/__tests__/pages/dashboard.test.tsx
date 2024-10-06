@@ -38,8 +38,8 @@ const mockDashboardData = {
     { id: '4', title: 'Recent 2', composer: 'Composer 4', createdAt: '2023-08-31T00:00:00Z' },
   ],
   recommendedTranscriptions: [
-    { id: '5', title: 'Recommended 1', composer: 'Composer 5', genre: 'Jazz' },
-    { id: '6', title: 'Recommended 2', composer: 'Composer 6', genre: 'Classical' },
+    { id: '5', title: 'Recommended 1', composer: 'Composer 5', tags: [{ id: '1', name: 'Jazz' }] },
+    { id: '6', title: 'Recommended 2', composer: 'Composer 6', tags: [{ id: '2', name: 'Classical' }] },
   ],
   userStatistics: {
     totalTranscriptions: 10,
@@ -78,7 +78,8 @@ describe('Dashboard', () => {
     expect(screen.getByText('Recent 1 by Composer 3 - 9/1/2023')).toBeInTheDocument();
 
     expect(screen.getByText('Recommended for You')).toBeInTheDocument();
-    expect(screen.getByText('Recommended 1 by Composer 5 - Jazz')).toBeInTheDocument();
+    expect(screen.getByText('Recommended 1 by Composer 5 -')).toBeInTheDocument();
+    expect(screen.getByText('Jazz')).toBeInTheDocument();
 
     expect(screen.getByText('Your Statistics')).toBeInTheDocument();
     expect(screen.getByText('Total Transcriptions: 10')).toBeInTheDocument();

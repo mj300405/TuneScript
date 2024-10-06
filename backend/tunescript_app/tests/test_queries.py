@@ -79,15 +79,19 @@ class TestQueries:
         assert len(response["data"]["profiles"]) == 3  # 2 created + 1 from user fixture
 
     def test_transcriptions_query(self, graphql_client, user):
-        TranscriptionFactory.create_batch(5, public=True)
-        TranscriptionFactory.create_batch(2, public=False, user=user)
+        tag1 = TagFactory(name="Jazz")
+        tag2 = TagFactory(name="Classical")
+        TranscriptionFactory.create_batch(5, public=True, tags=[tag1])
+        TranscriptionFactory.create_batch(2, public=False, user=user, tags=[tag2])
         query = """
         query {
             transcriptions {
                 id
                 title
                 composer
-                genre
+                tags {
+                    name
+                }
                 player
                 public
                 avgRating
@@ -97,16 +101,21 @@ class TestQueries:
         response = self.execute_query(graphql_client, query)
         assert "errors" not in response
         assert len(response["data"]["transcriptions"]) == 7
+        assert any(t["tags"][0]["name"] == "Jazz" for t in response["data"]["transcriptions"])
+        assert any(t["tags"][0]["name"] == "Classical" for t in response["data"]["transcriptions"])
 
     def test_transcription_query(self, graphql_client):
-        transcription = TranscriptionFactory(public=True)
+        tag = TagFactory(name="Rock")
+        transcription = TranscriptionFactory(public=True, tags=[tag])
         query = """
         query($id: ID!) {
             transcription(id: $id) {
                 id
                 title
                 composer
-                genre
+                tags {
+                    name
+                }
                 player
                 public
                 avgRating
@@ -117,6 +126,7 @@ class TestQueries:
         response = self.execute_query(graphql_client, query, variables)
         assert "errors" not in response
         assert response["data"]["transcription"]["title"] == transcription.title
+        assert response["data"]["transcription"]["tags"][0]["name"] == "Rock"
 
     def test_tags_query(self, graphql_client):
         TagFactory.create_batch(5)
@@ -133,10 +143,10 @@ class TestQueries:
         assert len(response["data"]["tags"]) == 5
 
     def test_search_transcriptions_query(self, graphql_client):
-        TranscriptionFactory(title="Jazz Piano", composer="John Doe", public=True)
-        TranscriptionFactory(
-            title="Classical Guitar", composer="Jane Smith", public=True
-        )
+        jazz_tag = TagFactory(name="Jazz")
+        classical_tag = TagFactory(name="Classical")
+        TranscriptionFactory(title="Jazz Piano", composer="John Doe", public=True, tags=[jazz_tag])
+        TranscriptionFactory(title="Classical Guitar", composer="Jane Smith", public=True, tags=[classical_tag])
         query = """
         query($title: String, $composer: String, $isPublic: Boolean) {
             searchTranscriptions(title: $title, composer: $composer, isPublic: $isPublic) {
@@ -144,6 +154,9 @@ class TestQueries:
                 title
                 composer
                 public
+                tags {
+                    name
+                }
             }
         }
         """
@@ -152,6 +165,7 @@ class TestQueries:
         assert "errors" not in response
         assert len(response["data"]["searchTranscriptions"]) == 1
         assert response["data"]["searchTranscriptions"][0]["title"] == "Jazz Piano"
+        assert response["data"]["searchTranscriptions"][0]["tags"][0]["name"] == "Jazz"
 
     def test_me_query(self, graphql_client, user):
         query = """
@@ -230,18 +244,14 @@ class TestQueries:
         assert len(response["data"]["recentTranscriptions"]) == 5
 
     def test_recommended_transcriptions_query(self, graphql_client, user):
-        # Create public transcriptions with different genres
-        jazz_transcriptions = TranscriptionFactory.create_batch(
-            3, public=True, genre="Jazz"
-        )
-        classical_transcriptions = TranscriptionFactory.create_batch(
-            3, public=True, genre="Classical"
-        )
-        rock_transcriptions = TranscriptionFactory.create_batch(
-            3, public=True, genre="Rock"
-        )
+        jazz_tag = TagFactory(name="Jazz")
+        classical_tag = TagFactory(name="Classical")
+        rock_tag = TagFactory(name="Rock")
 
-        # Create user play history with Jazz genre
+        jazz_transcriptions = TranscriptionFactory.create_batch(3, public=True, tags=[jazz_tag])
+        classical_transcriptions = TranscriptionFactory.create_batch(3, public=True, tags=[classical_tag])
+        rock_transcriptions = TranscriptionFactory.create_batch(3, public=True, tags=[rock_tag])
+
         UserPlayHistoryFactory(user=user, transcription=jazz_transcriptions[0])
         UserPlayHistoryFactory(user=user, transcription=jazz_transcriptions[1])
 
@@ -250,13 +260,13 @@ class TestQueries:
             recommendedTranscriptions {
                 id
                 title
-                genre
+                tags {
+                    name
+                }
             }
         }
         """
         response = self.execute_query(graphql_client, query)
-
-        print("Response:", response)  # Debug print
 
         if "errors" in response:
             assert False, f"GraphQL query returned errors: {response['errors']}"
@@ -265,9 +275,8 @@ class TestQueries:
 
         assert len(recommended) > 0, "No recommended transcriptions returned"
 
-        # Check if at least one of the recommended transcriptions has the genre "Jazz"
         assert any(
-            t["genre"] == "Jazz" for t in recommended
+            "Jazz" in [tag["name"] for tag in t["tags"]] for t in recommended
         ), "No Jazz transcriptions in recommendations"
 
     def test_user_statistics_query(self, graphql_client, user):
@@ -349,3 +358,17 @@ class TestQueries:
         ]
         returned_ids = [t["id"] for t in response["data"]["userFavorites"]]
         assert set(returned_ids) == set(favorite_ids)
+
+    def test_all_tags_query(self, graphql_client):
+        TagFactory.create_batch(5)
+        query = """
+        query {
+            allTags {
+                id
+                name
+            }
+        }
+        """
+        response = self.execute_query(graphql_client, query)
+        assert "errors" not in response
+        assert len(response["data"]["allTags"]) == 5

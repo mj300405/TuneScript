@@ -10,4 +10,4 @@ from .models import Rating, Transcription
 @receiver(post_save, sender=Rating)
 def update_transcription_rating(sender, instance, **kwargs):
     transcription = instance.transcription
-    transcription.recalculate_rating()  # Use the method we've already defined
+    transcription.recalculate_rating()

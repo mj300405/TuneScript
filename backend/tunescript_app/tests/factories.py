@@ -10,7 +10,6 @@ from tunescript_app.models import (
     SheetMusic,
     Tag,
     Transcription,
-    TranscriptionTag,
     UserPlayHistory,
 )
 
@@ -44,18 +43,35 @@ class AudioFileFactory(factory.django.DjangoModelFactory):
     audio_file = factory.django.FileField(filename="test_audio.mp3")
 
 
+class TagFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Tag
+
+    name = factory.Sequence(lambda n: f"tag{n}")
+
+
 class TranscriptionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Transcription
 
     audio_file = factory.SubFactory(AudioFileFactory)
     user = factory.SelfAttribute("audio_file.user")
-    genre = factory.Faker("word")
     title = factory.Faker("sentence")
     composer = factory.Faker("name")
     player = factory.Faker("name")
     status = "COMPLETED"
     public = factory.Faker("boolean")
+
+    @factory.post_generation
+    def tags(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for tag in extracted:
+                self.tags.add(tag)
+        else:
+            self.tags.add(TagFactory())
 
 
 class RatingFactory(factory.django.DjangoModelFactory):
@@ -91,21 +107,6 @@ class SheetMusicFactory(factory.django.DjangoModelFactory):
     pdf_file = factory.django.FileField(filename="test_sheet.pdf")
 
 
-class TagFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Tag
-
-    name = factory.Sequence(lambda n: f"tag{n}")
-
-
-class TranscriptionTagFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = TranscriptionTag
-
-    transcription = factory.SubFactory(TranscriptionFactory)
-    tag = factory.SubFactory(TagFactory)
-
-
 class UserPlayHistoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = UserPlayHistory
@@ -114,11 +115,3 @@ class UserPlayHistoryFactory(factory.django.DjangoModelFactory):
     transcription = factory.SubFactory(TranscriptionFactory)
     play_time = factory.Faker("random_int", min=1, max=3600)
     play_count = factory.Faker("random_int", min=1, max=100)
-
-
-class FavoriteFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Favorite
-
-    user = factory.SubFactory(UserFactory)
-    transcription = factory.SubFactory(TranscriptionFactory)

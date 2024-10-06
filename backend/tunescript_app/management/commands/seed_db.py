@@ -5,7 +5,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files import File
 from django.core.management.base import BaseCommand
-from django.utils import timezone
 
 from tunescript_app.models import (
     AudioFile,
@@ -71,19 +70,14 @@ class Command(BaseCommand):
 
         # Create tags
         tags = [
-            "Classical",
-            "Jazz",
-            "Rock",
-            "Pop",
-            "Electronic",
-            "Blues",
-            "Country",
-            "Hip Hop",
-            "R&B",
-            "Folk",
+            "Classical", "Jazz", "Rock", "Pop", "Electronic", "Blues", "Country",
+            "Hip Hop", "R&B", "Folk", "Reggae", "Metal", "Punk", "Soul", "Funk", 
+            "Disco", "Techno", "House", "Dance", "Trap", "Dubstep", "Chillout",
         ]
+        created_tags = []
         for tag_name in tags:
-            Tag.objects.create(name=tag_name)
+            tag, _ = Tag.objects.get_or_create(name=tag_name)
+            created_tags.append(tag)
 
         self.stdout.write(self.style.SUCCESS(f'Created tags: {", ".join(tags)}'))
 
@@ -91,7 +85,6 @@ class Command(BaseCommand):
         transcription_data = {
             "title": "Bach Composition",
             "composer": "Johann Sebastian Bach",
-            "genre": "Classical",
             "player": "Unknown",
             "audio_file": "audio_files/cut_bach.mp3",
             "midi_file": "midi_files/Bach.mid",
@@ -113,11 +106,13 @@ class Command(BaseCommand):
             user=user,
             title=transcription_data["title"],
             composer=transcription_data["composer"],
-            genre=transcription_data["genre"],
             player=transcription_data["player"],
             public=random.choice([True, False]),
             status="COMPLETED",
         )
+
+        # Add tags to the transcription
+        transcription.tags.add(*random.sample(created_tags, 3))  # Add 3 random tags
 
         # Create MIDI and Sheet Music files
         midi_path = os.path.join(settings.MEDIA_ROOT, transcription_data["midi_file"])
@@ -165,9 +160,7 @@ class Command(BaseCommand):
         admin_user.profile.activate_premium()
         self.stdout.write(self.style.SUCCESS(f"Activated premium for admin user"))
 
-        for user in random.sample(
-            users[1:], 1
-        ):  # Activate for one more user besides admin
+        for user in random.sample(users[1:], 1):  # Activate for one more user besides admin
             user.profile.activate_premium()
             self.stdout.write(
                 self.style.SUCCESS(f"Activated premium for user: {user.username}")

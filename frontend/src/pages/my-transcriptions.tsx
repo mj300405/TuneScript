@@ -9,7 +9,10 @@ export const GET_MY_TRANSCRIPTIONS = gql`
       id
       title
       composer
-      genre
+      tags {
+        id
+        name
+      }
       player
       visibility
       status
@@ -19,11 +22,16 @@ export const GET_MY_TRANSCRIPTIONS = gql`
   }
 `;
 
+interface Tag {
+  id: string;
+  name: string;
+}
+
 interface Transcription {
   id: string;
   title: string;
   composer: string;
-  genre: string;
+  tags: Tag[];
   player: string;
   visibility: string;
   status: string;
@@ -51,7 +59,13 @@ const MyTranscriptions = () => {
             <div key={transcription.id} className="border p-4 rounded shadow">
               <h2 className="text-xl font-bold">{transcription.title}</h2>
               <p>Composer: {transcription.composer}</p>
-              <p>Genre: {transcription.genre}</p>
+              <p>Tags: 
+                {transcription.tags.map(tag => (
+                  <span key={tag.id} className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                    {tag.name}
+                  </span>
+                ))}
+              </p>
               <p>Player: {transcription.player}</p>
               <p>Visibility: {transcription.visibility}</p>
               <p>Status: {transcription.status}</p>

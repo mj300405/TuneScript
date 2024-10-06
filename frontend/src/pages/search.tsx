@@ -4,12 +4,15 @@ import Layout from '../components/Layout';
 import TranscriptionDetails from '../components/TranscriptionDetails';
 
 const GET_TRANSCRIPTIONS = gql`
-  query GetTranscriptions($title: String, $composer: String, $genre: String, $player: String, $minRating: Float, $visibility: String) {
-    transcriptions(title: $title, composer: $composer, genre: $genre, player: $player, minRating: $minRating, visibility: $visibility) {
+  query GetTranscriptions($title: String, $composer: String, $tag: String, $player: String, $minRating: Float, $visibility: String) {
+    transcriptions(title: $title, composer: $composer, tag: $tag, player: $player, minRating: $minRating, visibility: $visibility) {
       id
       title
       composer
-      genre
+      tags {
+        id
+        name
+      }
       player
       visibility
       avgRating
@@ -19,11 +22,16 @@ const GET_TRANSCRIPTIONS = gql`
   }
 `;
 
+interface Tag {
+  id: string;
+  name: string;
+}
+
 interface Transcription {
   id: string;
   title: string;
   composer: string;
-  genre: string;
+  tags: Tag[];
   player: string;
   visibility: string;
   avgRating: number;
@@ -34,19 +42,19 @@ interface Transcription {
 const Search = () => {
   const [title, setTitle] = useState('');
   const [composer, setComposer] = useState('');
-  const [genre, setGenre] = useState('');
+  const [tag, setTag] = useState('');
   const [player, setPlayer] = useState('');
   const [minRating, setMinRating] = useState<number | null>(null);
   const [visibility, setVisibility] = useState('');
   const [selectedTranscription, setSelectedTranscription] = useState<string | null>(null);
 
   const { data, loading, error, refetch } = useQuery(GET_TRANSCRIPTIONS, {
-    variables: { title, composer, genre, player, minRating, visibility },
+    variables: { title, composer, tag, player, minRating, visibility },
     fetchPolicy: 'network-only',
   });
 
   const handleSearch = () => {
-    refetch({ title, composer, genre, player, minRating, visibility });
+    refetch({ title, composer, tag, player, minRating, visibility });
   };
 
   const handleDeleteTranscription = () => {
@@ -74,9 +82,9 @@ const Search = () => {
           />
           <input
             type="text"
-            placeholder="Genre"
-            value={genre}
-            onChange={(e) => setGenre(e.target.value)}
+            placeholder="Tag"
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
             className="border p-2 rounded"
           />
           <input
@@ -106,6 +114,12 @@ const Search = () => {
             <option value="private">Private</option>
           </select>
         </div>
+        <button
+          onClick={handleSearch}
+          className="w-full bg-blue-500 text-white p-2 rounded mb-4"
+        >
+          Search
+        </button>
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-500">{error.message}</p>}
         {data && (
@@ -114,7 +128,13 @@ const Search = () => {
               <div key={transcription.id} className="border p-4 rounded shadow">
                 <h2 className="text-xl font-bold">{transcription.title}</h2>
                 <p>Composer: {transcription.composer}</p>
-                <p>Genre: {transcription.genre}</p>
+                <p>Tags: 
+                  {transcription.tags.map(tag => (
+                    <span key={tag.id} className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                      {tag.name}
+                    </span>
+                  ))}
+                </p>
                 <p>Player: {transcription.player}</p>
                 <p>Visibility: {transcription.visibility}</p>
                 <p>Average Rating: {transcription.avgRating ? transcription.avgRating.toFixed(1) : 'No ratings'}</p>

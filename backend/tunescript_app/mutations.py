@@ -2,14 +2,12 @@ import logging
 
 import graphene
 import graphql_jwt
-from django.conf import settings
 from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.tokens import default_token_generator
 from django.core.files.storage import default_storage
 from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
 from django.core.mail import send_mail
-from django.db import IntegrityError, models, transaction
-from django.db.models import Avg, F
+from django.db import IntegrityError, transaction
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from graphene_file_upload.scalars import Upload
@@ -17,13 +15,12 @@ from graphql_jwt import JSONWebTokenMutation
 from graphql_jwt.decorators import login_required
 from graphql_relay import from_global_id
 
-from .models import AudioFile, Favorite, Profile, Rating, Transcription, UserPlayHistory
-from .tasks import download_youtube_audio, process_transcription
+from .models import AudioFile, Favorite, Profile, Rating, Transcription, Tag
+from .tasks import process_transcription
 from .types import (
     AudioFileType,
     FavoriteType,
     ProfileType,
-    RatingType,
     TranscriptionType,
     UserType,
 )
@@ -91,7 +88,7 @@ class CreateTranscription(graphene.Mutation):
         audio_file_id = graphene.Int()
         youtube_url = graphene.String()
         title = graphene.String(required=True)
-        genre = graphene.String()
+        tag_ids = graphene.List(graphene.Int)  # Change to Int
         composer = graphene.String()
         player = graphene.String()
         is_public = graphene.Boolean(required=True)
@@ -103,7 +100,7 @@ class CreateTranscription(graphene.Mutation):
         self,
         info,
         title,
-        genre=None,
+        tag_ids=None,
         composer=None,
         player=None,
         is_public=False,
@@ -137,12 +134,14 @@ class CreateTranscription(graphene.Mutation):
             audio_file=audio_file,
             user=user,
             title=title,
-            genre=genre or "",
             composer=composer or "",
             player=player or "",
             public=is_public,
             status="PENDING",
         )
+
+        if tag_ids:
+            transcription.tags.set(Tag.objects.filter(id__in=tag_ids))
 
         if youtube_url:
             # For YouTube URLs, we'll download the audio first
@@ -157,6 +156,45 @@ class CreateTranscription(graphene.Mutation):
 
         return CreateTranscription(transcription=transcription)
 
+class UpdateTranscription(graphene.Mutation):
+    transcription = graphene.Field(TranscriptionType)
+
+    class Arguments:
+        id = graphene.Int(required=True)
+        title = graphene.String()
+        tag_ids = graphene.List(graphene.Int)  # Change to Int
+        composer = graphene.String()
+        player = graphene.String()
+        is_public = graphene.Boolean()
+
+    def mutate(
+        self,
+        info,
+        id,
+        title=None,
+        tag_ids=None,
+        composer=None,
+        player=None,
+        is_public=None,
+    ):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception("Not logged in!")
+
+        transcription = Transcription.objects.get(pk=id, user=user)
+        if title:
+            transcription.title = title
+        if tag_ids is not None:
+            transcription.tags.set(Tag.objects.filter(id__in=tag_ids))
+        if composer:
+            transcription.composer = composer
+        if player:
+            transcription.player = player
+        if is_public is not None:
+            transcription.public = is_public
+        transcription.save()
+
+        return UpdateTranscription(transcription=transcription)
 
 class PasswordReset(graphene.Mutation):
     class Arguments:
@@ -179,45 +217,6 @@ class PasswordReset(graphene.Mutation):
         return PasswordReset(success=False, message="Email not found")
 
 
-class UpdateTranscription(graphene.Mutation):
-    transcription = graphene.Field(TranscriptionType)
-
-    class Arguments:
-        id = graphene.Int(required=True)
-        title = graphene.String()
-        genre = graphene.String()
-        composer = graphene.String()
-        player = graphene.String()
-        is_public = graphene.Boolean()
-
-    def mutate(
-        self,
-        info,
-        id,
-        title=None,
-        genre=None,
-        composer=None,
-        player=None,
-        is_public=None,
-    ):
-        user = info.context.user
-        if user.is_anonymous:
-            raise Exception("Not logged in!")
-
-        transcription = Transcription.objects.get(pk=id, user=user)
-        if title:
-            transcription.title = title
-        if genre:
-            transcription.genre = genre
-        if composer:
-            transcription.composer = composer
-        if player:
-            transcription.player = player
-        if is_public is not None:
-            transcription.public = is_public
-        transcription.save()
-
-        return UpdateTranscription(transcription=transcription)
 
 
 class DeleteTranscription(graphene.Mutation):
@@ -518,9 +517,6 @@ class ShareTranscription(graphene.Mutation):
             transcription = Transcription.objects.get(pk=decoded_id)
         except Transcription.DoesNotExist:
             raise Exception("Transcription not found")
-
-        if transcription.user != user:
-            raise Exception("You don't have permission to share this transcription")
 
         share_token = transcription.generate_share_token()
         share_url = f"http://localhost:3000/transcription/{share_token}"

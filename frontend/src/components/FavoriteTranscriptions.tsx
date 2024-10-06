@@ -9,7 +9,10 @@ export const GET_FAVORITE_TRANSCRIPTIONS = gql`
       id
       title
       composer
-      genre
+      tags {
+        id
+        name
+      }
       player
       visibility
       status
@@ -18,6 +21,23 @@ export const GET_FAVORITE_TRANSCRIPTIONS = gql`
     }
   }
 `;
+
+interface Tag {
+  id: string;
+  name: string;
+}
+
+interface Transcription {
+  id: string;
+  title: string;
+  composer: string;
+  tags: Tag[];
+  player: string;
+  visibility: string;
+  status: string;
+  createdAt: string;
+  avgRating: number;
+}
 
 interface FavoriteTranscriptionsProps {
   TranscriptionDetailsComponent?: React.ComponentType<any>;
@@ -42,18 +62,24 @@ const FavoriteTranscriptions: React.FC<FavoriteTranscriptionsProps> = ({
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  if (!data || !data.userFavorites) return null; // Added check for undefined data
+  if (!data || !data.userFavorites) return null;
 
   return (
     <LayoutComponent title="Favorite Transcriptions">
       <div className="max-w-4xl mx-auto p-8">
         <h1 className="text-3xl font-bold mb-4">Favorite Transcriptions</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {data.userFavorites.map((transcription: any) => (
+          {data.userFavorites.map((transcription: Transcription) => (
             <div key={transcription.id} className="border p-4 rounded shadow">
               <h2 className="text-xl font-bold">{transcription.title}</h2>
               <p>Composer: {transcription.composer}</p>
-              <p>Genre: {transcription.genre}</p>
+              <p>Tags: 
+                {transcription.tags.map(tag => (
+                  <span key={tag.id} className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                    {tag.name}
+                  </span>
+                ))}
+              </p>
               <p>Player: {transcription.player}</p>
               <p>Visibility: {transcription.visibility}</p>
               <p>Status: {transcription.status}</p>

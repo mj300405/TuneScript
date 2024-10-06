@@ -1,11 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { gql, useQuery, useMutation } from '@apollo/client';
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
-import RatingComponent from './RatingComponent';
-import ShareComponent from './ShareComponent';
-import { FileMusic, FileText, Eye, EyeOff, Play, Pause, Trash2, Star } from 'lucide-react';
+import React, { useState, useRef, useEffect } from "react";
+import { gql, useQuery, useMutation } from "@apollo/client";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import RatingComponent from "./RatingComponent";
+import ShareComponent from "./ShareComponent";
+import {
+  FileMusic,
+  FileText,
+  Eye,
+  EyeOff,
+  Play,
+  Pause,
+  Trash2,
+  Star,
+} from "lucide-react";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -16,7 +25,10 @@ export const GET_TRANSCRIPTION_DETAILS = gql`
       title
       composer
       player
-      genre
+      tags {
+        id
+        name
+      }
       visibility
       status
       avgRating
@@ -40,7 +52,10 @@ export const GET_TRANSCRIPTION_DETAILS = gql`
 
 export const RATE_TRANSCRIPTION = gql`
   mutation RateTranscription($transcriptionId: ID!, $ratingValue: Int!) {
-    rateTranscription(transcriptionId: $transcriptionId, ratingValue: $ratingValue) {
+    rateTranscription(
+      transcriptionId: $transcriptionId
+      ratingValue: $ratingValue
+    ) {
       rating {
         id
         rating
@@ -86,20 +101,29 @@ interface TranscriptionDetailsProps {
   onDelete: () => void;
 }
 
-const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcriptionId, onClose, onDelete }) => {
+const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({
+  transcriptionId,
+  onClose,
+  onDelete,
+}) => {
   const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioError, setAudioError] = useState<string | null>(null);
   const [pdfError, setPdfError] = useState<string | null>(null);
-  const [audioLoadingStatus, setAudioLoadingStatus] = useState<'loading' | 'loaded' | 'error'>('loading');
+  const [audioLoadingStatus, setAudioLoadingStatus] = useState<
+    "loading" | "loaded" | "error"
+  >("loading");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isMountedRef = useRef(true);
 
-  const { loading, error, data, refetch } = useQuery(GET_TRANSCRIPTION_DETAILS, {
-    variables: { id: transcriptionId },
-  });
+  const { loading, error, data, refetch } = useQuery(
+    GET_TRANSCRIPTION_DETAILS,
+    {
+      variables: { id: transcriptionId },
+    }
+  );
 
   const [rateTranscription] = useMutation(RATE_TRANSCRIPTION);
   const [deleteTranscription] = useMutation(DELETE_TRANSCRIPTION);
@@ -121,17 +145,17 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
   }
 
   function onDocumentLoadError(error: Error): void {
-    console.error('Error loading PDF:', error);
-    setPdfError('Failed to load PDF. Please try again later.');
+    console.error("Error loading PDF:", error);
+    setPdfError("Failed to load PDF. Please try again later.");
   }
 
   const handlePlayPause = () => {
-    if (audioRef.current && audioLoadingStatus === 'loaded') {
+    if (audioRef.current && audioLoadingStatus === "loaded") {
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        audioRef.current.play().catch(e => {
+        audioRef.current.play().catch((e) => {
           console.error("Error playing audio:", e);
           setAudioError(e.message);
         });
@@ -150,27 +174,27 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
       });
       refetch();
     } catch (error) {
-      console.error('Error updating rating:', error);
+      console.error("Error updating rating:", error);
     }
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this transcription?')) {
+    if (window.confirm("Are you sure you want to delete this transcription?")) {
       try {
         const { data } = await deleteTranscription({
           variables: { id: transcriptionId },
         });
-        
+
         if (data.deleteTranscription.success) {
-          alert('Transcription deleted successfully');
+          alert("Transcription deleted successfully");
           onDelete();
           onClose();
         } else {
-          throw new Error('Deletion was not successful');
+          throw new Error("Deletion was not successful");
         }
       } catch (error) {
-        console.error('Error deleting transcription:', error);
-        alert('Failed to delete transcription');
+        console.error("Error deleting transcription:", error);
+        alert("Failed to delete transcription");
       }
     }
   };
@@ -184,7 +208,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
       }
       setIsFavorite(!isFavorite);
     } catch (error) {
-      console.error('Error toggling favorite:', error);
+      console.error("Error toggling favorite:", error);
     }
   };
 
@@ -199,38 +223,38 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
 
         try {
           const audio = new Audio(audioUrl);
-          
+
           const handleLoadedData = () => {
             if (isMountedRef.current) {
-              console.log('Audio loaded successfully');
-              setAudioLoadingStatus('loaded');
+              console.log("Audio loaded successfully");
+              setAudioLoadingStatus("loaded");
             }
           };
 
           const handleError = (e: Event) => {
             if (isMountedRef.current) {
-              console.error('Error loading audio:', e);
-              setAudioLoadingStatus('error');
-              setAudioError('Failed to load audio file');
+              console.error("Error loading audio:", e);
+              setAudioLoadingStatus("error");
+              setAudioError("Failed to load audio file");
             }
           };
 
-          audio.addEventListener('loadeddata', handleLoadedData);
-          audio.addEventListener('error', handleError);
+          audio.addEventListener("loadeddata", handleLoadedData);
+          audio.addEventListener("error", handleError);
 
           audioRef.current = audio;
 
           cleanup = () => {
-            audio.removeEventListener('loadeddata', handleLoadedData);
-            audio.removeEventListener('error', handleError);
+            audio.removeEventListener("loadeddata", handleLoadedData);
+            audio.removeEventListener("error", handleError);
             audio.pause();
-            audio.src = '';
+            audio.src = "";
           };
         } catch (error) {
-          console.error('Unexpected error while setting up audio:', error);
+          console.error("Unexpected error while setting up audio:", error);
           if (isMountedRef.current) {
-            setAudioLoadingStatus('error');
-            setAudioError('Unexpected error while setting up audio');
+            setAudioLoadingStatus("error");
+            setAudioError("Unexpected error while setting up audio");
           }
         }
       }
@@ -243,7 +267,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
       if (cleanup) cleanup();
       if (audioRef.current) {
         audioRef.current.pause();
-        audioRef.current.src = '';
+        audioRef.current.src = "";
         audioRef.current = null;
       }
     };
@@ -258,10 +282,10 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
         }
       };
 
-      audio.addEventListener('ended', handleEnded);
+      audio.addEventListener("ended", handleEnded);
 
       return () => {
-        audio.removeEventListener('ended', handleEnded);
+        audio.removeEventListener("ended", handleEnded);
       };
     }
   }, []);
@@ -287,15 +311,48 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
         </div>
         <div className="overflow-y-auto flex-grow p-4">
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <p><strong>Composer:</strong> {transcription.composer}</p>
-            <p><strong>Player:</strong> {transcription.player || 'Unknown'}</p>
-            <p><strong>Genre:</strong> {transcription.genre}</p>
-            <p><strong>Visibility:</strong> {transcription.visibility}</p>
-            <p><strong>Status:</strong> {transcription.status}</p>
-            <p><strong>Average Rating:</strong> {transcription.avgRating.toFixed(1)} ({transcription.numRatings} ratings)</p>
-            <p><strong>Created At:</strong> {new Date(transcription.createdAt).toLocaleDateString()}</p>
+            <p>
+              <strong>Composer:</strong> {transcription.composer}
+            </p>
+            <p>
+              <strong>Player:</strong> {transcription.player || "Unknown"}
+            </p>
+            <p>
+              <strong>Tags:</strong>
+              {transcription.tags.length > 0 ? (
+                <span className="flex flex-wrap gap-1 mt-1">
+                  {transcription.tags.map(
+                    (tag: { id: string; name: string }) => (
+                      <span
+                        key={tag.id}
+                        className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
+                      >
+                        {tag.name}
+                      </span>
+                    )
+                  )}
+                </span>
+              ) : (
+                "No tags"
+              )}
+            </p>
+            <p>
+              <strong>Visibility:</strong> {transcription.visibility}
+            </p>
+            <p>
+              <strong>Status:</strong> {transcription.status}
+            </p>
+            <p>
+              <strong>Average Rating:</strong>{" "}
+              {transcription.avgRating.toFixed(1)} ({transcription.numRatings}{" "}
+              ratings)
+            </p>
+            <p>
+              <strong>Created At:</strong>{" "}
+              {new Date(transcription.createdAt).toLocaleDateString()}
+            </p>
           </div>
-          
+
           <div className="mb-4">
             <RatingComponent
               transcriptionId={transcriptionId}
@@ -305,11 +362,11 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
               onRatingChange={handleRatingChange}
             />
           </div>
-          
+
           <div className="flex justify-between items-center mb-4">
             <div className="flex space-x-2">
               {transcription.midiFile?.downloadUrl && (
-                <a 
+                <a
                   href={transcription.midiFile.downloadUrl}
                   className="bg-blue-500 text-white p-2 rounded inline-flex items-center justify-center hover:bg-blue-600"
                   download
@@ -319,7 +376,7 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
                 </a>
               )}
               {transcription.sheetMusic?.downloadUrl && (
-                <a 
+                <a
                   href={transcription.sheetMusic.downloadUrl}
                   className="bg-green-500 text-white p-2 rounded inline-flex items-center justify-center hover:bg-green-600"
                   download
@@ -332,12 +389,14 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
                 <button
                   onClick={() => setShowPdfPreview(!showPdfPreview)}
                   className="bg-yellow-500 text-white p-2 rounded inline-flex items-center justify-center hover:bg-yellow-600"
-                  title={showPdfPreview ? "Hide PDF Preview" : "Show PDF Preview"}
+                  title={
+                    showPdfPreview ? "Hide PDF Preview" : "Show PDF Preview"
+                  }
                 >
                   {showPdfPreview ? <EyeOff size={24} /> : <Eye size={24} />}
                 </button>
               )}
-              {audioLoadingStatus === 'loaded' && (
+              {audioLoadingStatus === "loaded" && (
                 <button
                   onClick={handlePlayPause}
                   className="bg-purple-500 text-white p-2 rounded inline-flex items-center justify-center hover:bg-purple-600"
@@ -351,9 +410,13 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
               <button
                 onClick={handleFavoriteToggle}
                 className={`p-2 rounded inline-flex items-center justify-center ${
-                  isFavorite ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-gray-300 hover:bg-gray-400'
+                  isFavorite
+                    ? "bg-yellow-500 hover:bg-yellow-600"
+                    : "bg-gray-300 hover:bg-gray-400"
                 }`}
-                title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+                title={
+                  isFavorite ? "Remove from Favorites" : "Add to Favorites"
+                }
               >
                 <Star size={24} fill={isFavorite ? "white" : "none"} />
               </button>
@@ -370,8 +433,10 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
             </div>
           </div>
 
-          {audioLoadingStatus === 'error' && <p className="text-red-500 mt-4">Error with audio: {audioError}</p>}
-          
+          {audioLoadingStatus === "error" && (
+            <p className="text-red-500 mt-4">Error with audio: {audioError}</p>
+          )}
+
           {showPdfPreview && transcription.sheetMusic?.downloadUrl && (
             <div className="mt-4 border-t pt-4">
               <Document
@@ -385,8 +450,8 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
                   <div className="text-red-500">{pdfError}</div>
                 ) : (
                   <div className="overflow-x-auto">
-                    <Page 
-                      pageNumber={pageNumber} 
+                    <Page
+                      pageNumber={pageNumber}
                       scale={1}
                       renderTextLayer={true}
                       renderAnnotationLayer={true}
@@ -404,14 +469,18 @@ const TranscriptionDetails: React.FC<TranscriptionDetailsProps> = ({ transcripti
                     <div className="flex justify-center mt-2">
                       <button
                         disabled={pageNumber <= 1}
-                        onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}
-                        className="bg-blue-500 text-white px-2 py-1 rounded mr-2disabled:bg-gray-300"
+                        onClick={() =>
+                          setPageNumber((prev) => Math.max(prev - 1, 1))
+                        }
+                        className="bg-blue-500 text-white px-2 py-1 rounded mr-2 disabled:bg-gray-300"
                       >
                         Previous
                       </button>
                       <button
                         disabled={pageNumber >= numPages}
-                        onClick={() => setPageNumber(prev => Math.min(prev + 1, numPages))}
+                        onClick={() =>
+                          setPageNumber((prev) => Math.min(prev + 1, numPages))
+                        }
                         className="bg-blue-500 text-white px-2 py-1 rounded disabled:bg-gray-300"
                       >
                         Next

@@ -41,7 +41,10 @@ const mockTranscriptionData = {
   title: 'Test Transcription',
   composer: 'Test Composer',
   player: 'Test Player',
-  genre: 'Test Genre',
+  tags: [
+    { id: '1', name: 'Jazz' },
+    { id: '2', name: 'Piano' },
+  ],
   visibility: 'public',
   status: 'COMPLETED',
   avgRating: 4.5,
@@ -88,7 +91,6 @@ describe('TranscriptionDetails', () => {
       expect(screen.getByText('Test Transcription')).toBeInTheDocument();
       expect(screen.getByText('Test Composer')).toBeInTheDocument();
       expect(screen.getByText('Test Player')).toBeInTheDocument();
-      expect(screen.getByText('Test Genre')).toBeInTheDocument();
       expect(screen.getByText('public')).toBeInTheDocument();
       expect(screen.getByText('COMPLETED')).toBeInTheDocument();
       expect(screen.getByText('4.5 (10 ratings)')).toBeInTheDocument();

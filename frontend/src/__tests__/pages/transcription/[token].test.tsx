@@ -69,7 +69,10 @@ describe('SharedTranscriptionPage', () => {
       title: 'Test Transcription',
       composer: 'Test Composer',
       player: 'Test Player',
-      genre: 'Test Genre',
+      tags: [
+        { id: '1', name: 'Jazz' },
+        { id: '2', name: 'Piano' }
+      ],
       avgRating: 4.5,
       numRatings: 10,
     };
