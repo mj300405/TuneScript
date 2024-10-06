@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 
-const GET_ALL_TAGS = gql`
+export const GET_ALL_TAGS = gql`
   query GetAllTags {
     allTags {
       id
