@@ -1,0 +1,28 @@
+\babel@toc {polish}{}\relax 
+\babel@toc {british}{}\relax 
+\babel@toc {polish}{}\relax 
+\babel@toc {british}{}\relax 
+\babel@toc {polish}{}\relax 
+\babel@toc {british}{}\relax 
+\babel@toc {polish}{}\relax 
+\thispagestyle {empty}
+\contentsline {chapter}{\numberline {1}Wstęp}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Analiza tematu}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Sformułowanie problemu}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Osadzenie tematu w kontekście aktualnego stanu wiedzy}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Studia literaturowe}{5}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Wymagania i narzędzia}{9}{chapter.3}%
+\contentsline {chapter}{\numberline {4}[Właściwy dla kierunku -- np. Specyfikacja zewnętrzna]}{11}{chapter.4}%
+\contentsline {chapter}{\numberline {5}[Właściwy dla kierunku -- np. Specyfikacja wewnętrzna]}{13}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Weryfikacja i walidacja}{15}{chapter.6}%
+\contentsline {chapter}{\numberline {7}Podsumowanie i wnioski}{17}{chapter.7}%
+\contentsline {chapter}{Bibliografia}{19}{chapter*.11}%
+\contentsline {chapter}{Spis skrótów i symboli}{23}{appendix*.12}%
+\babel@toc {british}{}\relax 
+\babel@toc {polish}{}\relax 
+\babel@toc {british}{}\relax 
+\babel@toc {polish}{}\relax 
+\contentsline {chapter}{Źródła}{25}{appendix*.13}%
+\contentsline {chapter}{Lista dodatkowych plików, uzupełniających tekst pracy}{27}{appendix*.14}%
+\contentsline {chapter}{Spis rysunków}{29}{appendix*.15}%
+\contentsline {chapter}{Spis tabel}{31}{appendix*.16}%
