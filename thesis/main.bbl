@@ -297,40 +297,6 @@
     \field{year}{2020}
   \endentry
 
-  \entry{bib:roman2018deep}{inproceedings}{}
-    \name{author}{3}{}{%
-      {{hash=RMA}{%
-         family={Roman},
-         familyi={R\bibinitperiod},
-         given={Miguel\bibnamedelima A.},
-         giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
-      }}%
-      {{hash=PA}{%
-         family={Pertusa},
-         familyi={P\bibinitperiod},
-         given={Antonio},
-         giveni={A\bibinitperiod},
-      }}%
-      {{hash=CZJ}{%
-         family={Calvo-Zaragoza},
-         familyi={C\bibinithyphendelim Z\bibinitperiod},
-         given={Jorge},
-         giveni={J\bibinitperiod},
-      }}%
-    }
-    \strng{namehash}{RMAPACZJ1}
-    \strng{fullhash}{RMAPACZJ1}
-    \field{labelnamesource}{author}
-    \field{labeltitlesource}{title}
-    \field{sortinit}{R}
-    \field{sortinithash}{R}
-    \field{booktitle}{Proceedings of the 19th International Society for Music
-  Information Retrieval Conference}
-    \field{pages}{758\bibrangedash 764}
-    \field{title}{Deep Learning for Music Notation Generation}
-    \field{year}{2018}
-  \endentry
-
   \entry{bib:sigtia2016end}{article}{}
     \name{author}{3}{}{%
       {{hash=SS}{%
