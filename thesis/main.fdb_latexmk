@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex main"] 1728749902 "main.aux" "main.bbl" "main" 1728749907 0
+["bibtex main"] 1728776042 "main.aux" "main.bbl" "main" 1728776046 0
   "./biblio.bib" 1728749805 4509 81232258338895fb63c66c639672a13e ""
-  "./main-blx.bib" 1728749906 341 1f97c0ed7ca96f22d26266aea9c4261e ""
+  "./main-blx.bib" 1728776045 341 1f97c0ed7ca96f22d26266aea9c4261e ""
   "C:/Users/Michal/AppData/Local/Programs/MiKTeX/bibtex/bst/biblatex/biblatex.bst" 1657613115 65483 3b5a53ada692a06ce416d088de6a391b ""
-  "main.aux" 1728749906 7919 4d7f2e9083cf9dc5a3a85fe34b907db6 "pdflatex"
+  "main.aux" 1728776045 9631 4ebff7e9a03ddf0994457ffd80e5ad08 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1728749903 "c:/Users/Michal/Desktop/TuneScript/thesis/main.tex" "main.pdf" "main" 1728749907 0
+["pdflatex"] 1728776042 "c:/Users/Michal/Desktop/TuneScript/thesis/main.tex" "main.pdf" "main" 1728776046 0
   "C:/Users/Michal/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1728235210 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/Michal/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1688222964 10788558 90b99f369bd921a70fd65a11e552e9e0 ""
   "C:/Users/Michal/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc" 1256933040 2375 baa924870cfb487815765f9094cf3728 ""
@@ -279,15 +279,15 @@
   "C:/Users/Michal/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1656236890 56148 51a9a8571c07b9921892ae11063ae853 ""
   "C:/Users/Michal/AppData/Local/Programs/MiKTeX/tex/latex/xstring/xstring.sty" 1693735632 123 a302f2c651a95033260db60e51527ae8 ""
   "C:/Users/Michal/AppData/Local/Programs/MiKTeX/tex/latex/xurl/xurl.sty" 1641737540 4675 e4b8c405820368c2dfb03526e16d725a ""
-  "c:/Users/Michal/Desktop/TuneScript/thesis/main.tex" 1728749897 36588 51e856cb92c8d1d8a6b98ab5e8c5ff27 ""
-  "main.aux" 1728749906 7919 4d7f2e9083cf9dc5a3a85fe34b907db6 "pdflatex"
-  "main.bbl" 1728749903 9512 e894d1e6ea17ccd769fa0a560e2ddafe "bibtex main"
-  "main.lof" 1728749906 745 6a7c1b9af6fd04cdf1a9e8ccae706904 "pdflatex"
-  "main.lot" 1728749906 639 9e33f27569d99b1787dcda45107380e8 "pdflatex"
-  "main.out" 1728749906 2924 22b346ed79bb529a3002cb6270e47e91 "pdflatex"
-  "main.run.xml" 1728749906 2613 b0aada028a7f8702b3b5fdf798159577 "pdflatex"
-  "main.tex" 1728749897 36588 51e856cb92c8d1d8a6b98ab5e8c5ff27 ""
-  "main.toc" 1728749906 1614 86f4455d25ca4728b45acd2f08d5e900 "pdflatex"
+  "c:/Users/Michal/Desktop/TuneScript/thesis/main.tex" 1728776037 50140 687ba5d52ee82a3f549e126da74f7565 ""
+  "main.aux" 1728776045 9631 4ebff7e9a03ddf0994457ffd80e5ad08 "pdflatex"
+  "main.bbl" 1728776042 9512 e894d1e6ea17ccd769fa0a560e2ddafe "bibtex main"
+  "main.lof" 1728776045 636 10a339aaada1cf28c16c478ff1b41ab1 "pdflatex"
+  "main.lot" 1728776045 638 b78987d45f8ba0ba316e933e40524601 "pdflatex"
+  "main.out" 1728776045 5417 3258e678656b308e22c98d436e6255cd "pdflatex"
+  "main.run.xml" 1728776045 2613 b0aada028a7f8702b3b5fdf798159577 "pdflatex"
+  "main.tex" 1728776037 50140 687ba5d52ee82a3f549e126da74f7565 ""
+  "main.toc" 1728776045 2872 b842d2be81cc2ce47f79da485a5e4374 "pdflatex"
   "politechnika_sl_logo_bw_pion_pl.pdf" 1728234168 22633 c6320640bafa38d406e62eed6fafdfbd ""
   (generated)
   "main-blx.bib"

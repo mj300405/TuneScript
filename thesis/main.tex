@@ -624,105 +624,389 @@ Warto zauważyć, że mimo znaczącego postępu w dziedzinie ATM dla fortepianu,
 \chapter{Wymagania i narzędzia}
 \label{ch:wymagania-i-narzedzia}
 
+\section{Wymagania funkcjonalne}
+
+System TuneScript powinien spełniać następujące wymagania funkcjonalne:
+
+\begin{enumerate}
+    \item \textbf{Uwierzytelnianie i autoryzacja użytkowników:}
+    \begin{itemize}
+        \item System musi zapewniać funkcjonalności rejestracji, logowania i wylogowywania użytkowników.
+        \item Użytkownicy muszą mieć możliwość resetowania haseł za pomocą poczty elektronicznej.
+    \end{itemize}
+    
+    \item \textbf{Przesyłanie plików:}
+    \begin{itemize}
+        \item System musi umożliwiać użytkownikom przesyłanie plików audio w formatach MP3 i WAV.
+        \item System musi weryfikować format przesyłanych plików.
+    \end{itemize}
+    
+    \item \textbf{Przetwarzanie transkrypcji:}
+    \begin{itemize}
+        \item System musi przetwarzać przesłane pliki audio w celu generowania transkrypcji fortepianowych.
+        \item Transkrypcje powinny być zapisywane w formacie łatwym do odczytu i edycji.
+    \end{itemize}
+    
+    \item \textbf{Zarządzanie transkrypcjami:}
+    \begin{itemize}
+        \item Użytkownicy muszą mieć możliwość przeglądania i usuwania swoich transkrypcji.
+        \item Użytkownicy muszą mieć możliwość ustawiania widoczności swoich transkrypcji jako publicznych lub prywatnych.
+    \end{itemize}
+    
+    \item \textbf{Funkcjonalność wyszukiwania:}
+    \begin{itemize}
+        \item System musi zapewniać podstawowe możliwości wyszukiwania transkrypcji na podstawie tytułu, kompozytora i widoczności.
+    \end{itemize}
+    
+    \item \textbf{System oceniania:}
+    \begin{itemize}
+        \item Użytkownicy muszą mieć możliwość oceniania transkrypcji.
+        \item System musi obliczać i wyświetlać średnią ocenę dla każdej transkrypcji.
+    \end{itemize}
+    
+    \item \textbf{Zakładki:}
+    \begin{itemize}
+        \item Użytkownicy muszą mieć możliwość dodawania transkrypcji do ulubionych.
+        \item Użytkownicy muszą mieć możliwość przeglądania i zarządzania swoimi ulubionymi transkrypcjami.
+    \end{itemize}
+\end{enumerate}
+
+\section{Wymagania niefunkcjonalne}
+
+System TuneScript powinien spełniać następujące wymagania niefunkcjonalne:
+
+\begin{enumerate}
+    \item \textbf{Wydajność:}
+    \begin{itemize}
+        \item System musi przetwarzać transkrypcje w rozsądnych ramach czasowych (np. mniej niż 5 minut dla 10-minutowego pliku audio).
+    \end{itemize}
+    
+    \item \textbf{Użyteczność:}
+    \begin{itemize}
+        \item Interfejs użytkownika musi być intuicyjny i łatwy w nawigacji.
+        \item System musi dostarczać użytkownikom jasne instrukcje i informacje zwrotne.
+    \end{itemize}
+    
+    \item \textbf{Niezawodność:}
+    \begin{itemize}
+        \item System musi być niezawodny, z minimalnym czasem przestoju.
+        \item System musi zapewniać solidne mechanizmy obsługi błędów i odzyskiwania.
+    \end{itemize}
+    
+    \item \textbf{Bezpieczeństwo:}
+    \begin{itemize}
+        \item System musi chronić dane użytkowników za pomocą odpowiednich środków bezpieczeństwa.
+        \item System musi wykorzystywać bezpieczne mechanizmy uwierzytelniania.
+    \end{itemize}
+    
+    \item \textbf{Kompatybilność:}
+    \begin{itemize}
+        \item System musi być kompatybilny z głównymi przeglądarkami internetowymi (np. Chrome, Firefox).
+    \end{itemize}
+    
+    \item \textbf{Łatwość utrzymania:}
+    \begin{itemize}
+        \item Kod źródłowy musi być dobrze udokumentowany i modularny, aby ułatwić konserwację i aktualizacje.
+        \item System musi być łatwy do wdrożenia i skalowania.
+    \end{itemize}
+\end{enumerate}
+
+\section{Przypadki użycia}
+
+Poniżej przedstawiono diagram przypadków użycia dla systemu TuneScript w notacji UML:
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{use_case_diagram.png}
+%     \caption{Diagram przypadków użycia systemu TuneScript}
+%     \label{fig:use_case_diagram}
+% \end{figure}
+
+Główne przypadki użycia obejmują:
 \begin{itemize}
-\item wymagania funkcjonalne i niefunkcjonalne
-\item przypadki użycia (diagramy UML) -- dla prac, w których mają zastosowanie
-\item opis narzędzi, metod eksperymentalnych, metod modelowania itp.
-\item metodyka pracy nad projektowaniem i implementacją -- dla prac, w których ma to zastosowanie
+    \item Rejestracja użytkownika
+    \item Logowanie użytkownika
+    \item Przesyłanie pliku audio
+    \item Generowanie transkrypcji
+    \item Edycja transkrypcji
+    \item Wyszukiwanie transkrypcji
+    \item Ocenianie transkrypcji
+    \item Dodawanie transkrypcji do ulubionych
+    \item Zarządzanie ulubionymi transkrypcjami
 \end{itemize}
 
+\section{Opis narzędzi}
+
+Do realizacji projektu TuneScript wykorzystano następujące narzędzia i technologie:
+
+\begin{itemize}
+    \item \textbf{Backend:}
+    \begin{itemize}
+        \item Python
+        \item Django: Framework webowy
+        \item Graphene: Biblioteka do implementacji API GraphQL
+        \item Celery: System kolejkowania zadań
+        \item Redis: Broker wiadomości dla Celery
+        \item PyTorch: Biblioteka do uczenia maszynowego
+        \item Librosa: Biblioteka do analizy audio
+        \item Flask: Lekki framework webowy
+        \item Transformers: Biblioteka do przetwarzania języka naturalnego
+        \item PostgreSQL: System zarządzania bazą danych
+        \item MuseScore: Generowanie partytur w formacie PDF
+    \end{itemize}
+    
+    \item \textbf{Frontend:}
+    \begin{itemize}
+        \item Next.js: Framework React do renderowania po stronie serwera
+        \item TypeScript: Typowany nadzbiór JavaScript
+        \item Tailwind CSS: Framework CSS utility-first
+        \item Apollo: Klient GraphQL
+    \end{itemize}
+    
+    \item \textbf{Narzędzia deweloperskie:}
+    \begin{itemize}
+        \item Poetry: Narzędzie do zarządzania zależnościami Python
+        \item Docker: Platforma do konteneryzacji
+        \item Docker Compose: Narzędzie do definiowania i uruchamiania aplikacji wielokontenerowych
+        \item ESLint: Narzędzie do analizy statycznej kodu JavaScript
+        \item Black: Formatter kodu Python
+        \item isort: Narzędzie do sortowania importów w Pythonie
+        \item Flake8: Linter kodu Python
+    \end{itemize}
+    
+    \item \textbf{Narzędzia testowe:}
+    \begin{itemize}
+        \item Factory Boy: Biblioteka do generowania obiektów testowych w Pythonie
+        \item pytest: Framework testowy dla Pythona
+        \item Jest: Framework testowy dla JavaScript
+    \end{itemize}
+\end{itemize}
+
+\section{Metodyka pracy nad projektowaniem i implementacją}
+
+Proces projektowania i implementacji systemu TuneScript był realizowany w sposób iteracyjny, z naciskiem na stopniowe rozwijanie funkcjonalności. Główne etapy pracy obejmowały:
+
+\begin{enumerate}
+    \item \textbf{Analiza wymagań}: Szczegółowe określenie wymagań funkcjonalnych i niefunkcjonalnych na podstawie analizy potrzeb użytkowników i badania istniejących rozwiązań.
+    
+    \item \textbf{Projektowanie architektury}: Opracowanie ogólnej architektury systemu, z uwzględnieniem modułów odpowiedzialnych za transkrypcję, API backendu i interfejs użytkownika.
+    
+    \item \textbf{Implementacja i szkolenie modelu transkrypcji}: 
+    \begin{itemize}
+        \item Adaptacja modelu opartego na pracy Kong et al. \cite{bib:kong2020high} do potrzeb systemu TuneScript.
+        \item Implementacja modelu z wykorzystaniem PyTorch i Librosa.
+        \item Przeprowadzenie procesu szkolenia i optymalizacji modelu.
+    \end{itemize}
+    
+    \item \textbf{Iteracyjny rozwój funkcjonalności}:
+    Dla każdej funkcjonalności systemu proces obejmował:
+    \begin{itemize}
+        \item Implementację logiki backendu z wykorzystaniem Django i Graphene.
+        \item Rozwój odpowiadającego interfejsu użytkownika w Next.js i TypeScript.
+        \item Integrację backendu z frontendem za pomocą Apollo Client.
+        \item Pisanie testów jednostkowych i integracyjnych dla zaimplementowanej funkcjonalności.
+    \end{itemize}
+    
+    \item \textbf{Testowanie i debugowanie}: Po implementacji każdej funkcjonalności przeprowadzano testy, wykorzystując pytest dla backendu i Jest dla frontendu. W razie potrzeby przeprowadzano debugowanie i optymalizację kodu.
+    
+    \item \textbf{Integracja komponentów}: Stopniowe łączenie poszczególnych modułów systemu, w tym integracja modelu transkrypcji z API backendu i implementacja systemu kolejkowania zadań z użyciem Celery i Redis.
+    
+    \item \textbf{Optymalizacja wydajności}: Analiza wydajności systemu i optymalizacja krytycznych ścieżek, szczególnie w procesie transkrypcji i generowania partytur.
+    
+    \item \textbf{Dokumentacja}: Tworzenie dokumentacji technicznej równolegle z rozwojem systemu, obejmującej zarówno kod źródłowy, jak i instrukcje użytkownika.
+    
+    \item \textbf{Przygotowanie do wdrożenia}: Konfiguracja środowiska produkcyjnego z wykorzystaniem Docker i Docker Compose, zapewniająca łatwe wdrożenie i skalowalność systemu.
+\end{enumerate}
+
+Podczas całego procesu rozwoju projektu stosowano następujące praktyki:
+
+\begin{itemize}
+    \item \textbf{Kontrola wersji}: Wykorzystanie systemu Git do śledzenia zmian w kodzie i zarządzania wersjami.
+    
+    \item \textbf{Ciągła integracja}: Regularne integrowanie nowych funkcjonalności z główną gałęzią projektu, aby wcześnie wykrywać i rozwiązywać konflikty.
+    
+    \item \textbf{Przeglądy kodu}: Samodzielne przeglądy implementowanych funkcjonalności w celu zapewnienia jakości i spójności kodu.
+    
+    \item \textbf{Automatyzacja}: Wykorzystanie narzędzi takich jak Black, isort i Flake8 dla Pythona oraz ESLint dla JavaScript/TypeScript do automatycznego formatowania i lintowania kodu.
+    
+    \item \textbf{Zarządzanie zależnościami}: Użycie Poetry do zarządzania zależnościami Python, zapewniając reprodukowalność środowiska deweloperskiego.
+\end{itemize}
+
+Takie podejście pozwoliło na elastyczne rozwijanie projektu, umożliwiając skupienie się na jednej funkcjonalności na raz i zapewniając solidne podstawy dla każdego kolejnego etapu rozwoju systemu TuneScript.
 
 % TODO
-\chapter{[Właściwy dla kierunku -- np. Specyfikacja zewnętrzna]}
+\chapter{Specyfikacja zewnętrzna}
 \label{ch:04}
 
-Jeśli „Specyfikacja zewnętrzna”:
+\section{Wymagania sprzętowe i programowe}
+
+\subsection{Wymagania sprzętowe}
 \begin{itemize}
-\item  wymagania sprzętowe i programowe
-\item  sposób instalacji
-\item  sposób aktywacji
-\item  kategorie użytkowników
-\item  sposób obsługi
-\item  administracja systemem
-\item  kwestie bezpieczeństwa
-\item  przykład działania
-\item  scenariusze korzystania z systemu (ilustrowane zrzutami z ekranu lub generowanymi dokumentami)
+    \item Serwer: 
+    \begin{itemize}
+        \item Procesor: minimum 4 rdzenie, zalecane 8 rdzeni
+        \item RAM: minimum 8 GB, zalecane 16 GB
+        \item Dysk: minimum 100 GB przestrzeni dyskowej SSD
+    \end{itemize}
+    \item Klient:
+    \begin{itemize}
+        \item Dowolne urządzenie z przeglądarką internetową i dostępem do internetu
+    \end{itemize}
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%
-%% RYSUNEK Z PLIKU
-%
-%\begin{figure}
-%\centering
-%\includegraphics[width=0.5\textwidth]{./politechnika_sl_logo_bw_pion_pl.pdf}
-%\caption{Podpis rysunku zawsze pod rysunkiem.}
-%\label{fig:etykieta-rysunku}
-%\end{figure}
-%Rys. \ref{fig:etykieta-rysunku} przestawia …
-%%%%%%%%%%%%%%%%%%%%%
-%
-%%%%%%%%%%%%%%%%%%%%%
-%% WIELE RYSUNKÓW 
-%
-%\begin{figure}
-%\centering
-%\begin{subfigure}{0.4\textwidth}
-%    \includegraphics[width=\textwidth]{./politechnika_sl_logo_bw_pion_pl.pdf}
-%    \caption{Lewy górny rysunek.}
-%    \label{fig:lewy-gorny}
-%\end{subfigure}
-%\hfill
-%\begin{subfigure}{0.4\textwidth}
-%    \includegraphics[width=\textwidth]{./politechnika_sl_logo_bw_pion_pl.pdf}
-%    \caption{Prawy górny rysunek.}
-%    \label{fig:prawy-gorny}
-%\end{subfigure}
-%
-%\begin{subfigure}{0.4\textwidth}
-%    \includegraphics[width=\textwidth]{./politechnika_sl_logo_bw_pion_pl.pdf}
-%    \caption{Lewy dolny rysunek.}
-%    \label{fig:lewy-dolny}
-%\end{subfigure}
-%\hfill
-%\begin{subfigure}{0.4\textwidth}
-%    \includegraphics[width=\textwidth]{./politechnika_sl_logo_bw_pion_pl.pdf}
-%    \caption{Prawy dolny rysunek.}
-%    \label{fig:prawy-dolny}
-%\end{subfigure}
-%        
-%\caption{Wspólny podpis kilku rysunków.}
-%\label{fig:wiele-rysunkow}
-%\end{figure}
-%Rys. \ref{fig:wiele-rysunkow} przestawia wiele ważnych informacji, np. rys. \ref{fig:prawy-gorny} jest na prawo u góry.
-%%%%%%%%%%%%%%%%%%%%%
+\subsection{Wymagania programowe}
+\begin{itemize}
+    \item Serwer:
+    \begin{itemize}
+        \item System operacyjny: Linux (zalecany Ubuntu 20.04 LTS lub nowszy)
+        \item Docker w wersji 20.10 lub nowszej
+        \item Docker Compose w wersji 1.29 lub nowszej
+    \end{itemize}
+    \item Klient:
+    \begin{itemize}
+        \item Nowoczesna przeglądarka internetowa (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+    \end{itemize}
+\end{itemize}
 
+\section{Sposób instalacji}
 
- 
-\begin{figure}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    y tick label style={
-        /pgf/number format/.cd,
-            fixed,   % po zakomentowaniu os rzednych jest indeksowana wykladniczo
-            fixed zerofill, % 1.0 zamiast 1
-            precision=1,
-        /tikz/.cd
-    },
-    x tick label style={
-        /pgf/number format/.cd,
-            fixed,
-            fixed zerofill,
-            precision=2,
-        /tikz/.cd
-    }
-]
-\addplot [domain=0.0:0.1] {rnd};
-\end{axis} 
-\end{tikzpicture}
-\caption{Podpis rysunku po rysunkiem.}
-\label{fig:2}
-\end{figure}
+Instalacja systemu TuneScript jest prosta i wymaga jedynie kilku kroków:
+
+\begin{enumerate}
+    \item Sklonuj repozytorium projektu:
+    \begin{verbatim}
+    git clone https://github.com/mj300405/TuneScript.git
+    \end{verbatim}
+    
+    \item Przejdź do katalogu narzędzi deweloperskich projektu:
+    \begin{verbatim}
+    cd TuneScript/devtools
+    \end{verbatim}
+    
+    \item Uruchom Docker Compose, aby zbudować i uruchomić kontenery (upewnij się, że masz zainstalowany Docker):
+    \begin{verbatim}
+    docker-compose up --build
+    \end{verbatim}
+    
+    \item Po zakończeniu procesu budowania i uruchamiania, aplikacja będzie dostępna w przeglądarce pod adresem:
+    \begin{verbatim}
+    http://localhost:3000
+    \end{verbatim}
+\end{enumerate}
+
+\textbf{Uwaga:} Przed uruchomieniem Docker Compose należy upewnić się, że Docker jest zainstalowany na systemie. Jeśli nie, można pobrać go i zainstalować ze strony oficjalnej: \url{https://www.docker.com/get-started}.
+
+\section{Kategorie użytkowników}
+
+\begin{itemize}
+    \item \textbf{Niezarejestrowani użytkownicy}: Mogą przeglądać publiczne transkrypcje.
+    \item \textbf{Zarejestrowani użytkownicy}: Mogą przesyłać pliki audio, generować transkrypcje, zarządzać własnymi transkrypcjami, oceniać i dodawać do ulubionych transkrypcje innych użytkowników.
+    \item \textbf{Administratorzy}: Mają pełny dostęp do systemu, w tym do panelu administracyjnego.
+\end{itemize}
+
+\section{Sposób obsługi}
+
+\begin{enumerate}
+    \item \textbf{Rejestracja i logowanie}:
+    \begin{itemize}
+        \item Użytkownik może zarejestrować się, podając nazwę użytkownika, adres e-mail i hasło.
+        \item Następnie otrzymuje e-mail z linkiem potwierdzającym.
+        \item Po potiwerdzeniu, użytkownik może zalogować się do systemu.
+    \end{itemize}
+    
+    \item \textbf{Przesyłanie pliku audio}:
+    \begin{itemize}
+        \item Zalogowany użytkownik może przesłać plik audio w formacie MP3 lub WAV.
+        \item System weryfikuje format i rozmiar pliku.
+    \end{itemize}
+    
+    \item \textbf{Generowanie transkrypcji}:
+    \begin{itemize}
+        \item Po przesłaniu pliku, system automatycznie rozpoczyna proces transkrypcji.
+        \item Użytkownik jest informowany o postępie procesu.
+    \end{itemize}
+    
+    \item \textbf{Zarządzanie transkrypcjami}:
+    \begin{itemize}
+        \item Użytkownik może przeglądać, edytować i usuwać swoje transkrypcje.
+        \item Możliwe jest ustawienie widoczności transkrypcji jako publicznej lub prywatnej.
+    \end{itemize}
+    
+    \item \textbf{Wyszukiwanie i przeglądanie transkrypcji}:
+    \begin{itemize}
+        \item Użytkownicy mogą wyszukiwać transkrypcje po tytule, kompozytorze i widoczności.
+        \item Możliwe jest przeglądanie publicznych transkrypcji innych użytkowników.
+    \end{itemize}
+    
+    \item \textbf{Ocenianie i dodawanie do ulubionych}:
+    \begin{itemize}
+        \item Zalogowani użytkownicy mogą oceniać transkrypcje.
+        \item Możliwe jest dodawanie transkrypcji do listy ulubionych.
+    \end{itemize}
+\end{enumerate}
+
+\section{Administracja systemem}
+
+Administratorzy mają dostęp do panelu administracyjnego Django, który umożliwia:
+\begin{itemize}
+    \item Zarządzanie kontami użytkowników
+    \item Przeglądanie i moderowanie transkrypcji
+    \item Monitorowanie aktywności systemu
+    \item Konfigurację ustawień systemu
+\end{itemize}
+
+\section{Kwestie bezpieczeństwa}
+
+\begin{itemize}
+    \item Wszystkie hasła są przechowywane w formie zaszyfrowanej.
+    \item Komunikacja między klientem a serwerem jest szyfrowana za pomocą HTTPS.
+    \item System wykorzystuje tokeny JWT do uwierzytelniania użytkowników.
+    \item Implementacja mechanizmów ochrony przed atakami CSRF i XSS.
+    \item Regularne aktualizacje wszystkich wykorzystywanych bibliotek i zależności.
+\end{itemize}
+
+\section{Przykład działania}
+
+Poniżej przedstawiono przykładowy scenariusz korzystania z systemu TuneScript:
+
+\begin{enumerate}
+    \item Użytkownik rejestruje się w systemie.
+    \item Po zalogowaniu, użytkownik przesyła plik audio zawierający nagranie fortepianowe.
+    \item System przetwarza plik i generuje transkrypcję.
+    \item Użytkownik może przeglądać, edytować i pobierać wygenerowaną transkrypcję.
+    \item Użytkownik ustawia transkrypcję jako publiczną.
+    \item Inni użytkownicy mogą przeglądać, oceniać i dodawać transkrypcję do ulubionych.
+\end{enumerate}
+
+\section{Scenariusze korzystania z systemu}
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{registration_screen.png}
+%     \caption{Ekran rejestracji użytkownika}
+%     \label{fig:registration_screen}
+% \end{figure}
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{upload_screen.png}
+%     \caption{Ekran przesyłania pliku audio}
+%     \label{fig:upload_screen}
+% \end{figure}
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{transcription_view.png}
+%     \caption{Widok wygenerowanej transkrypcji}
+%     \label{fig:transcription_view}
+% \end{figure}
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{search_results.png}
+%     \caption{Wyniki wyszukiwania transkrypcji}
+%     \label{fig:search_results}
+% \end{figure}
 
 
 
