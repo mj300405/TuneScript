@@ -644,18 +644,18 @@ System TuneScript powinien spełniać następujące wymagania funkcjonalne:
     \item \textbf{Przetwarzanie transkrypcji:}
     \begin{itemize}
         \item System musi przetwarzać przesłane pliki audio w celu generowania transkrypcji fortepianowych.
-        \item Transkrypcje powinny być zapisywane w formacie łatwym do odczytu i edycji.
+        \item Transkrypcje powinny być zapisywane w formacie MIDI oraz generowane jako partytury PDF.
     \end{itemize}
     
     \item \textbf{Zarządzanie transkrypcjami:}
     \begin{itemize}
-        \item Użytkownicy muszą mieć możliwość przeglądania i usuwania swoich transkrypcji.
+        \item Użytkownicy muszą mieć możliwość przeglądania, edytowania i usuwania swoich transkrypcji.
         \item Użytkownicy muszą mieć możliwość ustawiania widoczności swoich transkrypcji jako publicznych lub prywatnych.
     \end{itemize}
     
     \item \textbf{Funkcjonalność wyszukiwania:}
     \begin{itemize}
-        \item System musi zapewniać podstawowe możliwości wyszukiwania transkrypcji na podstawie tytułu, kompozytora i widoczności.
+        \item System musi zapewniać możliwości wyszukiwania transkrypcji na podstawie tytułu, kompozytora i widoczności.
     \end{itemize}
     
     \item \textbf{System oceniania:}
@@ -679,6 +679,7 @@ System TuneScript powinien spełniać następujące wymagania niefunkcjonalne:
     \item \textbf{Wydajność:}
     \begin{itemize}
         \item System musi przetwarzać transkrypcje w rozsądnych ramach czasowych (np. mniej niż 5 minut dla 10-minutowego pliku audio).
+        \item System powinien obsługiwać jednocześnie co najmniej 100 aktywnych użytkowników.
     \end{itemize}
     
     \item \textbf{Użyteczność:}
@@ -689,150 +690,102 @@ System TuneScript powinien spełniać następujące wymagania niefunkcjonalne:
     
     \item \textbf{Niezawodność:}
     \begin{itemize}
-        \item System musi być niezawodny, z minimalnym czasem przestoju.
-        \item System musi zapewniać solidne mechanizmy obsługi błędów i odzyskiwania.
+        \item System musi być niezawodny, z dostępnością na poziomie 99,9% (nie licząc planowanych przerw technicznych).
+        \item System musi zapewniać mechanizmy automatycznego odzyskiwania po awariach.
     \end{itemize}
     
     \item \textbf{Bezpieczeństwo:}
     \begin{itemize}
-        \item System musi chronić dane użytkowników za pomocą odpowiednich środków bezpieczeństwa.
-        \item System musi wykorzystywać bezpieczne mechanizmy uwierzytelniania.
+        \item System musi chronić dane użytkowników za pomocą szyfrowania.
+        \item System musi wykorzystywać bezpieczne mechanizmy uwierzytelniania, w tym dwuskładnikowe uwierzytelnianie.
     \end{itemize}
     
     \item \textbf{Kompatybilność:}
     \begin{itemize}
-        \item System musi być kompatybilny z głównymi przeglądarkami internetowymi (np. Chrome, Firefox).
+        \item System musi być kompatybilny z najnowszymi wersjami przeglądarek Chrome, Firefox, Safari i Edge.
+        \item Interfejs użytkownika powinien być responsywny i działać na urządzeniach mobilnych.
+    \end{itemize}
+    
+    \item \textbf{Skalowalność:}
+    \begin{itemize}
+        \item System musi być zdolny do obsługi rosnącej liczby użytkowników i transkrypcji bez znaczącego wpływu na wydajność.
     \end{itemize}
     
     \item \textbf{Łatwość utrzymania:}
     \begin{itemize}
-        \item Kod źródłowy musi być dobrze udokumentowany i modularny, aby ułatwić konserwację i aktualizacje.
-        \item System musi być łatwy do wdrożenia i skalowania.
+        \item System musi być modułowy, umożliwiając łatwe aktualizacje i rozszerzenia.
+        \item System musi posiadać kompletną dokumentację techniczną i użytkownika.
     \end{itemize}
 \end{enumerate}
+
+\section{Wymagania sprzętowe i programowe}
+
+\subsection{Wymagania dla użytkowników}
+\begin{itemize}
+    \item Urządzenie z dostępem do internetu (komputer, tablet lub smartfon)
+    \item Nowoczesna przeglądarka internetowa (Chrome, Firefox, Safari lub Edge w najnowszej wersji)
+    \item Minimum 4 GB RAM dla optymalnego działania aplikacji
+    \item Stabilne połączenie internetowe o prędkości co najmniej 5 Mbps
+\end{itemize}
+
+\subsection{Wymagania dla serwera}
+\begin{itemize}
+    \item Procesor: minimum 4 rdzenie, zalecane 8 rdzeni
+    \item RAM: minimum 16 GB, zalecane 32 GB
+    \item Dysk: minimum 100 GB przestrzeni dyskowej SSD
+    \item System operacyjny: Linux (zalecany Ubuntu 20.04 LTS lub nowszy)
+    \item Stabilne połączenie internetowe o wysokiej przepustowości
+\end{itemize}
+
+\section{Sposób instalacji}
+
+Instalacja systemu TuneScript jest prosta i wymaga jedynie kilku kroków:
+
+\begin{enumerate}
+    \item Sklonowanie repozytorium projektu:
+    \begin{verbatim}
+    git clone https://github.com/mj300405/TuneScript.git
+    \end{verbatim}
+    
+    \item Przejście do katalogu narzędzi deweloperskich projektu:
+    \begin{verbatim}
+    cd TuneScript/devtools
+    \end{verbatim}
+    
+    \item Uruchomienie Docker Compose, aby zbudować i uruchomić kontenery (wymagana wcześniejsza instalacja Dockera):
+    \begin{verbatim}
+    npm run start
+    \end{verbatim}
+    
+    \item Po zakończeniu procesu budowania i uruchamiania, aplikacja będzie dostępna w przeglądarce pod adresem:
+    \begin{verbatim}
+    http://localhost:3000
+    \end{verbatim}
+\end{enumerate}
+
+\textbf{Uwaga:} Przed uruchomieniem Docker Compose należy upewnić się, że Docker jest zainstalowany na systemie. W razie potrzeby można go pobrać i zainstalować ze strony oficjalnej: \url{https://www.docker.com/get-started}
+
+\subsection{Skrypty developerskie}
+
+System TuneScript zawiera zestaw skryptów ułatwiających proces developmentu i testowania. Skrypty te pozwalają na łatwe uruchamianie, zatrzymywanie i restartowanie aplikacji w różnych trybach, a także uruchamianie testów i formatowanie kodu. Szczegółowe informacje na temat tych skryptów i ich użycia można znaleźć w dokumentacji technicznej projektu.
 
 \section{Przypadki użycia}
 
-Poniżej przedstawiono diagram przypadków użycia dla systemu TuneScript w notacji UML:
-
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{use_case_diagram.png}
-%     \caption{Diagram przypadków użycia systemu TuneScript}
-%     \label{fig:use_case_diagram}
-% \end{figure}
-
-Główne przypadki użycia obejmują:
-\begin{itemize}
-    \item Rejestracja użytkownika
-    \item Logowanie użytkownika
-    \item Przesyłanie pliku audio
-    \item Generowanie transkrypcji
-    \item Edycja transkrypcji
-    \item Wyszukiwanie transkrypcji
-    \item Ocenianie transkrypcji
-    \item Dodawanie transkrypcji do ulubionych
-    \item Zarządzanie ulubionymi transkrypcjami
-\end{itemize}
-
-\section{Opis narzędzi}
-
-Do realizacji projektu TuneScript wykorzystano następujące narzędzia i technologie:
+Główne przypadki użycia systemu TuneScript obejmują:
 
 \begin{itemize}
-    \item \textbf{Backend:}
-    \begin{itemize}
-        \item Python
-        \item Django: Framework webowy
-        \item Graphene: Biblioteka do implementacji API GraphQL
-        \item Celery: System kolejkowania zadań
-        \item Redis: Broker wiadomości dla Celery
-        \item PyTorch: Biblioteka do uczenia maszynowego
-        \item Librosa: Biblioteka do analizy audio
-        \item Flask: Lekki framework webowy
-        \item Transformers: Biblioteka do przetwarzania języka naturalnego
-        \item PostgreSQL: System zarządzania bazą danych
-        \item MuseScore: Generowanie partytur w formacie PDF
-    \end{itemize}
-    
-    \item \textbf{Frontend:}
-    \begin{itemize}
-        \item Next.js: Framework React do renderowania po stronie serwera
-        \item TypeScript: Typowany nadzbiór JavaScript
-        \item Tailwind CSS: Framework CSS utility-first
-        \item Apollo: Klient GraphQL
-    \end{itemize}
-    
-    \item \textbf{Narzędzia deweloperskie:}
-    \begin{itemize}
-        \item Poetry: Narzędzie do zarządzania zależnościami Python
-        \item Docker: Platforma do konteneryzacji
-        \item Docker Compose: Narzędzie do definiowania i uruchamiania aplikacji wielokontenerowych
-        \item ESLint: Narzędzie do analizy statycznej kodu JavaScript
-        \item Black: Formatter kodu Python
-        \item isort: Narzędzie do sortowania importów w Pythonie
-        \item Flake8: Linter kodu Python
-    \end{itemize}
-    
-    \item \textbf{Narzędzia testowe:}
-    \begin{itemize}
-        \item Factory Boy: Biblioteka do generowania obiektów testowych w Pythonie
-        \item pytest: Framework testowy dla Pythona
-        \item Jest: Framework testowy dla JavaScript
-    \end{itemize}
+    \item \textbf{Rejestracja użytkownika:} Nowy użytkownik może utworzyć konto, podając wymagane informacje.
+    \item \textbf{Logowanie użytkownika:} Zarejestrowany użytkownik może zalogować się do systemu.
+    \item \textbf{Przesyłanie pliku audio:} Użytkownik może przesłać plik audio w formacie MP3 lub WAV do transkrypcji.
+    \item \textbf{Generowanie transkrypcji:} System przetwarza przesłany plik audio i generuje transkrypcję MIDI oraz partyturę PDF.
+    \item \textbf{Przeglądanie transkrypcji:} Użytkownik może przeglądać swoje oraz publiczne transkrypcje innych użytkowników.
+    \item \textbf{Edycja transkrypcji:} Użytkownik może edytować metadane swoich transkrypcji.
+    \item \textbf{Wyszukiwanie transkrypcji:} Użytkownik może wyszukiwać transkrypcje na podstawie różnych kryteriów.
+    \item \textbf{Ocenianie transkrypcji:} Użytkownik może oceniać transkrypcje innych użytkowników.
+    \item \textbf{Dodawanie do ulubionych:} Użytkownik może dodawać transkrypcje do listy ulubionych.
+    \item \textbf{Zarządzanie kontem:} Użytkownik może zarządzać ustawieniami swojego konta.
 \end{itemize}
 
-\section{Metodyka pracy nad projektowaniem i implementacją}
-
-Proces projektowania i implementacji systemu TuneScript był realizowany w sposób iteracyjny, z naciskiem na stopniowe rozwijanie funkcjonalności. Główne etapy pracy obejmowały:
-
-\begin{enumerate}
-    \item \textbf{Analiza wymagań}: Szczegółowe określenie wymagań funkcjonalnych i niefunkcjonalnych na podstawie analizy potrzeb użytkowników i badania istniejących rozwiązań.
-    
-    \item \textbf{Projektowanie architektury}: Opracowanie ogólnej architektury systemu, z uwzględnieniem modułów odpowiedzialnych za transkrypcję, API backendu i interfejs użytkownika.
-    
-    \item \textbf{Implementacja i szkolenie modelu transkrypcji}: 
-    \begin{itemize}
-        \item Adaptacja modelu opartego na pracy Kong et al. \cite{bib:kong2020high} do potrzeb systemu TuneScript.
-        \item Implementacja modelu z wykorzystaniem PyTorch i Librosa.
-        \item Przeprowadzenie procesu szkolenia i optymalizacji modelu.
-    \end{itemize}
-    
-    \item \textbf{Iteracyjny rozwój funkcjonalności}:
-    Dla każdej funkcjonalności systemu proces obejmował:
-    \begin{itemize}
-        \item Implementację logiki backendu z wykorzystaniem Django i Graphene.
-        \item Rozwój odpowiadającego interfejsu użytkownika w Next.js i TypeScript.
-        \item Integrację backendu z frontendem za pomocą Apollo Client.
-        \item Pisanie testów jednostkowych i integracyjnych dla zaimplementowanej funkcjonalności.
-    \end{itemize}
-    
-    \item \textbf{Testowanie i debugowanie}: Po implementacji każdej funkcjonalności przeprowadzano testy, wykorzystując pytest dla backendu i Jest dla frontendu. W razie potrzeby przeprowadzano debugowanie i optymalizację kodu.
-    
-    \item \textbf{Integracja komponentów}: Stopniowe łączenie poszczególnych modułów systemu, w tym integracja modelu transkrypcji z API backendu i implementacja systemu kolejkowania zadań z użyciem Celery i Redis.
-    
-    \item \textbf{Optymalizacja wydajności}: Analiza wydajności systemu i optymalizacja krytycznych ścieżek, szczególnie w procesie transkrypcji i generowania partytur.
-    
-    \item \textbf{Dokumentacja}: Tworzenie dokumentacji technicznej równolegle z rozwojem systemu, obejmującej zarówno kod źródłowy, jak i instrukcje użytkownika.
-    
-    \item \textbf{Przygotowanie do wdrożenia}: Konfiguracja środowiska produkcyjnego z wykorzystaniem Docker i Docker Compose, zapewniająca łatwe wdrożenie i skalowalność systemu.
-\end{enumerate}
-
-Podczas całego procesu rozwoju projektu stosowano następujące praktyki:
-
-\begin{itemize}
-    \item \textbf{Kontrola wersji}: Wykorzystanie systemu Git do śledzenia zmian w kodzie i zarządzania wersjami.
-    
-    \item \textbf{Ciągła integracja}: Regularne integrowanie nowych funkcjonalności z główną gałęzią projektu, aby wcześnie wykrywać i rozwiązywać konflikty.
-    
-    \item \textbf{Przeglądy kodu}: Samodzielne przeglądy implementowanych funkcjonalności w celu zapewnienia jakości i spójności kodu.
-    
-    \item \textbf{Automatyzacja}: Wykorzystanie narzędzi takich jak Black, isort i Flake8 dla Pythona oraz ESLint dla JavaScript/TypeScript do automatycznego formatowania i lintowania kodu.
-    
-    \item \textbf{Zarządzanie zależnościami}: Użycie Poetry do zarządzania zależnościami Python, zapewniając reprodukowalność środowiska deweloperskiego.
-\end{itemize}
-
-Takie podejście pozwoliło na elastyczne rozwijanie projektu, umożliwiając skupienie się na jednej funkcjonalności na raz i zapewniając solidne podstawy dla każdego kolejnego etapu rozwoju systemu TuneScript.
 
 % TODO
 \chapter{Specyfikacja zewnętrzna}
@@ -1011,20 +964,218 @@ Poniżej przedstawiono przykładowy scenariusz korzystania z systemu TuneScript:
 
 
 % TODO
-\chapter{[Właściwy dla kierunku -- np. Specyfikacja wewnętrzna]}
+
+\chapter{Specyfikacja wewnętrzna}
 \label{ch:05}
 
+\section{Przedstawienie idei}
 
-Jeśli „Specyfikacja wewnętrzna”:
+TuneScript to zaawansowana aplikacja webowa, która automatyzuje proces transkrypcji nagrań fortepianowych w formacie MP3 na partytury w formacie PDF. Główna idea projektu opiera się na wykorzystaniu sztucznej inteligencji, a dokładniej głębokich sieci neuronowych, do analizy i interpretacji sygnału audio, a następnie przekształcenia go w notację muzyczną.
+
+Kluczowe aspekty idei TuneScript obejmują:
+
 \begin{itemize}
-\item przedstawienie idei
-\item architektura systemu
-\item opis struktur danych (i organizacji baz danych)
-\item komponenty, moduły, biblioteki, przegląd ważniejszych klas (jeśli występują)
-\item przegląd ważniejszych algorytmów (jeśli występują)
-\item szczegóły implementacji wybranych fragmentów, zastosowane wzorce projektowe
-\item diagramy UML
+    \item Wykorzystanie zaawansowanych technik przetwarzania sygnałów audio do precyzyjnej detekcji nut.
+    \item Implementację modelu głębokiego uczenia do transkrypcji muzyki fortepianowej.
+    \item Integrację procesu transkrypcji z systemem generowania partytur.
+    \item Stworzenie przyjaznego dla użytkownika interfejsu webowego do zarządzania transkrypcjami.
 \end{itemize}
+
+\section{Architektura systemu}
+
+TuneScript został zaprojektowany w oparciu o architekturę mikrousług, co zapewnia elastyczność, skalowalność i łatwość utrzymania. Główne komponenty systemu to:
+
+\begin{enumerate}
+    \item \textbf{Frontend}: Implementowany w Next.js i TypeScript, zapewniający responsywny i interaktywny interfejs użytkownika.
+    \item \textbf{Backend API}: Napisany w Django i Graphene, obsługujący żądania od frontendu i zarządzający logiką biznesową.
+    \item \textbf{Serwis transkrypcji}: Odpowiedzialny za przetwarzanie plików audio i generowanie transkrypcji MIDI.
+    \item \textbf{Serwis generowania partytur}: Konwertuje pliki MIDI na partytury PDF.
+    \item \textbf{Baza danych}: PostgreSQL przechowujący dane użytkowników, metadane transkrypcji i inne informacje.
+    \item \textbf{System kolejkowania}: Implementowany z użyciem Celery i Redis, zarządzający asynchronicznymi zadaniami.
+\end{enumerate}
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{architecture_diagram.png}
+%     \caption{Diagram architektury systemu TuneScript}
+%     \label{fig:architecture_diagram}
+% \end{figure}
+
+\section{Opis struktur danych i organizacji bazy danych}
+
+TuneScript wykorzystuje relacyjną bazę danych PostgreSQL do przechowywania danych. Główne tabele w bazie danych to:
+
+\begin{itemize}
+    \item \textbf{Users}: Przechowuje informacje o użytkownikach.
+    \item \textbf{Transcriptions}: Zawiera metadane transkrypcji, w tym odniesienia do plików audio, MIDI i PDF.
+    \item \textbf{Ratings}: Przechowuje oceny transkrypcji.
+    \item \textbf{Favorites}: Zawiera informacje o ulubionych transkrypcjach użytkowników.
+\end{itemize}
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{database_schema.png}
+%     \caption{Schemat bazy danych TuneScript}
+%     \label{fig:database_schema}
+% \end{figure}
+
+\section{Komponenty, moduły i biblioteki}
+
+Główne komponenty i biblioteki wykorzystywane w projekcie TuneScript:
+
+\begin{itemize}
+    \item \textbf{Frontend}:
+    \begin{itemize}
+        \item Next.js: Framework React do renderowania po stronie serwera
+        \item TypeScript: Typowany nadzbiór JavaScript
+        \item Apollo Client: Klient GraphQL do komunikacji z backendem
+        \item Tailwind CSS: Framework CSS do stylizacji
+    \end{itemize}
+    \item \textbf{Backend}:
+    \begin{itemize}
+        \item Python: Główny język programowania
+        \item Django: Framework webowy Python
+        \item Graphene: Biblioteka do implementacji API GraphQL
+        \item Celery: System kolejkowania zadań
+        \item Redis: Broker wiadomości dla Celery
+        \item PyTorch: Biblioteka do uczenia maszynowego, używana w modelu transkrypcji
+        \item Librosa: Biblioteka do analizy audio
+        \item Flask: Lekki framework webowy
+        \item Transformers: Biblioteka do przetwarzania języka naturalnego
+    \end{itemize}
+    \item \textbf{Baza danych}:
+    \begin{itemize}
+        \item PostgreSQL: System zarządzania relacyjną bazą danych
+    \end{itemize}
+    \item \textbf{Narzędzia deweloperskie}:
+    \begin{itemize}
+        \item Docker i Docker Compose: Do konteneryzacji i orkiestracji usług
+        \item Poetry: Zarządzanie zależnościami Python
+        \item ESLint: Narzędzie do analizy statycznej kodu JavaScript/TypeScript
+        \item Black: Formatter kodu Python
+        \item isort: Narzędzie do sortowania importów w Pythonie
+        \item Flake8: Linter kodu Python
+    \end{itemize}
+    \item \textbf{Narzędzia testowe}:
+    \begin{itemize}
+        \item Factory Boy: Biblioteka do generowania obiektów testowych w Pythonie
+        \item pytest: Framework testowy dla Pythona
+        \item Jest: Framework testowy dla JavaScript/TypeScript
+    \end{itemize}
+\end{itemize}
+
+\section{Skrypty deweloperskie}
+
+Projekt TuneScript zawiera szereg skryptów ułatwiających proces rozwoju i testowania. Są one zdefiniowane w pliku \texttt{package.json}:
+
+\begin{verbatim}
+{
+  "name": "tunescript-devtools",
+  "version": "1.0.0",
+  "description": "Development tools for TuneScript",
+  "scripts": {
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down -v",
+    "start:persistent": "docker-compose -f docker-compose.persistent.yml up -d",
+    "stop:persistent": "docker-compose -f docker-compose.persistent.yml down",
+    "start:fresh": "docker-compose -f docker-compose.fresh.yml up -d",
+    "stop:fresh": "docker-compose -f docker-compose.fresh.yml down -v",
+    "restart": "npm run stop && npm run start",
+    "restart:persistent": "npm run stop:persistent && npm run start:persistent",
+    "restart:fresh": "npm run stop:fresh && npm run start:fresh",
+    "logs": "docker-compose logs -f",
+    "test": "docker-compose exec frontend npm run test",
+    "test:watch": "docker-compose exec frontend npm run test:watch",
+    "test:coverage": "docker-compose exec frontend npm run test:coverage",
+    "test:backend": "docker-compose exec web poetry run pytest tunescript_app/tests",
+    "format": "docker-compose exec web /app/format.sh"
+  }
+}
+\end{verbatim}
+
+Te skrypty umożliwiają łatwe uruchamianie, zatrzymywanie i restartowanie aplikacji w różnych trybach, a także uruchamianie testów i formatowanie kodu.
+
+
+\section{Przegląd ważniejszych algorytmów}
+
+Kluczowym algorytmem w systemie TuneScript jest model transkrypcji muzycznej oparty na pracy Kong et al. (2020) "High-resolution Piano Transcription with Pedals by Regressing Onsets and Offsets Times". Główne etapy tego algorytmu to:
+
+\begin{enumerate}
+    \item Przetwarzanie wstępne sygnału audio (np. normalizacja, konwersja do spektrogramu).
+    \item Analiza sygnału przez sieć konwolucyjną w celu wykrycia początków (onset) i końców (offset) nut.
+    \item Regresja czasów początku i końca każdej nuty.
+    \item Detekcja użycia pedałów fortepianu.
+    \item Generowanie transkrypcji MIDI na podstawie wykrytych nut i pedałów.
+\end{enumerate}
+
+\section{Szczegóły implementacji wybranych fragmentów}
+
+\subsection{Implementacja modelu transkrypcji}
+
+Model transkrypcji jest implementowany w PyTorch. Oto fragment kodu ilustrujący strukturę głównej sieci neuronowej:
+
+\begin{verbatim}
+class PianoTranscriptionModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+        self.fc1 = nn.Linear(64 * 32 * 32, 1024)
+        self.fc2 = nn.Linear(1024, 88 * 2)  # 88 klawiszy, onset i offset
+
+    def forward(self, x):
+        x = F.relu(self.conv1(x))
+        x = F.max_pool2d(x, 2)
+        x = F.relu(self.conv2(x))
+        x = F.max_pool2d(x, 2)
+        x = x.view(-1, 64 * 32 * 32)
+        x = F.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+\end{verbatim}
+
+\subsection{Implementacja API GraphQL}
+
+Backend wykorzystuje Graphene do implementacji API GraphQL. Oto przykład definicji typu i mutacji dla transkrypcji:
+
+\begin{verbatim}
+class TranscriptionType(DjangoObjectType):
+    class Meta:
+        model = Transcription
+        fields = ("id", "title", "audio_file", "midi_file", "pdf_file")
+
+class CreateTranscription(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        audio_file = graphene.String(required=True)
+
+    transcription = graphene.Field(TranscriptionType)
+
+    def mutate(self, info, title, audio_file):
+        user = info.context.user
+        transcription = Transcription.objects.create(
+            title=title,
+            audio_file=audio_file,
+            user=user
+        )
+        return CreateTranscription(transcription=transcription)
+\end{verbatim}
+
+\section{Diagramy UML}
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{class_diagram.png}
+%     \caption{Diagram klas głównych komponentów systemu TuneScript}
+%     \label{fig:class_diagram}
+% \end{figure}
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{sequence_diagram.png}
+%     \caption{Diagram sekwencji procesu transkrypcji}
+%     \label{fig:sequence_diagram}
+% \end{figure}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 % Pakiet minted wymaga importu: \usepackage{minted}                 %
@@ -1032,48 +1183,6 @@ Jeśli „Specyfikacja wewnętrzna”:
 % pdflatex -shell-escape main                                       %
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 
-
-Krótka wstawka kodu w linii tekstu jest możliwa, np.  \lstinline|int a;| (biblioteka \texttt{listings})% lub  \mintinline{C++}|int a;| (biblioteka \texttt{minted})
-. 
-Dłuższe fragmenty lepiej jest umieszczać jako rysunek, np. kod na rys \ref{fig:pseudokod:listings}% i rys. \ref{fig:pseudokod:minted}
-, a naprawdę długie fragmenty – w załączniku.
-
-
-\begin{figure}
-\centering
-\begin{lstlisting}
-class test : public basic
-{
-    public:
-      test (int a);
-      friend std::ostream operator<<(std::ostream & s, 
-                                     const test & t);
-    protected:
-      int _a;  
-      
-};
-\end{lstlisting}
-\caption{Pseudokod w \texttt{listings}.}
-\label{fig:pseudokod:listings}
-\end{figure}
-
-%\begin{figure}
-%\centering
-%\begin{minted}[linenos,frame=lines]{c++}
-%class test : public basic
-%{
-%    public:
-%      test (int a);
-%      friend std::ostream operator<<(std::ostream & s, 
-%                                     const test & t);
-%    protected:
-%      int _a;  
-%      
-%};
-%\end{minted}
-%\caption{Pseudokod w \texttt{minted}.}
-%\label{fig:pseudokod:minted}
-%\end{figure}
 
 
 
