@@ -697,7 +697,7 @@ System TuneScript powinien spełniać następujące wymagania niefunkcjonalne:
     \item \textbf{Bezpieczeństwo:}
     \begin{itemize}
         \item System musi chronić dane użytkowników za pomocą szyfrowania.
-        \item System musi wykorzystywać bezpieczne mechanizmy uwierzytelniania, w tym dwuskładnikowe uwierzytelnianie.
+        \item System musi wykorzystywać bezpieczne mechanizmy uwierzytelniania.
     \end{itemize}
     
     \item \textbf{Kompatybilność:}
@@ -737,38 +737,6 @@ System TuneScript powinien spełniać następujące wymagania niefunkcjonalne:
     \item Stabilne połączenie internetowe o wysokiej przepustowości
 \end{itemize}
 
-\section{Sposób instalacji}
-
-Instalacja systemu TuneScript jest prosta i wymaga jedynie kilku kroków:
-
-\begin{enumerate}
-    \item Sklonowanie repozytorium projektu:
-    \begin{verbatim}
-    git clone https://github.com/mj300405/TuneScript.git
-    \end{verbatim}
-    
-    \item Przejście do katalogu narzędzi deweloperskich projektu:
-    \begin{verbatim}
-    cd TuneScript/devtools
-    \end{verbatim}
-    
-    \item Uruchomienie Docker Compose, aby zbudować i uruchomić kontenery (wymagana wcześniejsza instalacja Dockera):
-    \begin{verbatim}
-    npm run start
-    \end{verbatim}
-    
-    \item Po zakończeniu procesu budowania i uruchamiania, aplikacja będzie dostępna w przeglądarce pod adresem:
-    \begin{verbatim}
-    http://localhost:3000
-    \end{verbatim}
-\end{enumerate}
-
-\textbf{Uwaga:} Przed uruchomieniem Docker Compose należy upewnić się, że Docker jest zainstalowany na systemie. W razie potrzeby można go pobrać i zainstalować ze strony oficjalnej: \url{https://www.docker.com/get-started}
-
-\subsection{Skrypty developerskie}
-
-System TuneScript zawiera zestaw skryptów ułatwiających proces developmentu i testowania. Skrypty te pozwalają na łatwe uruchamianie, zatrzymywanie i restartowanie aplikacji w różnych trybach, a także uruchamianie testów i formatowanie kodu. Szczegółowe informacje na temat tych skryptów i ich użycia można znaleźć w dokumentacji technicznej projektu.
-
 \section{Przypadki użycia}
 
 Główne przypadki użycia systemu TuneScript obejmują:
@@ -794,7 +762,7 @@ Główne przypadki użycia systemu TuneScript obejmują:
 \section{Wymagania sprzętowe i programowe}
 
 \subsection{Wymagania sprzętowe}
-\begin{itemize}
+\begin{itemize} 
     \item Serwer: 
     \begin{itemize}
         \item Procesor: minimum 4 rdzenie, zalecane 8 rdzeni
@@ -821,34 +789,6 @@ Główne przypadki użycia systemu TuneScript obejmują:
     \end{itemize}
 \end{itemize}
 
-\section{Sposób instalacji}
-
-Instalacja systemu TuneScript jest prosta i wymaga jedynie kilku kroków:
-
-\begin{enumerate}
-    \item Sklonuj repozytorium projektu:
-    \begin{verbatim}
-    git clone https://github.com/mj300405/TuneScript.git
-    \end{verbatim}
-    
-    \item Przejdź do katalogu narzędzi deweloperskich projektu:
-    \begin{verbatim}
-    cd TuneScript/devtools
-    \end{verbatim}
-    
-    \item Uruchom Docker Compose, aby zbudować i uruchomić kontenery (upewnij się, że masz zainstalowany Docker):
-    \begin{verbatim}
-    docker-compose up --build
-    \end{verbatim}
-    
-    \item Po zakończeniu procesu budowania i uruchamiania, aplikacja będzie dostępna w przeglądarce pod adresem:
-    \begin{verbatim}
-    http://localhost:3000
-    \end{verbatim}
-\end{enumerate}
-
-\textbf{Uwaga:} Przed uruchomieniem Docker Compose należy upewnić się, że Docker jest zainstalowany na systemie. Jeśli nie, można pobrać go i zainstalować ze strony oficjalnej: \url{https://www.docker.com/get-started}.
-
 \section{Kategorie użytkowników}
 
 \begin{itemize}
@@ -870,7 +810,7 @@ Instalacja systemu TuneScript jest prosta i wymaga jedynie kilku kroków:
     \item \textbf{Przesyłanie pliku audio}:
     \begin{itemize}
         \item Zalogowany użytkownik może przesłać plik audio w formacie MP3 lub WAV.
-        \item System weryfikuje format i rozmiar pliku.
+        \item System weryfikuje format pliku.
     \end{itemize}
     
     \item \textbf{Generowanie transkrypcji}:
@@ -983,41 +923,61 @@ Kluczowe aspekty idei TuneScript obejmują:
 
 \section{Architektura systemu}
 
-TuneScript został zaprojektowany w oparciu o architekturę mikrousług, co zapewnia elastyczność, skalowalność i łatwość utrzymania. Główne komponenty systemu to:
+TuneScript został zaprojektowany w oparciu o modularną architekturę, która łączy elementy aplikacji monolitycznej z pewnymi aspektami architektury rozproszonej. Takie podejście zapewnia elastyczność, skalowalność i łatwość utrzymania. Główne komponenty systemu to:
 
 \begin{enumerate}
     \item \textbf{Frontend}: Implementowany w Next.js i TypeScript, zapewniający responsywny i interaktywny interfejs użytkownika.
     \item \textbf{Backend API}: Napisany w Django i Graphene, obsługujący żądania od frontendu i zarządzający logiką biznesową.
-    \item \textbf{Serwis transkrypcji}: Odpowiedzialny za przetwarzanie plików audio i generowanie transkrypcji MIDI.
-    \item \textbf{Serwis generowania partytur}: Konwertuje pliki MIDI na partytury PDF.
+    \item \textbf{Usługa transkrypcji}: Zintegrowana z backendem, odpowiedzialna za przetwarzanie plików audio i generowanie transkrypcji MIDI.
+    \item \textbf{Usługa generowania partytur}: Zintegrowana z backendem, konwertuje pliki MIDI na partytury PDF.
     \item \textbf{Baza danych}: PostgreSQL przechowujący dane użytkowników, metadane transkrypcji i inne informacje.
     \item \textbf{System kolejkowania}: Implementowany z użyciem Celery i Redis, zarządzający asynchronicznymi zadaniami.
+    \item \textbf{Chatbot}: Oddzielny serwis oparty na Flask, implementujący system RAG do odpowiadania na pytania użytkowników dotyczące funkcjonalności systemu.
 \end{enumerate}
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{architecture_diagram.png}
-%     \caption{Diagram architektury systemu TuneScript}
-%     \label{fig:architecture_diagram}
-% \end{figure}
+Ta architektura, choć nie jest klasyczną implementacją mikrousług, pozwala na efektywne zarządzanie złożonością systemu i umożliwia niezależne skalowanie poszczególnych komponentów, szczególnie w przypadku chatbota i systemu kolejkowania.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/architecture_diagram.png}
+    \caption{Diagram architektury systemu TuneScript}
+    \label{fig:architecture_diagram}
+\end{figure}
 
 \section{Opis struktur danych i organizacji bazy danych}
 
-TuneScript wykorzystuje relacyjną bazę danych PostgreSQL do przechowywania danych. Główne tabele w bazie danych to:
+TuneScript wykorzystuje relacyjną bazę danych PostgreSQL do przechowywania danych. Schemat bazy danych przedstawiony jest na Rysunku \ref{fig:database_schema}. Główne modele w bazie danych to:
 
 \begin{itemize}
-    \item \textbf{Users}: Przechowuje informacje o użytkownikach.
-    \item \textbf{Transcriptions}: Zawiera metadane transkrypcji, w tym odniesienia do plików audio, MIDI i PDF.
-    \item \textbf{Ratings}: Przechowuje oceny transkrypcji.
-    \item \textbf{Favorites}: Zawiera informacje o ulubionych transkrypcjach użytkowników.
+    \item \textbf{User}: Rozszerzenie standardowego modelu użytkownika Django, zawierające dodatkowe pole do potwierdzenia e-maila.
+    
+    \item \textbf{Profile}: Przechowuje dodatkowe informacje o użytkowniku, takie jak biografia, zdjęcie profilowe, preferencje oraz informacje o statusie premium.
+    
+    \item \textbf{AudioFile}: Zawiera informacje o przesłanych plikach audio, w tym tytuł i ścieżkę do pliku.
+    
+    \item \textbf{Transcription}: Przechowuje metadane transkrypcji, w tym odniesienia do pliku audio, użytkownika, tagów, oraz informacje o statusie, ocenach i widoczności.
+    
+    \item \textbf{Rating}: Zawiera oceny użytkowników dla poszczególnych transkrypcji.
+    
+    \item \textbf{Favorite}: Przechowuje informacje o ulubionych transkrypcjach użytkowników.
+    
+    \item \textbf{MIDIFile}: Zawiera informacje o wygenerowanych plikach MIDI dla transkrypcji.
+    
+    \item \textbf{SheetMusic}: Przechowuje informacje o wygenerowanych partyturach PDF dla transkrypcji.
+    
+    \item \textbf{Tag}: Zawiera tagi, które mogą być przypisane do transkrypcji.
+    
+    \item \textbf{UserPlayHistory}: Przechowuje historię odtwarzania transkrypcji przez użytkowników, w tym czas odtwarzania i liczbę odtworzeń.
 \end{itemize}
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{database_schema.png}
-%     \caption{Schemat bazy danych TuneScript}
-%     \label{fig:database_schema}
-% \end{figure}
+Modele te są ze sobą powiązane za pomocą kluczy obcych, tworząc kompleksową strukturę danych, która umożliwia efektywne zarządzanie informacjami w systemie TuneScript. Jak widać na Rysunku \ref{fig:database_schema}, szczególną uwagę zwrócono na optymalizację wydajności poprzez zastosowanie indeksów oraz unikalnych ograniczeń tam, gdzie jest to konieczne.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagrams/database_diagram.png}
+    \caption{Schemat bazy danych TuneScript}
+    \label{fig:database_schema}
+\end{figure}
 
 \section{Komponenty, moduły i biblioteki}
 
