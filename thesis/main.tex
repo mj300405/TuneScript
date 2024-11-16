@@ -77,7 +77,7 @@
 %\newcommand{\FirstNameCoauthor}{Imię}   % Jeżeli jest drugi autor, to tutaj należy podać imię.
 %\newcommand{\SurnameCoauthor}{Nazwisko} % Jeżeli jest drugi autor, to tutaj należy podać nazwisko.
 %\newcommand{\IdCoauthor}{$\langle$wpisać właściwy$\rangle$}  % numer albumu drugiego autora (bez $\langle$ i $\rangle$)
-% Gdy nie ma drugiego autora, należy zostawić poniższe definicje puste, jak poniżej. Gdy jest drugi autor, należy zakomentować te linie.
+% Gdy nie ma drugiego autora, należy zostawić poniższe definicje puste, jak poniżej. Gdy jest drugi autor, należy zakomentować te linie.
 \newcommand{\FirstNameCoauthor}{} % Jeżeli praca ma tylko jednego autora, to dane drugiego autora zostają puste.
 \newcommand{\SurnameCoauthor}{}   % Jeżeli praca ma tylko jednego autora, to dane drugiego autora zostają puste.
 \newcommand{\IdCoauthor}{}  % Jeżeli praca ma tylko jednego autora, to dane drugiego autora zostają puste.
@@ -92,7 +92,7 @@
 
 % Jeżeli został wyznaczony promotor pomocniczy lub opiekun, proszę go/ją wpisać ...
 %\newcommand{\Consultant}{$\langle$stopień naukowy imię i nazwisko$\rangle$} % dane promotora pomocniczego, opiekuna (bez $\langle$ i $\rangle$)
-% ... w przeciwnym razie proszę zostawić puste miejsce jak poniżej:
+% ... w przeciwnym razie proszę zostawić puste miejsce jak poniżej:
 \newcommand{\Consultant}{} % brak promotowa pomocniczego / opiekuna
 
 % koniec fragmentu do modyfikacji
@@ -291,7 +291,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
-% Proszę nie modyfikować poniższych definicji!
+% Proszę nie modyfikować poniższych definicji!
 \newcommand{\Author}{\FirstNameAuthor\ \MakeUppercase{\SurnameAuthor}} 
 \newcommand{\Coauthor}{\FirstNameCoauthor\ \MakeUppercase{\SurnameCoauthor}}
 \newcommand{\Type}{PROJEKT INŻYNIERSKI}
@@ -402,63 +402,63 @@ escapeinside={@*}{*@},%
 \pagestyle{empty}
 {
 	\newgeometry{top=1.5cm,%
-	             bottom=2.5cm,%
-	             left=3cm,
-	             right=2.5cm}
- 
+		bottom=2.5cm,%
+		left=3cm,
+		right=2.5cm}
+	 
 	\ifxetex 
-	  \begingroup
-	  \setsansfont{Calibri}
-	   
+	\begingroup
+	\setsansfont{Calibri}
+		   
 	\fi 
-	 \sffamily
+	\sffamily
 	\begin{center}
-	\includegraphics[width=50mm]{\Logo}
-	 
-	
-	{\Large\bfseries\Type\par}
-	
-	\vfill  \vfill  
+		\includegraphics[width=50mm]{\Logo}
 			 
-	{\large\Title\par}
-	
-	\vfill  
-		
-	{\large\bfseries\Author\par}
-	
-	{\normalsize\bfseries \LeftId: \IdAuthor}
-
-	\printCoauthor
-	
-	\vfill  		
- 
-	{\large{\bfseries \LeftProgram:} \Program\par} 
-	
-	{\large{\bfseries \LeftSpecialisation:} \Specialisation\par} 
-	 		
-	\vfill  \vfill 	\vfill 	\vfill 	\vfill 	\vfill 	\vfill  
-	 
-	{\large{\bfseries \LeftSUPERVISOR}\par}
-	
-	{\large{\bfseries \Supervisor}\par}
+			
+		{\Large\bfseries\Type\par}
+			
+		\vfill  \vfill  
+					 
+		{\large\Title\par}
+			
+		\vfill  
 				
-	{\large{\bfseries \LeftDEPARTMENT\ \Departament} \par}
+		{\large\bfseries\Author\par}
+			
+		{\normalsize\bfseries \LeftId: \IdAuthor}
 		
-	{\large{\bfseries \Faculty}\par}
+		\printCoauthor
+			
+		\vfill  		
+		 
+		{\large{\bfseries \LeftProgram:} \Program\par} 
+			
+		{\large{\bfseries \LeftSpecialisation:} \Specialisation\par} 
+			 		
+		\vfill  \vfill 	\vfill 	\vfill 	\vfill 	\vfill 	\vfill  
+			 
+		{\large{\bfseries \LeftSUPERVISOR}\par}
+			
+		{\large{\bfseries \Supervisor}\par}
+						
+		{\large{\bfseries \LeftDEPARTMENT\ \Departament} \par}
+				
+		{\large{\bfseries \Faculty}\par}
+				
+		\vfill  \vfill  
 		
-	\vfill  \vfill  
-
-    	
-    \printOpiekun{\Consultant}
-    
-	\vfill  \vfill  
+		    	
+		\printOpiekun{\Consultant}
+		    
+		\vfill  \vfill  
+				
+		{\large\bfseries  Gliwice \the\year}
 		
-    {\large\bfseries  Gliwice \the\year}
-
-   \end{center}	
-       \ifxetex 
-       	  \endgroup
-       \fi
+	\end{center}	
+	\ifxetex 
+	\endgroup
+	\fi
 	\restoregeometry
 }
   
@@ -475,7 +475,7 @@ escapeinside={@*}{*@},%
 \pagestyle{empty}
 
 
-%%% No to zaczynamy pisać pracę :-) %%%%
+%%% No to zaczynamy pisać pracę :-) %%%%
 
 % TODO
 \subsubsection*{Tytuł pracy} 
@@ -489,16 +489,16 @@ escapeinside={@*}{*@},%
 
 \subsubsection*{Thesis title} 
 \begin{otherlanguage}{british}
-\TitleAlt
+	\TitleAlt
 \end{otherlanguage}
 
 \subsubsection*{Abstract} 
 \begin{otherlanguage}{british}
-(Thesis abstract – to be copied into an appropriate field during an electronic submission – in English.)
+	(Thesis abstract – to be copied into an appropriate field during an electronic submission – in English.)
 \end{otherlanguage}
 \subsubsection*{Key words}  
 \begin{otherlanguage}{british}
-(2-5 keywords, separated by commas)
+	(2-5 keywords, separated by commas)
 \end{otherlanguage}
 
 
@@ -524,18 +524,33 @@ escapeinside={@*}{*@},%
 \chapter{Wstęp}
 \label{ch:wstep}
 
+W dobie cyfrowej transformacji muzyki, potrzeba efektywnych narzędzi do konwersji nagrań audio na zapis nutowy staje się coraz bardziej istotna. Niniejsza praca przedstawia projekt i implementację systemu TuneScript, który wykorzystuje zaawansowane modele sztucznej inteligencji do automatycznej transkrypcji nagrań fortepianowych. System ten stanowi odpowiedź na rosnące zapotrzebowanie muzyków, kompozytorów i pedagogów muzycznych na narzędzia umożliwiające szybką i dokładną konwersję nagrań audio do formatu partytur.
+
+Problem automatycznej transkrypcji muzyki fortepianowej jest szczególnie złożony ze względu na polifoniczny charakter instrumentu oraz bogactwo ekspresji muzycznej. Dotychczasowe rozwiązania często nie spełniają oczekiwań użytkowników w zakresie dokładności transkrypcji lub wygody użytkowania. TuneScript adresuje te wyzwania poprzez zastosowanie najnowszych osiągnięć w dziedzinie uczenia maszynowego i przetwarzania sygnałów audio.
+
+Głównym celem pracy jest stworzenie kompleksowego systemu, który nie tylko dokładnie rozpoznaje nuty i ich parametry czasowe, ale także generuje profesjonalnie wyglądające partytury w formacie PDF. Cele szczegółowe obejmują:
+
 \begin{itemize}
-\item wprowadzenie w problem/zagadnienie
-\item osadzenie problemu w dziedzinie
-\item cel pracy
-\item zakres pracy
-\item zwięzła charakterystyka rozdziałów
-\item jednoznaczne określenie wkładu autora, w przypadku prac wieloosobowych – tabela z autorstwem poszczególnych elementów pracy
+	\item Implementację modelu uczenia głębokiego do precyzyjnej detekcji nut i ich parametrów.
+	\item Opracowanie systemu konwersji plików MIDI do formatu PDF.
+	\item Stworzenie intuicyjnego interfejsu webowego dla użytkowników.
+	\item Zapewnienie mechanizmów zarządzania i udostępniania transkrypcji.
 \end{itemize}
 
+Zakres pracy obejmuje następujące obszary:
+\begin{itemize}
+	\item Analiza istniejących rozwiązań i badań w dziedzinie automatycznej transkrypcji muzyki.
+	\item Implementacja modelu uczenia maszynowego do transkrypcji.
+	\item Projekt i implementacja systemu webowego.
+	\item Integracja modelu uczenia maszynowego.
+	\item Integracja mechanizmów generowania partytur.
+	\item Testowanie i walidacja systemu.
+\end{itemize}
+
+Praca składa się z sześciu rozdziałów. Po wstępie, w rozdziale drugim przedstawiono szczegółową analizę problemu oraz przegląd literatury. Rozdział trzeci opisuje wymagania funkcjonalne i niefunkcjonalne oraz wykorzystane narzędzia. Rozdział czwarty zawiera specyfikację zewnętrzną systemu, a rozdział piąty - specyfikację wewnętrzną wraz z opisem architektury i implementacji. Rozdział szósty przedstawia proces weryfikacji i walidacji systemu.
 
 
-% TODO
+
 \chapter{Analiza tematu}
 
 \section{Sformułowanie problemu}
@@ -547,11 +562,11 @@ Problem, którym zajmuje się niniejsza praca, polega na stworzeniu efektywnego,
 Kluczowe wyzwania, które należy rozwiązać w ramach tego projektu, obejmują:
 
 \begin{itemize}
-    \item Precyzyjne rozpoznawanie wysokości dźwięków w nagraniach fortepianowych, z uwzględnieniem złożoności polifonii fortepianowej.
-    \item Dokładne określanie czasu rozpoczęcia i zakończenia każdej nuty, co jest kluczowe dla zachowania rytmu i tempa utworu.
-    \item Odwzorowanie dynamiki gry, która jest istotnym elementem ekspresji muzycznej na fortepianie.
-    \item Efektywne przetwarzanie długich utworów muzycznych przy zachowaniu wysokiej jakości transkrypcji.
-    \item Generowanie czytelnych i estetycznych partytur PDF, które będą użyteczne dla muzyków.
+	\item Precyzyjne rozpoznawanie wysokości dźwięków w nagraniach fortepianowych, z uwzględnieniem złożoności polifonii fortepianowej.
+	\item Dokładne określanie czasu rozpoczęcia i zakończenia każdej nuty, co jest kluczowe dla zachowania rytmu i tempa utworu.
+	\item Odwzorowanie dynamiki gry, która jest istotnym elementem ekspresji muzycznej na fortepianie.
+	\item Efektywne przetwarzanie długich utworów muzycznych przy zachowaniu wysokiej jakości transkrypcji.
+	\item Generowanie czytelnych i estetycznych partytur PDF, które będą użyteczne dla muzyków.
 \end{itemize}
 
 Rozwiązanie tego problemu ma potencjał znaczącego usprawnienia pracy muzyków, ułatwienia analizy muzycznej oraz wsparcia procesów edukacyjnych w dziedzinie muzyki fortepianowej.
@@ -563,29 +578,29 @@ Automatyczna transkrypcja muzyki (ATM, ang. \textit{Automatic Music Transcriptio
 Obecny stan wiedzy w dziedzinie ATM dla fortepianu charakteryzuje się następującymi aspektami:
 
 \begin{enumerate}
-    \item \textbf{Wykorzystanie głębokiego uczenia:} Współczesne podejścia do ATM fortepianowego opierają się głównie na zastosowaniu głębokich sieci neuronowych. Modele takie jak konwolucyjne sieci neuronowe (CNN) i rekurencyjne sieci neuronowe (RNN) wykazały znaczącą skuteczność w rozpoznawaniu struktur muzycznych w spektrogramach audio \cite{bib:hawthorne2018onsets}.
-    
-    \item \textbf{Modele hybrydowe:} Najnowsze badania skupiają się na modelach hybrydowych, łączących różne architektury sieci neuronowych. Na przykład, model "Onsets and Frames" \cite{bib:hawthorne2018onsets} wykorzystuje osobne sieci do detekcji początków dźwięków i ich trwania, co znacząco poprawiło dokładność transkrypcji.
-    
-    \item \textbf{Przetwarzanie w czasie rzeczywistym:} Rozwój technik przetwarzania sygnałów i optymalizacji algorytmów pozwala na coraz szybszą transkrypcję, zbliżającą się do przetwarzania w czasie rzeczywistym \cite{bib:kelz2016potential}.
-    
-    \item \textbf{Modelowanie akustyki fortepianu:} Zaawansowane modele uwzględniają specyfikę akustyki fortepianu, w tym zjawiska takie jak rezonans strun i wpływ pedałów na brzmienie \cite{bib:cheng2016attack}.
-    
-    \item \textbf{Transkrypcja ekspresji muzycznej:} Nowsze badania skupiają się nie tylko na rozpoznawaniu nut, ale także na odwzorowaniu dynamiki, artykulacji i innych aspektów ekspresji muzycznej \cite{bib:jeong2017deep}.
+	\item \textbf{Wykorzystanie głębokiego uczenia:} Współczesne podejścia do ATM fortepianowego opierają się głównie na zastosowaniu głębokich sieci neuronowych. Modele takie jak konwolucyjne sieci neuronowe (CNN) i rekurencyjne sieci neuronowe (RNN) wykazały znaczącą skuteczność w rozpoznawaniu struktur muzycznych w spektrogramach audio \cite{bib:hawthorne2018onsets}.
+	          
+	\item \textbf{Modele hybrydowe:} Najnowsze badania skupiają się na modelach hybrydowych, łączących różne architektury sieci neuronowych. Na przykład, model "Onsets and Frames" \cite{bib:hawthorne2018onsets} wykorzystuje osobne sieci do detekcji początków dźwięków i ich trwania, co znacząco poprawiło dokładność transkrypcji.
+	          
+	\item \textbf{Przetwarzanie w czasie rzeczywistym:} Rozwój technik przetwarzania sygnałów i optymalizacji algorytmów pozwala na coraz szybszą transkrypcję, zbliżającą się do przetwarzania w czasie rzeczywistym \cite{bib:kelz2016potential}.
+	          
+	\item \textbf{Modelowanie akustyki fortepianu:} Zaawansowane modele uwzględniają specyfikę akustyki fortepianu, w tym zjawiska takie jak rezonans strun i wpływ pedałów na brzmienie \cite{bib:cheng2016attack}.
+	          
+	\item \textbf{Transkrypcja ekspresji muzycznej:} Nowsze badania skupiają się nie tylko na rozpoznawaniu nut, ale także na odwzorowaniu dynamiki, artykulacji i innych aspektów ekspresji muzycznej \cite{bib:jeong2017deep}.
 \end{enumerate}
 
 Mimo znaczących postępów w dziedzinie ATM dla fortepianu, wciąż istnieją pewne ograniczenia i wyzwania:
 
 \begin{itemize}
-    \item \textbf{Dokładność w muzyce polifonicznej:} Transkrypcja złożonych struktur polifonicznych, charakterystycznych dla zaawansowanej literatury fortepianowej, wciąż stanowi wyzwanie dla obecnych systemów \cite{bib:benetos2013automatic}.
-    
-    \item \textbf{Rozpoznawanie bardzo cichych dźwięków:} Detekcja nut granych bardzo cicho, szczególnie w kontekście głośniejszego akompaniamentu, pozostaje problematyczna \cite{bib:sigtia2016end}.
-    
-    \item \textbf{Odróżnianie bliskich harmonicznie dźwięków:} W gęstych strukturach harmonicznych, rozróżnienie blisko brzmiących dźwięków może być trudne dla systemów ATM \cite{bib:benetos2013automatic}.
-    
-    \item \textbf{Interpretacja rytmiczna:} Precyzyjne odwzorowanie złożonych struktur rytmicznych, szczególnie w muzyce z rubato lub improwizowanej, stanowi wyzwanie dla obecnych systemów \cite{bib:cheng2016attack}.
-    
-    \item \textbf{Wykorzystanie pedałów:} Uwzględnienie u użytkowania pedałów fortepianowych, które wpływają na rezonans strun i brzmienie, wymaga zaawansowanych technik analizy akustycznej \cite{bib:cheng2016attack}.
+	\item \textbf{Dokładność w muzyce polifonicznej:} Transkrypcja złożonych struktur polifonicznych, charakterystycznych dla zaawansowanej literatury fortepianowej, wciąż stanowi wyzwanie dla obecnych systemów \cite{bib:benetos2013automatic}.
+	          
+	\item \textbf{Rozpoznawanie bardzo cichych dźwięków:} Detekcja nut granych bardzo cicho, szczególnie w kontekście głośniejszego akompaniamentu, pozostaje problematyczna \cite{bib:sigtia2016end}.
+	          
+	\item \textbf{Odróżnianie bliskich harmonicznie dźwięków:} W gęstych strukturach harmonicznych, rozróżnienie blisko brzmiących dźwięków może być trudne dla systemów ATM \cite{bib:benetos2013automatic}.
+	          
+	\item \textbf{Interpretacja rytmiczna:} Precyzyjne odwzorowanie złożonych struktur rytmicznych, szczególnie w muzyce z rubato lub improwizowanej, stanowi wyzwanie dla obecnych systemów \cite{bib:cheng2016attack}.
+	          
+	\item \textbf{Wykorzystanie pedałów:} Uwzględnienie u użytkowania pedałów fortepianowych, które wpływają na rezonans strun i brzmienie, wymaga zaawansowanych technik analizy akustycznej \cite{bib:cheng2016attack}.
 \end{itemize}
 
 Projekt TuneScript wpisuje się w ten kontekst, stawiając sobie za cel adresowanie wymienionych wyzwań poprzez integrację zaawansowanego modelu AI do transkrypcji z MP3 do MIDI z narzędziami do generowania partytur PDF. Takie kompleksowe podejście ma potencjał przezwyciężenia niektórych ograniczeń obecnych rozwiązań i dostarczenia użytkownikom narzędzia o wysokiej praktycznej wartości.
@@ -595,19 +610,19 @@ Projekt TuneScript wpisuje się w ten kontekst, stawiając sobie za cel adresowa
 W celu głębszego zrozumienia problematyki automatycznej transkrypcji muzyki fortepianowej oraz określenia aktualnego stanu wiedzy w tej dziedzinie, przeprowadzono szczegółowy przegląd literatury. Poniżej przedstawiono kluczowe prace i ich wkład w rozwój tej dziedziny:
 
 \begin{enumerate}
-    \item \textbf{Kong et al. (2020) \cite{bib:kong2020high}} w pracy "High-resolution Piano Transcription with Pedals by Regressing Onsets and Offsets Times" prezentują nowatorskie podejście do transkrypcji fortepianowej, które stanowi podstawę modelu wykorzystywanego w projekcie TuneScript. Autorzy proponują metodę wysokiej rozdzielczości czasowej do transkrypcji fortepianowej, która uwzględnia nie tylko detekcję nut, ale także użycie pedałów. Kluczową innowacją jest zastosowanie regresji do precyzyjnego określania czasów początku (onset) i końca (offset) każdej nuty, co pozwala na dokładniejsze odwzorowanie rytmu i artykulacji. Model ten wykazuje znaczącą poprawę w stosunku do wcześniejszych rozwiązań, szczególnie w zakresie precyzji czasowej i detekcji użycia pedałów.
-
-    \item \textbf{Benetos et al. (2013) \cite{bib:benetos2013automatic}} w swojej pracy przeglądowej "Automatic music transcription: challenges and future directions" przedstawiają kompleksowe omówienie technik ATM. Autorzy omawiają główne wyzwania w dziedzinie, takie jak polifonia, różnorodność instrumentów i style wykonania. W kontekście muzyki fortepianowej, praca ta podkreśla złożoność problemu transkrypcji ze względu na szeroką gamę dynamiczną i bogactwo harmoniczne fortepianu.
-    
-    \item \textbf{Hawthorne et al. (2018) \cite{bib:hawthorne2018onsets}} w artykule "Onsets and frames: Dual-objective piano transcription" prezentują przełomowy model do transkrypcji fortepianowej. Ich podejście, nazwane "Onsets and Frames", wykorzystuje osobne sieci neuronowe do detekcji początków dźwięków i ich trwania. Model ten znacząco poprawił dokładność transkrypcji fortepianowej, osiągając wyniki bliskie ludzkiej dokładności w niektórych aspektach. Jest to jedno z najbardziej zaawansowanych rozwiązań w dziedzinie ATM dla fortepianu, które stanowiło inspirację dla późniejszych prac, w tym modelu Kong et al.
-    
-    \item \textbf{Kelz et al. (2016) \cite{bib:kelz2016potential}} w pracy "On the Potential of Simple Framewise Approaches to Piano Transcription" badają możliwości prostszych podejść do transkrypcji fortepianowej, opierających się na analizie pojedynczych ramek czasowych. Autorzy wykazują, że nawet stosunkowo proste modele mogą osiągać konkurencyjne wyniki, co ma istotne implikacje dla projektowania systemów działających w czasie rzeczywistym.
-    
-    \item \textbf{Cheng et al. (2016) \cite{bib:cheng2016attack}} w artykule "Attack/decay analysis of piano sounds using an exponential model" skupiają się na modelowaniu akustycznych właściwości dźwięków fortepianowych. Ich praca jest istotna dla zrozumienia, jak precyzyjnie analizować początkową fazę dźwięku (atak) oraz jego wygaszanie (decay), co jest kluczowe dla dokładnej transkrypcji dynamiki i artykulacji.
-    
-    \item \textbf{Jeong et al. (2017) \cite{bib:jeong2017deep}} w pracy "Deep Learning for Music" prezentują szerokie zastosowanie technik głębokiego uczenia w różnych zadaniach związanych z przetwarzaniem muzyki, w tym w transkrypcji fortepianowej. Autorzy omawiają, jak różne architektury sieci neuronowych mogą być wykorzystane do modelowania różnych aspektów muzyki, od wysokości dźwięku po ekspresję.
-    
-    \item \textbf{Sigtia et al. (2016) \cite{bib:sigtia2016end}} w pracy "An end-to-end neural network for polyphonic piano music transcription" prezentują kompleksowe podejście do transkrypcji muzyki fortepianowej wykorzystujące głębokie sieci neuronowe. Ich model jest w stanie bezpośrednio przetwarzać surowy sygnał audio na notację muzyczną, co stanowi znaczący krok w kierunku w pełni automatycznej transkrypcji.
+	\item \textbf{Kong et al. (2020) \cite{bib:kong2020high}} w pracy "High-resolution Piano Transcription with Pedals by Regressing Onsets and Offsets Times" prezentują nowatorskie podejście do transkrypcji fortepianowej, które stanowi podstawę modelu wykorzystywanego w projekcie TuneScript. Autorzy proponują metodę wysokiej rozdzielczości czasowej do transkrypcji fortepianowej, która uwzględnia nie tylko detekcję nut, ale także użycie pedałów. Kluczową innowacją jest zastosowanie regresji do precyzyjnego określania czasów początku (onset) i końca (offset) każdej nuty, co pozwala na dokładniejsze odwzorowanie rytmu i artykulacji. Model ten wykazuje znaczącą poprawę w stosunku do wcześniejszych rozwiązań, szczególnie w zakresie precyzji czasowej i detekcji użycia pedałów.
+	      
+	\item \textbf{Benetos et al. (2013) \cite{bib:benetos2013automatic}} w swojej pracy przeglądowej "Automatic music transcription: challenges and future directions" przedstawiają kompleksowe omówienie technik ATM. Autorzy omawiają główne wyzwania w dziedzinie, takie jak polifonia, różnorodność instrumentów i style wykonania. W kontekście muzyki fortepianowej, praca ta podkreśla złożoność problemu transkrypcji ze względu na szeroką gamę dynamiczną i bogactwo harmoniczne fortepianu.
+	          
+	\item \textbf{Hawthorne et al. (2018) \cite{bib:hawthorne2018onsets}} w artykule "Onsets and frames: Dual-objective piano transcription" prezentują przełomowy model do transkrypcji fortepianowej. Ich podejście, nazwane "Onsets and Frames", wykorzystuje osobne sieci neuronowe do detekcji początków dźwięków i ich trwania. Model ten znacząco poprawił dokładność transkrypcji fortepianowej, osiągając wyniki bliskie ludzkiej dokładności w niektórych aspektach. Jest to jedno z najbardziej zaawansowanych rozwiązań w dziedzinie ATM dla fortepianu, które stanowiło inspirację dla późniejszych prac, w tym modelu Kong et al.
+	          
+	\item \textbf{Kelz et al. (2016) \cite{bib:kelz2016potential}} w pracy "On the Potential of Simple Framewise Approaches to Piano Transcription" badają możliwości prostszych podejść do transkrypcji fortepianowej, opierających się na analizie pojedynczych ramek czasowych. Autorzy wykazują, że nawet stosunkowo proste modele mogą osiągać konkurencyjne wyniki, co ma istotne implikacje dla projektowania systemów działających w czasie rzeczywistym.
+	          
+	\item \textbf{Cheng et al. (2016) \cite{bib:cheng2016attack}} w artykule "Attack/decay analysis of piano sounds using an exponential model" skupiają się na modelowaniu akustycznych właściwości dźwięków fortepianowych. Ich praca jest istotna dla zrozumienia, jak precyzyjnie analizować początkową fazę dźwięku (atak) oraz jego wygaszanie (decay), co jest kluczowe dla dokładnej transkrypcji dynamiki i artykulacji.
+	          
+	\item \textbf{Jeong et al. (2017) \cite{bib:jeong2017deep}} w pracy "Deep Learning for Music" prezentują szerokie zastosowanie technik głębokiego uczenia w różnych zadaniach związanych z przetwarzaniem muzyki, w tym w transkrypcji fortepianowej. Autorzy omawiają, jak różne architektury sieci neuronowych mogą być wykorzystane do modelowania różnych aspektów muzyki, od wysokości dźwięku po ekspresję.
+	          
+	\item \textbf{Sigtia et al. (2016) \cite{bib:sigtia2016end}} w pracy "An end-to-end neural network for polyphonic piano music transcription" prezentują kompleksowe podejście do transkrypcji muzyki fortepianowej wykorzystujące głębokie sieci neuronowe. Ich model jest w stanie bezpośrednio przetwarzać surowy sygnał audio na notację muzyczną, co stanowi znaczący krok w kierunku w pełni automatycznej transkrypcji.
 \end{enumerate}
 
 Powyższe prace stanowią fundament teoretyczny dla projektu TuneScript. Pokazują one ewolucję technik ATM dla fortepianu od tradycyjnych metod przetwarzania sygnałów do zaawansowanych modeli uczenia głębokiego. Jednocześnie, literatura ta wskazuje na wciąż istniejące wyzwania, szczególnie w zakresie transkrypcji muzyki polifonicznej, dokładnego odwzorowania dynamiki i ekspresji oraz generowania wysokiej jakości partytur.
@@ -615,260 +630,318 @@ Powyższe prace stanowią fundament teoretyczny dla projektu TuneScript. Pokazuj
 Projekt TuneScript czerpie z tych badań, integrując najnowsze osiągnięcia w dziedzinie ATM z praktycznym aspektem generowania użytecznych partytur. Szczególnie istotna jest praca Kong et al. \cite{bib:kong2020high}, która stanowi podstawę modelu transkrypcji wykorzystywanego w systemie. Model ten, dzięki swojej wysokiej rozdzielczości czasowej i uwzględnieniu pedałów, pozwala na bardziej precyzyjną transkrypcję niż wcześniejsze rozwiązania.
 
 Warto zauważyć, że mimo znaczącego postępu w dziedzinie ATM dla fortepianu, wciąż istnieje przestrzeń do dalszych ulepszeń, szczególnie w zakresie dokładności transkrypcji bardzo złożonych utworów polifonicznych oraz wiernego odwzorowania subtelności ekspresji muzycznej. TuneScript stara się adresować te wyzwania, oferując kompleksowe rozwiązanie łączące zaawansowaną transkrypcję z praktycznym zastosowaniem w postaci generowania partytur.
-%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
 
-% TODO
 \chapter{Wymagania i narzędzia}
 \label{ch:wymagania-i-narzedzia}
 
+Rozdział ten przedstawia przegląd wymagań i narzędzi niezbędnych do realizacji systemu TuneScript. Omówione zostaną zarówno wymagania funkcjonalne i niefunkcjonalne, jak również wymagania sprzętowe i programowe oraz wykorzystane technologie i narzędzia. Szczególną uwagę poświęcono doborowi odpowiednich komponentów i bibliotek, które umożliwiają efektywną implementację złożonych funkcjonalności systemu.
+
+\section{Komponenty, moduły i biblioteki}
+Realizacja systemu TuneScript wymaga wykorzystania szeregu nowoczesnych technologii i narzędzi programistycznych. Wybór konkretnych rozwiązań został podyktowany specyficznymi wymaganiami projektu, takimi jak wydajne przetwarzanie dźwięku, skalowalność systemu oraz zapewnienie intuicyjnego interfejsu użytkownika. Poniżej przedstawiono główne komponenty i biblioteki wraz z uzasadnieniem ich wyboru:
+\begin{itemize}
+	\item \textbf{Frontend}:
+	      \begin{itemize}
+	      	\item Next.js: Framework React wybrany ze względu na:
+	      	      \begin{itemize}
+	      	      	\item Wydajne renderowanie po stronie serwera (SSR)
+	      	      	\item Wbudowaną optymalizację SEO
+	      	      	\item Automatyczny routing i code splitting
+	      	      	\item Wsparcie dla API Routes ułatwiające integrację z backendem
+	      	      \end{itemize}
+	      	\item TypeScript: Rozszerzenie JavaScript zastosowane dla:
+	      	      \begin{itemize}
+	      	      	\item Wczesnego wykrywania błędów dzięki statycznemu typowaniu
+	      	      	\item Lepszej dokumentacji kodu poprzez interfejsy i typy
+	      	      	\item Udoskonalonego wsparcia IDE i autouzupełniania
+	      	      \end{itemize}
+	      	\item Apollo Client: Klient GraphQL wybrany ze względu na:
+	      	      \begin{itemize}
+	      	      	\item Zaawansowane zarządzanie stanem aplikacji
+	      	      	\item Inteligentne cachowanie zapytań
+	      	      	\item Wsparcie dla TypeScript
+	      	      \end{itemize}
+	      \end{itemize}
+	      
+	\item \textbf{Backend}:
+	      \begin{itemize}
+	      	\item Python: Główny język programowania wybrany ze względu na:
+	      	      \begin{itemize}
+	      	      	\item Rozbudowany ekosystem bibliotek do uczenia maszynowego
+	      	      	\item Wydajne przetwarzanie danych numerycznych
+	      	      	\item Czytelną składnię ułatwiającą rozwój projektu
+	      	      \end{itemize}
+	      	\item Django: Framework webowy zastosowany dla:
+	      	      \begin{itemize}
+	      	      	\item Solidnego systemu autentykacji i autoryzacji
+	      	      	\item ORM ułatwiającego pracę z bazą danych
+	      	      	\item Wbudowanych mechanizmów bezpieczeństwa
+	      	      \end{itemize}
+	      	\item Celery z Redis: System kolejkowania wybrany dla:
+	      	      \begin{itemize}
+	      	      	\item Asynchronicznego przetwarzania długotrwałych zadań
+	      	      	\item Efektywnej dystrybucji obciążenia
+	      	      	\item Niezawodnej komunikacji między komponentami
+	      	      \end{itemize}
+	      \end{itemize}
+	      
+	\item \textbf{Komponenty ML}:
+	      \begin{itemize}
+	      	\item PyTorch: Framework ML wybrany ze względu na:
+	      	      \begin{itemize}
+	      	      	\item Elastyczność w definiowaniu modeli neuronowych
+	      	      	\item Wydajne przetwarzanie na GPU
+	      	      	\item Rozbudowane narzędzia do treningu modeli
+	      	      \end{itemize}
+	      	\item Transformers: Biblioteka NLP zastosowana dla:
+	      	      \begin{itemize}
+	      	      	\item Dostępu do najnowszych modeli językowych
+	      	      	\item Gotowych implementacji architektury Transformer
+	      	      	\item Łatwej integracji z PyTorch
+	      	      \end{itemize}
+	      \end{itemize}
+	      
+	\item \textbf{Infrastruktura}:
+	      \begin{itemize}
+	      	\item PostgreSQL: System bazodanowy wybrany ze względu na:
+	      	      \begin{itemize}
+	      	      	\item Wsparcie dla złożonych zapytań i indeksów
+	      	      	\item Niezawodność i skalowalność
+	      	      	\item Dobrą integrację z Django
+	      	      \end{itemize}
+	      	\item Docker z Compose: Narzędzia konteneryzacji zastosowane dla:
+	      	      \begin{itemize}
+	      	      	\item Spójnego środowiska deweloperskiego
+	      	      	\item Łatwego zarządzania mikrousługami
+	      	      	\item Uproszczonego wdrażania aplikacji
+	      	      \end{itemize}
+	      \end{itemize}
+\end{itemize}
+Powyższa struktura technologiczna została zaprojektowana z myślą o zapewnieniu wydajności, skalowalności i łatwości utrzymania systemu. Wybrane narzędzia reprezentują sprawdzone rozwiązania w swoich dziedzinach, jednocześnie oferując nowoczesne podejście do tworzenia aplikacji webowych wspierających uczenie maszynowe.
+Dla zapewnienia jakości kodu i ułatwienia pracy zespołowej, projekt wykorzystuje szereg narzędzi deweloperskich:
+\begin{itemize}
+	\item \textbf{Zarządzanie zależnościami i jakość kodu}:
+	      \begin{itemize}
+	      	\item Poetry: Nowoczesne zarządzanie zależnościami Python
+	      	\item ESLint i Prettier: Spójne formatowanie kodu JavaScript/TypeScript
+	      	\item Black i isort: Automatyczne formatowanie kodu Python
+	      	\item Flake8: Analiza statyczna kodu Python
+	      \end{itemize}
+	\item \textbf{Testowanie}:
+	      \begin{itemize}
+	      	\item pytest: Kompleksowe testowanie komponentów Pythona
+	      	\item Jest: Testy jednostkowe i integracyjne frontendu
+	      	\item Factory Boy: Generowanie danych testowych
+	      \end{itemize}
+\end{itemize}
+
 \section{Wymagania funkcjonalne}
 
-System TuneScript powinien spełniać następujące wymagania funkcjonalne:
+Wymagania funkcjonalne systemu TuneScript definiują konkretne funkcje i możliwości, które system musi zapewniać użytkownikom. Zostały one opracowane na podstawie analizy potrzeb docelowych użytkowników oraz specyfiki procesu transkrypcji muzycznej. System musi zapewniać kompletny zestaw funkcjonalności umożliwiających zarówno pracę z transkrypcjami, jak i interakcję między użytkownikami. Poniżej przedstawiono szczegółowy wykaz wymagań funkcjonalnych:
 
 \begin{enumerate}
-    \item \textbf{Uwierzytelnianie i autoryzacja użytkowników:}
-    \begin{itemize}
-        \item System musi zapewniać funkcjonalności rejestracji, logowania i wylogowywania użytkowników.
-        \item Użytkownicy muszą mieć możliwość resetowania haseł za pomocą poczty elektronicznej.
-    \end{itemize}
-    
-    \item \textbf{Przesyłanie plików:}
-    \begin{itemize}
-        \item System musi umożliwiać użytkownikom przesyłanie plików audio w formatach MP3 i WAV.
-        \item System musi weryfikować format przesyłanych plików.
-    \end{itemize}
-    
-    \item \textbf{Przetwarzanie transkrypcji:}
-    \begin{itemize}
-        \item System musi przetwarzać przesłane pliki audio w celu generowania transkrypcji fortepianowych.
-        \item Transkrypcje powinny być zapisywane w formacie MIDI oraz generowane jako partytury PDF.
-    \end{itemize}
-    
-    \item \textbf{Zarządzanie transkrypcjami:}
-    \begin{itemize}
-        \item Użytkownicy muszą mieć możliwość przeglądania, edytowania i usuwania swoich transkrypcji.
-        \item Użytkownicy muszą mieć możliwość ustawiania widoczności swoich transkrypcji jako publicznych lub prywatnych.
-    \end{itemize}
-    
-    \item \textbf{Funkcjonalność wyszukiwania:}
-    \begin{itemize}
-        \item System musi zapewniać możliwości wyszukiwania transkrypcji na podstawie tytułu, kompozytora i widoczności.
-    \end{itemize}
-    
-    \item \textbf{System oceniania:}
-    \begin{itemize}
-        \item Użytkownicy muszą mieć możliwość oceniania transkrypcji.
-        \item System musi obliczać i wyświetlać średnią ocenę dla każdej transkrypcji.
-    \end{itemize}
-    
-    \item \textbf{Zakładki:}
-    \begin{itemize}
-        \item Użytkownicy muszą mieć możliwość dodawania transkrypcji do ulubionych.
-        \item Użytkownicy muszą mieć możliwość przeglądania i zarządzania swoimi ulubionymi transkrypcjami.
-    \end{itemize}
+	\item \textbf{Uwierzytelnianie i autoryzacja użytkowników:}
+	      \begin{itemize}
+	      	\item System musi zapewniać funkcjonalności rejestracji, logowania i wylogowywania użytkowników.
+	      	\item Użytkownicy muszą mieć możliwość resetowania haseł za pomocą poczty elektronicznej.
+	      \end{itemize}
+	          
+	\item \textbf{Przesyłanie plików:}
+	      \begin{itemize}
+	      	\item System musi umożliwiać użytkownikom przesyłanie plików audio w formatach MP3 i WAV.
+	      	\item System musi weryfikować format przesyłanych plików.
+	      \end{itemize}
+	          
+	\item \textbf{Przetwarzanie transkrypcji:}
+	      \begin{itemize}
+	      	\item System musi przetwarzać przesłane pliki audio w celu generowania transkrypcji fortepianowych.
+	      	\item Transkrypcje powinny być zapisywane w formacie MIDI oraz generowane jako partytury PDF.
+	      \end{itemize}
+	          
+	\item \textbf{Zarządzanie transkrypcjami:}
+	      \begin{itemize}
+	      	\item Użytkownicy muszą mieć możliwość przeglądania, edytowania i usuwania swoich transkrypcji.
+	      	\item Użytkownicy muszą mieć możliwość ustawiania widoczności swoich transkrypcji jako publicznych lub prywatnych.
+	      \end{itemize}
+	          
+	\item \textbf{Funkcjonalność wyszukiwania:}
+	      \begin{itemize}
+	      	\item System musi zapewniać możliwości wyszukiwania transkrypcji na podstawie tytułu, kompozytora i widoczności.
+	      \end{itemize}
+	          
+	\item \textbf{System oceniania:}
+	      \begin{itemize}
+	      	\item Użytkownicy muszą mieć możliwość oceniania transkrypcji.
+	      	\item System musi obliczać i wyświetlać średnią ocenę dla każdej transkrypcji.
+	      \end{itemize}
+	          
+	\item \textbf{Zarządzanie ulubionymi:}
+	      \begin{itemize}
+	      	\item Użytkownicy muszą mieć możliwość dodawania transkrypcji do ulubionych.
+	      	\item Użytkownicy muszą mieć możliwość przeglądania i zarządzania swoimi ulubionymi transkrypcjami.
+	      \end{itemize}
 \end{enumerate}
 
 \section{Wymagania niefunkcjonalne}
 
-System TuneScript powinien spełniać następujące wymagania niefunkcjonalne:
+W celu zapewnienia wysokiej jakości działania systemu, oprócz wymagań funkcjonalnych, zdefiniowano szereg wymagań niefunkcjonalnych. Określają one cechy jakościowe systemu, takie jak wydajność, niezawodność czy bezpieczeństwo. Poniżej przedstawiono kluczowe wymagania niefunkcjonalne:
 
 \begin{enumerate}
-    \item \textbf{Wydajność:}
-    \begin{itemize}
-        \item System musi przetwarzać transkrypcje w rozsądnych ramach czasowych (np. mniej niż 5 minut dla 10-minutowego pliku audio).
-        \item System powinien obsługiwać jednocześnie co najmniej 100 aktywnych użytkowników.
-    \end{itemize}
-    
-    \item \textbf{Użyteczność:}
-    \begin{itemize}
-        \item Interfejs użytkownika musi być intuicyjny i łatwy w nawigacji.
-        \item System musi dostarczać użytkownikom jasne instrukcje i informacje zwrotne.
-    \end{itemize}
-    
-    \item \textbf{Niezawodność:}
-    \begin{itemize}
-        \item System musi być niezawodny, z dostępnością na poziomie 99,9% (nie licząc planowanych przerw technicznych).
-        \item System musi zapewniać mechanizmy automatycznego odzyskiwania po awariach.
-    \end{itemize}
-    
-    \item \textbf{Bezpieczeństwo:}
-    \begin{itemize}
-        \item System musi chronić dane użytkowników za pomocą szyfrowania.
-        \item System musi wykorzystywać bezpieczne mechanizmy uwierzytelniania.
-    \end{itemize}
-    
-    \item \textbf{Kompatybilność:}
-    \begin{itemize}
-        \item System musi być kompatybilny z najnowszymi wersjami przeglądarek Chrome, Firefox, Safari i Edge.
-        \item Interfejs użytkownika powinien być responsywny i działać na urządzeniach mobilnych.
-    \end{itemize}
-    
-    \item \textbf{Skalowalność:}
-    \begin{itemize}
-        \item System musi być zdolny do obsługi rosnącej liczby użytkowników i transkrypcji bez znaczącego wpływu na wydajność.
-    \end{itemize}
-    
-    \item \textbf{Łatwość utrzymania:}
-    \begin{itemize}
-        \item System musi być modułowy, umożliwiając łatwe aktualizacje i rozszerzenia.
-        \item System musi posiadać kompletną dokumentację techniczną i użytkownika.
-    \end{itemize}
+	\item \textbf{Wydajność:}
+	      Wydajność systemu jest kluczowa dla zapewnienia dobrego doświadczenia użytkownika. System powinien spełniać następujące kryteria:
+	      \begin{itemize}
+	      	\item System musi przetwarzać transkrypcje w rozsądnych ramach czasowych (np. mniej niż 5 minut dla 10-minutowego pliku audio).
+	      	\item System powinien obsługiwać jednocześnie co najmniej 100 aktywnych użytkowników.
+	      \end{itemize}
+	          
+	\item \textbf{Użyteczność i doświadczenie użytkownika:}
+	      \begin{itemize}
+	      	\item Interfejs użytkownika musi być intuicyjny i łatwy w nawigacji.
+	      	\item System musi dostarczać użytkownikom jasne instrukcje i informacje zwrotne.
+	      \end{itemize}
+	          
+	\item \textbf{Niezawodność i dostępność:}
+	      \begin{itemize}
+	      	\item System musi być niezawodny, z dostępnością na poziomie 99,9\% (nie licząc planowanych przerw technicznych).
+	      	\item System musi zapewniać mechanizmy automatycznego odzyskiwania po awariach.
+	      \end{itemize}
+	          
+	\item \textbf{Bezpieczeństwo i prywatność:}
+	      \begin{itemize}
+	      	\item System musi chronić dane użytkowników za pomocą szyfrowania.
+	      	\item System musi wykorzystywać bezpieczne mechanizmy uwierzytelniania.
+	      \end{itemize}
+	          
+	\item \textbf{Kompatybilność i dostępność:}
+	      \begin{itemize}
+	      	\item System musi być kompatybilny z najnowszymi wersjami przeglądarek Chrome, Firefox, Safari i Edge.
+	      	\item Interfejs użytkownika powinien być responsywny i działać na urządzeniach mobilnych.
+	      \end{itemize}
 \end{enumerate}
 
 \section{Wymagania sprzętowe i programowe}
 
-\subsection{Wymagania dla użytkowników}
+Prawidłowe funkcjonowanie systemu TuneScript wymaga spełnienia określonych wymagań technicznych, zarówno po stronie klienta, jak i serwera. Wymagania te zostały zoptymalizowane tak, aby zapewnić szeroką dostępność systemu przy jednoczesnym zachowaniu wysokiej jakości działania.
+
+\subsection{Wymagania dla użytkowników końcowych}
+System został zaprojektowany z myślą o minimalnych wymaganiach sprzętowych dla użytkowników końcowych:
+
 \begin{itemize}
-    \item Urządzenie z dostępem do internetu (komputer, tablet lub smartfon)
-    \item Nowoczesna przeglądarka internetowa (Chrome, Firefox, Safari lub Edge w najnowszej wersji)
-    \item Minimum 4 GB RAM dla optymalnego działania aplikacji
-    \item Stabilne połączenie internetowe o prędkości co najmniej 5 Mbps
+	\item Urządzenie z dostępem do internetu (komputer, tablet lub smartfon)
+	\item Nowoczesna przeglądarka internetowa (Chrome, Firefox, Safari lub Edge w najnowszej wersji)
+	\item Minimum 4 GB RAM dla optymalnego działania aplikacji
+	\item Stabilne połączenie internetowe o prędkości co najmniej 5 Mbps
 \end{itemize}
 
-\subsection{Wymagania dla serwera}
+\subsection{Wymagania dla środowiska serwerowego}
+Dla zapewnienia płynnej pracy systemu, serwer musi spełniać następujące wymagania:
+
 \begin{itemize}
-    \item Procesor: minimum 4 rdzenie, zalecane 8 rdzeni
-    \item RAM: minimum 16 GB, zalecane 32 GB
-    \item Dysk: minimum 100 GB przestrzeni dyskowej SSD
-    \item System operacyjny: Linux (zalecany Ubuntu 20.04 LTS lub nowszy)
-    \item Stabilne połączenie internetowe o wysokiej przepustowości
+	\item Procesor: minimum 4 rdzenie, zalecane 8 rdzeni
+	\item RAM: minimum 16 GB, zalecane 32 GB
+	\item Dysk: minimum 100 GB przestrzeni dyskowej SSD
+	\item System operacyjny: Linux (zalecany Ubuntu 20.04 LTS lub nowszy)
+	\item Stabilne połączenie internetowe o wysokiej przepustowości
 \end{itemize}
 
 \section{Przypadki użycia}
 
-Główne przypadki użycia systemu TuneScript obejmują:
+Zdefiniowane przypadki użycia przedstawiają typowe interakcje użytkowników z systemem TuneScript. Dokumentacja przypadków użycia pozwala na lepsze zrozumienie sposobu, w jaki różni użytkownicy będą korzystać z systemu oraz jakie funkcjonalności muszą być dostępne dla poszczególnych grup użytkowników.
+
+Kluczowe przypadki użycia obejmują:
 
 \begin{itemize}
-    \item \textbf{Rejestracja użytkownika:} Nowy użytkownik może utworzyć konto, podając wymagane informacje.
-    \item \textbf{Logowanie użytkownika:} Zarejestrowany użytkownik może zalogować się do systemu.
-    \item \textbf{Przesyłanie pliku audio:} Użytkownik może przesłać plik audio w formacie MP3 lub WAV do transkrypcji.
-    \item \textbf{Generowanie transkrypcji:} System przetwarza przesłany plik audio i generuje transkrypcję MIDI oraz partyturę PDF.
-    \item \textbf{Przeglądanie transkrypcji:} Użytkownik może przeglądać swoje oraz publiczne transkrypcje innych użytkowników.
-    \item \textbf{Edycja transkrypcji:} Użytkownik może edytować metadane swoich transkrypcji.
-    \item \textbf{Wyszukiwanie transkrypcji:} Użytkownik może wyszukiwać transkrypcje na podstawie różnych kryteriów.
-    \item \textbf{Ocenianie transkrypcji:} Użytkownik może oceniać transkrypcje innych użytkowników.
-    \item \textbf{Dodawanie do ulubionych:} Użytkownik może dodawać transkrypcje do listy ulubionych.
-    \item \textbf{Zarządzanie kontem:} Użytkownik może zarządzać ustawieniami swojego konta.
+	\item \textbf{Rejestracja i uwierzytelnianie:} Obejmuje proces tworzenia konta, logowania i zarządzania dostępem do systemu.
+	\item \textbf{Zarządzanie transkrypcjami:} Dotyczy przesyłania plików audio, generowania transkrypcji oraz zarządzania wygenerowanymi partyturami.
+	\item \textbf{Interakcje społecznościowe:} Obejmuje ocenianie transkrypcji, dodawanie ich do ulubionych oraz udostępnianie innym użytkownikom.
+	\item \textbf{Wyszukiwanie i przeglądanie:} Dotyczy możliwości przeszukiwania bazy transkrypcji i przeglądania dostępnych materiałów.
+	\item \textbf{Zarządzanie kontem:} Obejmuje funkcje związane z personalizacją ustawień konta i preferencji użytkownika.
 \end{itemize}
 
 
-% TODO
 \chapter{Specyfikacja zewnętrzna}
 \label{ch:04}
 
+Rozdział ten przedstawia specyfikację zewnętrzną systemu TuneScript, opisując interfejsy użytkownika, scenariusze korzystania z systemu oraz wymagania dotyczące integracji z innymi systemami. Specyfikacja zewnętrzna ma na celu zaprezentowanie funkcjonalności systemu z perspektywy użytkownjsona, uwzględniając różne przypadki użycia i interakcje z systemem.
+
 \section{Wymagania sprzętowe i programowe}
 
-\subsection{Wymagania sprzętowe}
-\begin{itemize} 
-    \item Serwer: 
-    \begin{itemize}
-        \item Procesor: minimum 4 rdzenie, zalecane 8 rdzeni
-        \item RAM: minimum 8 GB, zalecane 16 GB
-        \item Dysk: minimum 100 GB przestrzeni dyskowej SSD
-    \end{itemize}
-    \item Klient:
-    \begin{itemize}
-        \item Dowolne urządzenie z przeglądarką internetową i dostępem do internetu
-    \end{itemize}
-\end{itemize}
+System TuneScript został zaprojektowany jako aplikacja webowa działająca w architekturze klient-serwer. Poniżej przedstawiono minimalne i zalecane wymagania sprzętowe oraz programowe niezbędne do prawidłowego funkcjonowania systemu.
 
 \subsection{Wymagania programowe}
-\begin{itemize}
-    \item Serwer:
-    \begin{itemize}
-        \item System operacyjny: Linux (zalecany Ubuntu 20.04 LTS lub nowszy)
-        \item Docker w wersji 20.10 lub nowszej
-        \item Docker Compose w wersji 1.29 lub nowszej
-    \end{itemize}
-    \item Klient:
-    \begin{itemize}
-        \item Nowoczesna przeglądarka internetowa (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
-    \end{itemize}
-\end{itemize}
+Do uruchomienia systemu TuneScript wymagane jest odpowiednie środowisko programowe. Na serwerze konieczny jest system operacyjny Linux (zalecany Ubuntu 20.04 LTS lub nowszy) wraz z zainstalowanym Dockerem w wersji 20.10 lub nowszej oraz Docker Compose w wersji 1.29 lub nowszej. Po stronie klienta wymagana jest jedynie nowoczesna przeglądarka internetowa, taka jak Chrome 90+, Firefox 88+, Safari 14+ lub Edge 90+.
 
 \section{Kategorie użytkowników}
 
-\begin{itemize}
-    \item \textbf{Niezarejestrowani użytkownicy}: Mogą przeglądać publiczne transkrypcje.
-    \item \textbf{Zarejestrowani użytkownicy}: Mogą przesyłać pliki audio, generować transkrypcje, zarządzać własnymi transkrypcjami, oceniać i dodawać do ulubionych transkrypcje innych użytkowników.
-    \item \textbf{Administratorzy}: Mają pełny dostęp do systemu, w tym do panelu administracyjnego.
-\end{itemize}
+System TuneScript przewiduje trzy główne kategorie użytkowników, różniące się poziomem dostępu i możliwościami w systemie. Niezarejestrowani użytkownicy mogą przeglądać jedynie publiczne transkrypcje. Zarejestrowani użytkownicy otrzymują dostęp do pełnej funkcjonalności systemu, włączając możliwość przesyłania plików audio, generowania transkrypcji oraz zarządzania własnymi materiałami. Administratorzy posiadają pełny dostęp do systemu, w tym do panelu administracyjnego, umożliwiającego zarządzanie użytkownikami i konfiguracją systemu.
 
 \section{Sposób obsługi}
 
+Korzystanie z systemu TuneScript zostało zaprojektowane w sposób intuicyjny i przyjazny dla użytkownika. Poniżej przedstawiono główne funkcjonalności systemu oraz sposób ich obsługi:
+
 \begin{enumerate}
     \item \textbf{Rejestracja i logowanie}:
-    \begin{itemize}
-        \item Użytkownik może zarejestrować się, podając nazwę użytkownika, adres e-mail i hasło.
-        \item Następnie otrzymuje e-mail z linkiem potwierdzającym.
-        \item Po potiwerdzeniu, użytkownik może zalogować się do systemu.
-    \end{itemize}
-    
+          \begin{itemize}
+            \item Użytkownik może zarejestrować się, podając nazwę użytkownika, adres e-mail i hasło
+            \item Następnie otrzymuje e-mail z linkiem potwierdzającym
+            \item Po potwierdzeniu, użytkownik może zalogować się do systemu
+          \end{itemize}
+          
     \item \textbf{Przesyłanie pliku audio}:
-    \begin{itemize}
-        \item Zalogowany użytkownik może przesłać plik audio w formacie MP3 lub WAV.
-        \item System weryfikuje format pliku.
-    \end{itemize}
-    
+          \begin{itemize}
+            \item Zalogowany użytkownik może przesłać plik audio w formacie MP3 lub WAV
+            \item System weryfikuje format pliku
+          \end{itemize}
+          
     \item \textbf{Generowanie transkrypcji}:
-    \begin{itemize}
-        \item Po przesłaniu pliku, system automatycznie rozpoczyna proces transkrypcji.
-        \item Użytkownik jest informowany o postępie procesu.
-    \end{itemize}
-    
+          \begin{itemize}
+            \item Po przesłaniu pliku, system automatycznie rozpoczyna proces transkrypcji
+            \item Użytkownik jest informowany o postępie procesu
+          \end{itemize}
+          
     \item \textbf{Zarządzanie transkrypcjami}:
-    \begin{itemize}
-        \item Użytkownik może przeglądać, edytować i usuwać swoje transkrypcje.
-        \item Możliwe jest ustawienie widoczności transkrypcji jako publicznej lub prywatnej.
-    \end{itemize}
-    
+          \begin{itemize}
+            \item Użytkownik może przeglądać, edytować i usuwać swoje transkrypcje
+            \item Możliwe jest ustawienie widoczności transkrypcji jako publicznej lub prywatnej
+          \end{itemize}
+          
     \item \textbf{Wyszukiwanie i przeglądanie transkrypcji}:
-    \begin{itemize}
-        \item Użytkownicy mogą wyszukiwać transkrypcje po tytule, kompozytorze i widoczności.
-        \item Możliwe jest przeglądanie publicznych transkrypcji innych użytkowników.
-    \end{itemize}
-    
+          \begin{itemize}
+            \item Użytkownicy mogą wyszukiwać transkrypcje po tytule, kompozytorze i widoczności
+            \item Możliwe jest przeglądanie publicznych transkrypcji innych użytkowników
+          \end{itemize}
+          
     \item \textbf{Ocenianie i dodawanie do ulubionych}:
-    \begin{itemize}
-        \item Zalogowani użytkownicy mogą oceniać transkrypcje.
-        \item Możliwe jest dodawanie transkrypcji do listy ulubionych.
-    \end{itemize}
+          \begin{itemize}
+            \item Zalogowani użytkownicy mogą oceniać transkrypcje
+            \item Możliwe jest dodawanie transkrypcji do listy ulubionych
+          \end{itemize}
 \end{enumerate}
 
 \section{Administracja systemem}
 
-Administratorzy mają dostęp do panelu administracyjnego Django, który umożliwia:
-\begin{itemize}
-    \item Zarządzanie kontami użytkowników
-    \item Przeglądanie i moderowanie transkrypcji
-    \item Monitorowanie aktywności systemu
-    \item Konfigurację ustawień systemu
-\end{itemize}
+Panel administracyjny systemu TuneScript, zbudowany w oparciu o framework Django, zapewnia administratorom pełną kontrolę nad funkcjonowaniem aplikacji. Administrator ma możliwość zarządzania kontami użytkowników, moderowania treści oraz monitorowania aktywności systemu. Panel umożliwia również konfigurację kluczowych ustawień systemu i generowanie raportów dotyczących jego wykorzystania. Do głównych zadań administracyjnych należy weryfikacja nowych użytkowników, monitorowanie jakości transkrypcji oraz zarządzanie zasobami systemowymi.
 
 \section{Kwestie bezpieczeństwa}
 
-\begin{itemize}
-    \item Wszystkie hasła są przechowywane w formie zaszyfrowanej.
-    \item Komunikacja między klientem a serwerem jest szyfrowana za pomocą HTTPS.
-    \item System wykorzystuje tokeny JWT do uwierzytelniania użytkowników.
-    \item Implementacja mechanizmów ochrony przed atakami CSRF i XSS.
-    \item Regularne aktualizacje wszystkich wykorzystywanych bibliotek i zależności.
-\end{itemize}
+Bezpieczeństwo danych i prywatność użytkowników stanowią kluczowy aspekt systemu TuneScript. Wszystkie dane przesyłane między klientem a serwerem są szyfrowane przy użyciu protokołu HTTPS, a hasła użytkowników przechowywane są w formie zaszyfrowanej z wykorzystaniem nowoczesnych algorytmów haszujących. System implementuje mechanizm uwierzytelniania oparty na tokenach JWT oraz zaawansowane zabezpieczenia przed popularnymi rodzajami ataków, takimi jak CSRF i XSS. Regularnie przeprowadzane są aktualizacje wszystkich wykorzystywanych bibliotek i zależności, co pozwala na utrzymanie wysokiego poziomu bezpieczeństwa. System został również wyposażony w mechanizmy monitorowania i wykrywania potencjalnych zagrożeń.
 
 \section{Przykład działania}
 
-Poniżej przedstawiono przykładowy scenariusz korzystania z systemu TuneScript:
+Dla lepszego zrozumienia funkcjonowania systemu, poniżej przedstawiono typowy scenariusz użycia aplikacji TuneScript:
 
 \begin{enumerate}
-    \item Użytkownik rejestruje się w systemie.
-    \item Po zalogowaniu, użytkownik przesyła plik audio zawierający nagranie fortepianowe.
-    \item System przetwarza plik i generuje transkrypcję.
-    \item Użytkownik może przeglądać, edytować i pobierać wygenerowaną transkrypcję.
-    \item Użytkownik ustawia transkrypcję jako publiczną.
-    \item Inni użytkownicy mogą przeglądać, oceniać i dodawać transkrypcję do ulubionych.
+    \item Użytkownik rozpoczyna od rejestracji w systemie, podając wymagane dane osobowe.
+    \item Po potwierdzeniu rejestracji poprzez link aktywacyjny, użytkownik loguje się do systemu.
+    \item Następnie przesyła plik audio zawierający nagranie fortepianowe w jednym z obsługiwanych formatów.
+    \item System automatycznie rozpoczyna proces przetwarzania pliku i generowania transkrypcji.
+    \item W czasie rzeczywistym wyświetlany jest postęp procesu transkrypcji.
+    \item Po zakończeniu procesu, użytkownik otrzymuje dostęp do wygenerowanej transkrypcji.
+    \item Transkrypcję można przeglądać, edytować parametry oraz pobierać w różnych formatach.
+    \item Użytkownik może zdecydować o udostępnieniu transkrypcji publicznie.
+    \item Inni użytkownicy mogą wyszukać, przeglądać i oceniać udostępnioną transkrypcję.
 \end{enumerate}
 
 \section{Scenariusze korzystania z systemu}
@@ -915,10 +988,10 @@ TuneScript to zaawansowana aplikacja webowa, która automatyzuje proces transkry
 Kluczowe aspekty idei TuneScript obejmują:
 
 \begin{itemize}
-    \item Wykorzystanie zaawansowanych technik przetwarzania sygnałów audio do precyzyjnej detekcji nut.
-    \item Implementację modelu głębokiego uczenia do transkrypcji muzyki fortepianowej.
-    \item Integrację procesu transkrypcji z systemem generowania partytur.
-    \item Stworzenie przyjaznego dla użytkownika interfejsu webowego do zarządzania transkrypcjami.
+	\item Wykorzystanie zaawansowanych technik przetwarzania sygnałów audio do precyzyjnej detekcji nut.
+	\item Implementację modelu głębokiego uczenia do transkrypcji muzyki fortepianowej.
+	\item Integrację procesu transkrypcji z systemem generowania partytur.
+	\item Stworzenie przyjaznego dla użytkownika interfejsu webowego do zarządzania transkrypcjami.
 \end{itemize}
 
 \section{Architektura systemu}
@@ -926,22 +999,22 @@ Kluczowe aspekty idei TuneScript obejmują:
 TuneScript został zaprojektowany w oparciu o modularną architekturę, która łączy elementy aplikacji monolitycznej z pewnymi aspektami architektury rozproszonej. Takie podejście zapewnia elastyczność, skalowalność i łatwość utrzymania. Główne komponenty systemu to:
 
 \begin{enumerate}
-    \item \textbf{Frontend}: Implementowany w Next.js i TypeScript, zapewniający responsywny i interaktywny interfejs użytkownika.
-    \item \textbf{Backend API}: Napisany w Django i Graphene, obsługujący żądania od frontendu i zarządzający logiką biznesową.
-    \item \textbf{Usługa transkrypcji}: Zintegrowana z backendem, odpowiedzialna za przetwarzanie plików audio i generowanie transkrypcji MIDI.
-    \item \textbf{Usługa generowania partytur}: Zintegrowana z backendem, konwertuje pliki MIDI na partytury PDF.
-    \item \textbf{Baza danych}: PostgreSQL przechowujący dane użytkowników, metadane transkrypcji i inne informacje.
-    \item \textbf{System kolejkowania}: Implementowany z użyciem Celery i Redis, zarządzający asynchronicznymi zadaniami.
-    \item \textbf{Chatbot}: Oddzielny serwis oparty na Flask, implementujący system RAG do odpowiadania na pytania użytkowników dotyczące funkcjonalności systemu.
+	\item \textbf{Frontend}: Implementowany w Next.js i TypeScript, zapewniający responsywny i interaktywny interfejs użytkownika.
+	\item \textbf{Backend API}: Napisany w Django i Graphene, obsługujący żądania od frontendu i zarządzający logiką biznesową.
+	\item \textbf{Usługa transkrypcji}: Zintegrowana z backendem, odpowiedzialna za przetwarzanie plików audio i generowanie transkrypcji MIDI.
+	\item \textbf{Usługa generowania partytur}: Zintegrowana z backendem, konwertuje pliki MIDI na partytury PDF.
+	\item \textbf{Baza danych}: PostgreSQL przechowujący dane użytkowników, metadane transkrypcji i inne informacje.
+	\item \textbf{System kolejkowania}: Implementowany z użyciem Celery i Redis, zarządzający asynchronicznymi zadaniami.
+	\item \textbf{Chatbot}: Oddzielny serwis oparty na Flask, implementujący system RAG do odpowiadania na pytania użytkowników dotyczące funkcjonalności systemu.
 \end{enumerate}
 
 Ta architektura, choć nie jest klasyczną implementacją mikrousług, pozwala na efektywne zarządzanie złożonością systemu i umożliwia niezależne skalowanie poszczególnych komponentów, szczególnie w przypadku chatbota i systemu kolejkowania.
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{diagrams/architecture_diagram.png}
-    \caption{Diagram architektury systemu TuneScript}
-    \label{fig:architecture_diagram}
+	\centering
+	\includegraphics[width=0.8\textwidth]{diagrams/architecture_diagram.png}
+	\caption{Diagram architektury systemu TuneScript}
+	\label{fig:architecture_diagram}
 \end{figure}
 
 \section{Opis struktur danych i organizacji bazy danych}
@@ -949,34 +1022,34 @@ Ta architektura, choć nie jest klasyczną implementacją mikrousług, pozwala n
 TuneScript wykorzystuje relacyjną bazę danych PostgreSQL do przechowywania danych. Schemat bazy danych przedstawiony jest na Rysunku \ref{fig:database_schema}. Główne modele w bazie danych to:
 
 \begin{itemize}
-    \item \textbf{User}: Rozszerzenie standardowego modelu użytkownika Django, zawierające dodatkowe pole do potwierdzenia e-maila.
-    
-    \item \textbf{Profile}: Przechowuje dodatkowe informacje o użytkowniku, takie jak biografia, zdjęcie profilowe, preferencje oraz informacje o statusie premium.
-    
-    \item \textbf{AudioFile}: Zawiera informacje o przesłanych plikach audio, w tym tytuł i ścieżkę do pliku.
-    
-    \item \textbf{Transcription}: Przechowuje metadane transkrypcji, w tym odniesienia do pliku audio, użytkownika, tagów, oraz informacje o statusie, ocenach i widoczności.
-    
-    \item \textbf{Rating}: Zawiera oceny użytkowników dla poszczególnych transkrypcji.
-    
-    \item \textbf{Favorite}: Przechowuje informacje o ulubionych transkrypcjach użytkowników.
-    
-    \item \textbf{MIDIFile}: Zawiera informacje o wygenerowanych plikach MIDI dla transkrypcji.
-    
-    \item \textbf{SheetMusic}: Przechowuje informacje o wygenerowanych partyturach PDF dla transkrypcji.
-    
-    \item \textbf{Tag}: Zawiera tagi, które mogą być przypisane do transkrypcji.
-    
-    \item \textbf{UserPlayHistory}: Przechowuje historię odtwarzania transkrypcji przez użytkowników, w tym czas odtwarzania i liczbę odtworzeń.
+	\item \textbf{User}: Rozszerzenie standardowego modelu użytkownika Django, zawierające dodatkowe pole do potwierdzenia e-maila.
+	          
+	\item \textbf{Profile}: Przechowuje dodatkowe informacje o użytkowniku, takie jak biografia, zdjęcie profilowe, preferencje oraz informacje o statusie premium.
+	          
+	\item \textbf{AudioFile}: Zawiera informacje o przesłanych plikach audio, w tym tytuł i ścieżkę do pliku.
+	          
+	\item \textbf{Transcription}: Przechowuje metadane transkrypcji, w tym odniesienia do pliku audio, użytkownika, tagów, oraz informacje o statusie, ocenach i widoczności.
+	          
+	\item \textbf{Rating}: Zawiera oceny użytkowników dla poszczególnych transkrypcji.
+	          
+	\item \textbf{Favorite}: Przechowuje informacje o ulubionych transkrypcjach użytkowników.
+	          
+	\item \textbf{MIDIFile}: Zawiera informacje o wygenerowanych plikach MIDI dla transkrypcji.
+	          
+	\item \textbf{SheetMusic}: Przechowuje informacje o wygenerowanych partyturach PDF dla transkrypcji.
+	          
+	\item \textbf{Tag}: Zawiera tagi, które mogą być przypisane do transkrypcji.
+	          
+	\item \textbf{UserPlayHistory}: Przechowuje historię odtwarzania transkrypcji przez użytkowników, w tym czas odtwarzania i liczbę odtworzeń.
 \end{itemize}
 
 Modele te są ze sobą powiązane za pomocą kluczy obcych, tworząc kompleksową strukturę danych, która umożliwia efektywne zarządzanie informacjami w systemie TuneScript. Jak widać na Rysunku \ref{fig:database_schema}, szczególną uwagę zwrócono na optymalizację wydajności poprzez zastosowanie indeksów oraz unikalnych ograniczeń tam, gdzie jest to konieczne.
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{diagrams/database_diagram.png}
-    \caption{Schemat bazy danych TuneScript}
-    \label{fig:database_schema}
+	\centering
+	\includegraphics[width=0.8\textwidth]{diagrams/database_diagram.png}
+	\caption{Schemat bazy danych TuneScript}
+	\label{fig:database_schema}
 \end{figure}
 
 \section{Komponenty, moduły i biblioteki}
@@ -984,44 +1057,44 @@ Modele te są ze sobą powiązane za pomocą kluczy obcych, tworząc kompleksow�
 Główne komponenty i biblioteki wykorzystywane w projekcie TuneScript:
 
 \begin{itemize}
-    \item \textbf{Frontend}:
-    \begin{itemize}
-        \item Next.js: Framework React do renderowania po stronie serwera
-        \item TypeScript: Typowany nadzbiór JavaScript
-        \item Apollo Client: Klient GraphQL do komunikacji z backendem
-        \item Tailwind CSS: Framework CSS do stylizacji
-    \end{itemize}
-    \item \textbf{Backend}:
-    \begin{itemize}
-        \item Python: Główny język programowania
-        \item Django: Framework webowy Python
-        \item Graphene: Biblioteka do implementacji API GraphQL
-        \item Celery: System kolejkowania zadań
-        \item Redis: Broker wiadomości dla Celery
-        \item PyTorch: Biblioteka do uczenia maszynowego, używana w modelu transkrypcji
-        \item Librosa: Biblioteka do analizy audio
-        \item Flask: Lekki framework webowy
-        \item Transformers: Biblioteka do przetwarzania języka naturalnego
-    \end{itemize}
-    \item \textbf{Baza danych}:
-    \begin{itemize}
-        \item PostgreSQL: System zarządzania relacyjną bazą danych
-    \end{itemize}
-    \item \textbf{Narzędzia deweloperskie}:
-    \begin{itemize}
-        \item Docker i Docker Compose: Do konteneryzacji i orkiestracji usług
-        \item Poetry: Zarządzanie zależnościami Python
-        \item ESLint: Narzędzie do analizy statycznej kodu JavaScript/TypeScript
-        \item Black: Formatter kodu Python
-        \item isort: Narzędzie do sortowania importów w Pythonie
-        \item Flake8: Linter kodu Python
-    \end{itemize}
-    \item \textbf{Narzędzia testowe}:
-    \begin{itemize}
-        \item Factory Boy: Biblioteka do generowania obiektów testowych w Pythonie
-        \item pytest: Framework testowy dla Pythona
-        \item Jest: Framework testowy dla JavaScript/TypeScript
-    \end{itemize}
+	\item \textbf{Frontend}:
+	      \begin{itemize}
+	      	\item Next.js: Framework React do renderowania po stronie serwera
+	      	\item TypeScript: Typowany nadzbiór JavaScript
+	      	\item Apollo Client: Klient GraphQL do komunikacji z backendem
+	      	\item Tailwind CSS: Framework CSS do stylizacji
+	      \end{itemize}
+	\item \textbf{Backend}:
+	      \begin{itemize}
+	      	\item Python: Główny język programowania
+	      	\item Django: Framework webowy Python
+	      	\item Graphene: Biblioteka do implementacji API GraphQL
+	      	\item Celery: System kolejkowania zadań
+	      	\item Redis: Broker wiadomości dla Celery
+	      	\item PyTorch: Biblioteka do uczenia maszynowego, używana w modelu transkrypcji
+	      	\item Librosa: Biblioteka do analizy audio
+	      	\item Flask: Lekki framework webowy
+	      	\item Transformers: Biblioteka do przetwarzania języka naturalnego
+	      \end{itemize}
+	\item \textbf{Baza danych}:
+	      \begin{itemize}
+	      	\item PostgreSQL: System zarządzania relacyjną bazą danych
+	      \end{itemize}
+	\item \textbf{Narzędzia deweloperskie}:
+	      \begin{itemize}
+	      	\item Docker i Docker Compose: Do konteneryzacji i orkiestracji usług
+	      	\item Poetry: Zarządzanie zależnościami Python
+	      	\item ESLint: Narzędzie do analizy statycznej kodu JavaScript/TypeScript
+	      	\item Black: Formatter kodu Python
+	      	\item isort: Narzędzie do sortowania importów w Pythonie
+	      	\item Flake8: Linter kodu Python
+	      \end{itemize}
+	\item \textbf{Narzędzia testowe}:
+	      \begin{itemize}
+	      	\item Factory Boy: Biblioteka do generowania obiektów testowych w Pythonie
+	      	\item pytest: Framework testowy dla Pythona
+	      	\item Jest: Framework testowy dla JavaScript/TypeScript
+	      \end{itemize}
 \end{itemize}
 
 \section{Skrypty deweloperskie}
@@ -1061,11 +1134,11 @@ Te skrypty umożliwiają łatwe uruchamianie, zatrzymywanie i restartowanie apli
 Kluczowym algorytmem w systemie TuneScript jest model transkrypcji muzycznej oparty na pracy Kong et al. (2020) "High-resolution Piano Transcription with Pedals by Regressing Onsets and Offsets Times". Główne etapy tego algorytmu to:
 
 \begin{enumerate}
-    \item Przetwarzanie wstępne sygnału audio (np. normalizacja, konwersja do spektrogramu).
-    \item Analiza sygnału przez sieć konwolucyjną w celu wykrycia początków (onset) i końców (offset) nut.
-    \item Regresja czasów początku i końca każdej nuty.
-    \item Detekcja użycia pedałów fortepianu.
-    \item Generowanie transkrypcji MIDI na podstawie wykrytych nut i pedałów.
+	\item Przetwarzanie wstępne sygnału audio (np. normalizacja, konwersja do spektrogramu).
+	\item Analiza sygnału przez sieć konwolucyjną w celu wykrycia początków (onset) i końców (offset) nut.
+	\item Regresja czasów początku i końca każdej nuty.
+	\item Detekcja użycia pedałów fortepianu.
+	\item Generowanie transkrypcji MIDI na podstawie wykrytych nut i pedałów.
 \end{enumerate}
 
 \section{Szczegóły implementacji wybranych fragmentów}
@@ -1151,38 +1224,38 @@ class CreateTranscription(graphene.Mutation):
 \chapter{Weryfikacja i walidacja}
 \label{ch:06}
 \begin{itemize}
-\item sposób testowania w ramach pracy (np. odniesienie do modelu V)
-\item organizacja eksperymentów
-\item przypadki testowe zakres testowania (pełny/niepełny)
-\item wykryte i usunięte błędy
-\item opcjonalnie wyniki badań eksperymentalnych
+	\item sposób testowania w ramach pracy (np. odniesienie do modelu V)
+	\item organizacja eksperymentów
+	\item przypadki testowe zakres testowania (pełny/niepełny)
+	\item wykryte i usunięte błędy
+	\item opcjonalnie wyniki badań eksperymentalnych
 \end{itemize}
 
 \begin{table}
-\centering
-\caption{Nagłówek tabeli jest nad tabelą.}
-\label{id:tab:wyniki}
-\begin{tabular}{rrrrrrrr}
-\toprule
-	         &                                     \multicolumn{7}{c}{metoda}                                      \\
-	         \cmidrule{2-8}
-	         &         &         &        \multicolumn{3}{c}{alg. 3}        & \multicolumn{2}{c}{alg. 4, $\gamma = 2$} \\
-	         \cmidrule(r){4-6}\cmidrule(r){7-8}
-	$\zeta$ &     alg. 1 &   alg. 2 & $\alpha= 1.5$ & $\alpha= 2$ & $\alpha= 3$ &   $\beta = 0.1$  &   $\beta = -0.1$ \\
-\midrule
-	       0 &  8.3250 & 1.45305 &       7.5791 &    14.8517 &    20.0028 & 1.16396 &                       1.1365 \\
-	       5 &  0.6111 & 2.27126 &       6.9952 &    13.8560 &    18.6064 & 1.18659 &                       1.1630 \\
-	      10 & 11.6126 & 2.69218 &       6.2520 &    12.5202 &    16.8278 & 1.23180 &                       1.2045 \\
-	      15 &  0.5665 & 2.95046 &       5.7753 &    11.4588 &    15.4837 & 1.25131 &                       1.2614 \\
-	      20 & 15.8728 & 3.07225 &       5.3071 &    10.3935 &    13.8738 & 1.25307 &                       1.2217 \\
-	      25 &  0.9791 & 3.19034 &       5.4575 &     9.9533 &    13.0721 & 1.27104 &                       1.2640 \\
-	      30 &  2.0228 & 3.27474 &       5.7461 &     9.7164 &    12.2637 & 1.33404 &                       1.3209 \\
-	      35 & 13.4210 & 3.36086 &       6.6735 &    10.0442 &    12.0270 & 1.35385 &                       1.3059 \\
-	      40 & 13.2226 & 3.36420 &       7.7248 &    10.4495 &    12.0379 & 1.34919 &                       1.2768 \\
-	      45 & 12.8445 & 3.47436 &       8.5539 &    10.8552 &    12.2773 & 1.42303 &                       1.4362 \\
-	      50 & 12.9245 & 3.58228 &       9.2702 &    11.2183 &    12.3990 & 1.40922 &                       1.3724 \\
-\bottomrule
-\end{tabular}
+	\centering
+	\caption{Nagłówek tabeli jest nad tabelą.}
+	\label{id:tab:wyniki}
+	\begin{tabular}{rrrrrrrr}
+		\toprule
+		&                                     \multicolumn{7}{c}{metoda}                                      \\
+		\cmidrule{2-8}
+		&         &         &        \multicolumn{3}{c}{alg. 3}        & \multicolumn{2}{c}{alg. 4, $\gamma = 2$} \\
+		\cmidrule(r){4-6}\cmidrule(r){7-8}
+		$\zeta$ & alg. 1  & alg. 2  & $\alpha= 1.5$ & $\alpha= 2$ & $\alpha= 3$ & $\beta = 0.1$ & $\beta = -0.1$ \\
+		\midrule
+		0       & 8.3250  & 1.45305 & 7.5791        & 14.8517     & 20.0028     & 1.16396       & 1.1365         \\
+		5       & 0.6111  & 2.27126 & 6.9952        & 13.8560     & 18.6064     & 1.18659       & 1.1630         \\
+		10      & 11.6126 & 2.69218 & 6.2520        & 12.5202     & 16.8278     & 1.23180       & 1.2045         \\
+		15      & 0.5665  & 2.95046 & 5.7753        & 11.4588     & 15.4837     & 1.25131       & 1.2614         \\
+		20      & 15.8728 & 3.07225 & 5.3071        & 10.3935     & 13.8738     & 1.25307       & 1.2217         \\
+		25      & 0.9791  & 3.19034 & 5.4575        & 9.9533      & 13.0721     & 1.27104       & 1.2640         \\
+		30      & 2.0228  & 3.27474 & 5.7461        & 9.7164      & 12.2637     & 1.33404       & 1.3209         \\
+		35      & 13.4210 & 3.36086 & 6.6735        & 10.0442     & 12.0270     & 1.35385       & 1.3059         \\
+		40      & 13.2226 & 3.36420 & 7.7248        & 10.4495     & 12.0379     & 1.34919       & 1.2768         \\
+		45      & 12.8445 & 3.47436 & 8.5539        & 10.8552     & 12.2773     & 1.42303       & 1.4362         \\
+		50      & 12.9245 & 3.58228 & 9.2702        & 11.2183     & 12.3990     & 1.40922       & 1.3724         \\
+		\bottomrule
+	\end{tabular}
 \end{table}  
 
 
@@ -1190,9 +1263,9 @@ class CreateTranscription(graphene.Mutation):
 % TODO
 \chapter{Podsumowanie i wnioski}
 \begin{itemize}
-\item uzyskane wyniki w świetle postawionych celów i zdefiniowanych wyżej wymagań
-\item kierunki ewentualnych danych prac (rozbudowa funkcjonalna …)
-\item problemy napotkane w trakcie pracy
+	\item uzyskane wyniki w świetle postawionych celów i zdefiniowanych wyżej wymagań
+	\item kierunki ewentualnych danych prac (rozbudowa funkcjonalna …)
+	\item problemy napotkane w trakcie pracy
 \end{itemize}
 
 
@@ -1205,74 +1278,73 @@ class CreateTranscription(graphene.Mutation):
 \addcontentsline{toc}{chapter}{Bibliografia}
 
 \begin{appendices}
-
-% TODO
-\chapter{Spis skrótów i symboli}
-
-\begin{itemize}
-\item[DNA] kwas deoksyrybonukleinowy (ang. \english{deoxyribonucleic acid})
-\item[MVC] model -- widok -- kontroler (ang. \english{model--view--controller}) 
-\item[$N$] liczebność zbioru danych
-\item[$\mu$] stopnień przyleżności do zbioru
-\item[$\mathbb{E}$] zbiór krawędzi grafu
-\item[$\mathcal{L}$] transformata Laplace'a 
-\end{itemize}
-
-
-% TODO
-\chapter{Źródła}
-
-Jeżeli w pracy konieczne jest umieszczenie długich fragmentów kodu źródłowego, należy je przenieść w to miejsce.
-
-\begin{lstlisting}
+	
+	% TODO
+	\chapter{Spis skrótów i symboli}
+	
+	\begin{itemize}
+		\item[DNA] kwas deoksyrybonukleinowy (ang. \english{deoxyribonucleic acid})
+		\item[MVC] model -- widok -- kontroler (ang. \english{model--view--controller}) 
+		\item[$N$] liczebność zbioru danych
+		\item[$\mu$] stopnień przyleżności do zbioru
+		\item[$\mathbb{E}$] zbiór krawędzi grafu
+		\item[$\mathcal{L}$] transformata Laplace'a 
+	\end{itemize}
+	
+	
+	% TODO
+	\chapter{Źródła}
+	
+	Jeżeli w pracy konieczne jest umieszczenie długich fragmentów kodu źródłowego, należy je przenieść w to miejsce.
+	
+	\begin{lstlisting}
 if (_nClusters < 1)
 	throw std::string ("unknown number of clusters");
 if (_nIterations < 1 and _epsilon < 0)
 	throw std::string ("You should set a maximal number of iteration or minimal difference -- epsilon.");
 if (_nIterations > 0 and _epsilon > 0)
 	throw std::string ("Both number of iterations and minimal epsilon set -- you should set either number of iterations or minimal epsilon.");
-\end{lstlisting}
-
-
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-% Pakiet minted wymaga odkomentowania w pliku config/settings.tex   %
-% importu pakietu minted: \usepackage{minted}                       %
-% i specjalnego kompilowania:                                       %
-% pdflatex -shell-escape praca                                      %
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-
-%\begin{minted}[linenos,breaklines,frame=lines]{c++}
-%if (_nClusters < 1)
-%   throw std::string ("unknown number of clusters");
-%if (_nIterations < 1 and _epsilon < 0)
-%   throw std::string ("You should set a maximal number of iteration or minimal difference -- epsilon.");
-%if (_nIterations > 0 and _epsilon > 0)
-%   throw std::string ("Both number of iterations and minimal epsilon set -- you should set either number of iterations or minimal epsilon.");
-%\end{minted}
-
-
-% TODO
-\chapter{Lista dodatkowych plików, uzupełniających tekst pracy} 
-
-
-W systemie do pracy dołączono dodatkowe pliki zawierające:
-\begin{itemize}
-\item źródła programu,
-\item dane testowe,
-\item film pokazujący działanie opracowanego oprogramowania lub zaprojektowanego i~wykonanego urządzenia,
-\item itp.
-\end{itemize}
-
-
-\listoffigures
-\addcontentsline{toc}{chapter}{Spis rysunków}
-\listoftables
-\addcontentsline{toc}{chapter}{Spis tabel}
-
+	\end{lstlisting}
+	
+	
+	% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+	% Pakiet minted wymaga odkomentowania w pliku config/settings.tex   %
+	% importu pakietu minted: \usepackage{minted}                       %
+	% i specjalnego kompilowania:                                       %
+	% pdflatex -shell-escape praca                                      %
+	% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+	
+	%\begin{minted}[linenos,breaklines,frame=lines]{c++}
+	%if (_nClusters < 1)
+	%   throw std::string ("unknown number of clusters");
+	%if (_nIterations < 1 and _epsilon < 0)
+	%   throw std::string ("You should set a maximal number of iteration or minimal difference -- epsilon.");
+	%if (_nIterations > 0 and _epsilon > 0)
+	%   throw std::string ("Both number of iterations and minimal epsilon set -- you should set either number of iterations or minimal epsilon.");
+	%\end{minted}
+	
+	
+	% TODO
+	\chapter{Lista dodatkowych plików, uzupełniających tekst pracy} 
+	
+	
+	W systemie do pracy dołączono dodatkowe pliki zawierające:
+	\begin{itemize}
+		\item źródła programu,
+		\item dane testowe,
+		\item film pokazujący działanie opracowanego oprogramowania lub zaprojektowanego i~wykonanego urządzenia,
+		\item itp.
+	\end{itemize}
+	
+	
+	\listoffigures
+	\addcontentsline{toc}{chapter}{Spis rysunków}
+	\listoftables
+	\addcontentsline{toc}{chapter}{Spis tabel}
+	
 \end{appendices}
 
 \end{document}
 
 
 %% Finis coronat opus.
-
