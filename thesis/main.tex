@@ -333,7 +333,7 @@
 \usepackage{listings}
 \lstset{%
 morekeywords={string,exception,std,vector},% słowa kluczowe rozpoznawane przez pakiet listings
-language=C++,% C, Matlab, Python, SQL, TeX, XML, bash, ... – vide https://www.ctan.org/pkg/listings
+language=Python,% C, Matlab, C++, SQL, TeX, XML, bash, ... – vide https://www.ctan.org/pkg/listings
 commentstyle=\textit,%
 identifierstyle=\textsf,%
 keywordstyle=\sffamily\bfseries, %\texttt, %
@@ -860,7 +860,6 @@ Kluczowe przypadki użycia obejmują:
 	\item \textbf{Zarządzanie kontem:} Obejmuje funkcje związane z personalizacją ustawień konta i preferencji użytkownika.
 \end{itemize}
 
-
 \chapter{Specyfikacja zewnętrzna}
 \label{ch:04}
 
@@ -1052,56 +1051,55 @@ Modele te są ze sobą powiązane za pomocą kluczy obcych, tworząc kompleksow�
 	\label{fig:database_schema}
 \end{figure}
 
-\section{Komponenty, moduły i biblioteki}
+\section{Komponenty i moduły}
 
-Główne komponenty i biblioteki wykorzystywane w projekcie TuneScript:
+System TuneScript został zorganizowany w modularną strukturę, gdzie każdy moduł odpowiada za konkretny aspekt funkcjonalności. Poniżej przedstawiono główne moduły systemu:
 
 \begin{itemize}
-	\item \textbf{Frontend}:
-	      \begin{itemize}
-	      	\item Next.js: Framework React do renderowania po stronie serwera
-	      	\item TypeScript: Typowany nadzbiór JavaScript
-	      	\item Apollo Client: Klient GraphQL do komunikacji z backendem
-	      	\item Tailwind CSS: Framework CSS do stylizacji
-	      \end{itemize}
-	\item \textbf{Backend}:
-	      \begin{itemize}
-	      	\item Python: Główny język programowania
-	      	\item Django: Framework webowy Python
-	      	\item Graphene: Biblioteka do implementacji API GraphQL
-	      	\item Celery: System kolejkowania zadań
-	      	\item Redis: Broker wiadomości dla Celery
-	      	\item PyTorch: Biblioteka do uczenia maszynowego, używana w modelu transkrypcji
-	      	\item Librosa: Biblioteka do analizy audio
-	      	\item Flask: Lekki framework webowy
-	      	\item Transformers: Biblioteka do przetwarzania języka naturalnego
-	      \end{itemize}
-	\item \textbf{Baza danych}:
-	      \begin{itemize}
-	      	\item PostgreSQL: System zarządzania relacyjną bazą danych
-	      \end{itemize}
-	\item \textbf{Narzędzia deweloperskie}:
-	      \begin{itemize}
-	      	\item Docker i Docker Compose: Do konteneryzacji i orkiestracji usług
-	      	\item Poetry: Zarządzanie zależnościami Python
-	      	\item ESLint: Narzędzie do analizy statycznej kodu JavaScript/TypeScript
-	      	\item Black: Formatter kodu Python
-	      	\item isort: Narzędzie do sortowania importów w Pythonie
-	      	\item Flake8: Linter kodu Python
-	      \end{itemize}
-	\item \textbf{Narzędzia testowe}:
-	      \begin{itemize}
-	      	\item Factory Boy: Biblioteka do generowania obiektów testowych w Pythonie
-	      	\item pytest: Framework testowy dla Pythona
-	      	\item Jest: Framework testowy dla JavaScript/TypeScript
-	      \end{itemize}
+    \item \textbf{Moduł transkrypcji i generacji partytur}: 
+          \begin{itemize}
+            \item Przetwarza pliki audio MP3 i WAV
+            \item Implementuje model głębokiego uczenia oparty na architekturze konwolucyjnej do detekcji nut
+            \item Wykrywa początki (onset) i końce (offset) nut fortepianowych
+            \item Generuje transkrypcje w formacie MIDI z uwzględnieniem dynamiki
+            \item Konwertuje pliki MIDI do partytur PDF przy użyciu MuseScore
+            \item Wykorzystuje Celery do asynchronicznego przetwarzania zadań
+          \end{itemize}
+    
+    \item \textbf{Moduł interfejsu użytkownika}:
+          \begin{itemize}
+            \item Zapewnia responsywny interfejs zbudowany w Next.js i Tailwind CSS
+            \item Implementuje system Server-Side Events (SSE) do śledzenia postępu transkrypcji
+            \item Umożliwia zarządzanie transkrypcjami (przesyłanie, edycja, usuwanie)
+            \item Obsługuje system ocen i ulubionych transkrypcji
+            \item Zapewnia funkcjonalności wyszukiwania i filtrowania
+          \end{itemize}
+    
+    \item \textbf{Moduł zarządzania danymi}:
+          \begin{itemize}
+            \item Wykorzystuje PostgreSQL do przechowywania danych użytkowników i metadanych
+            \item Implementuje system cachowania z użyciem Redis
+            \item Zarządza przechowywaniem plików audio, MIDI i PDF
+            \item Wykorzystuje GraphQL do efektywnej komunikacji między frontendem a backendem
+            \item Zapewnia system autoryzacji oparty na tokenach JWT
+          \end{itemize}
+    
+    \item \textbf{Moduł asystenta}:
+          \begin{itemize}
+            \item Implementuje system RAG (Retrieval-Augmented Generation) oparty na modelu TinyLlama
+            \item Wykorzystuje embeddingi semantyczne do wyszukiwania odpowiedzi
+            \item Zapewnia asynchroniczne przetwarzanie zapytań przez Flask
+            \item Integruje się z głównym systemem poprzez API REST
+          \end{itemize}
 \end{itemize}
+
+Moduły są zintegrowane ze sobą za pomocą precyzyjnie zdefiniowanych interfejsów, wykorzystując GraphQL jako główny protokół komunikacyjny między frontendem a backendem oraz REST API dla modułu asystenta. System wykorzystuje architekturę event-driven dla operacji asynchronicznych, z Celery i Redis jako podstawą systemu kolejkowania. Całość jest zorganizowana w kontenerach Docker, co umożliwia niezależne skalowanie poszczególnych komponentów i ułatwia proces wdrażania.
 
 \section{Skrypty deweloperskie}
 
 Projekt TuneScript zawiera szereg skryptów ułatwiających proces rozwoju i testowania. Są one zdefiniowane w pliku \texttt{package.json}:
 
-\begin{verbatim}
+\begin{lstlisting}
 {
   "name": "tunescript-devtools",
   "version": "1.0.0",
@@ -1124,7 +1122,7 @@ Projekt TuneScript zawiera szereg skryptów ułatwiających proces rozwoju i tes
     "format": "docker-compose exec web /app/format.sh"
   }
 }
-\end{verbatim}
+\end{lstlisting}
 
 Te skrypty umożliwiają łatwe uruchamianie, zatrzymywanie i restartowanie aplikacji w różnych trybach, a także uruchamianie testów i formatowanie kodu.
 
@@ -1145,54 +1143,157 @@ Kluczowym algorytmem w systemie TuneScript jest model transkrypcji muzycznej opa
 
 \subsection{Implementacja modelu transkrypcji}
 
-Model transkrypcji jest implementowany w PyTorch. Oto fragment kodu ilustrujący strukturę głównej sieci neuronowej:
+Model transkrypcji fortepianowej wykorzystuje zaawansowaną architekturę konwolucyjno-rekurencyjną do detekcji nut. Architektura modelu opiera się na kilku kluczowych komponentach przetwarzających sygnał audio. Pierwszym z nich jest ekstraktor spektrogramu, który przekształca surowy sygnał audio na reprezentację czasowo-częstotliwościową. Następnie, ekstraktor cech mel-spektrogramu konwertuje spektrogram na skalę mel, która lepiej odpowiada ludzkiemu postrzeganiu dźwięku. Główny element modelu stanowią cztery równoległe sieci CNN-RNN, z których każda specjalizuje się w detekcji innego aspektu dźwięku: ramek czasowych, początków nut, końców nut oraz głośności. Całość uzupełnia dwukierunkowa sieć rekurencyjna GRU, która przetwarza sekwencyjnie otrzymane cechy, uwzględniając kontekst czasowy wykonania utworu.
 
-\begin{verbatim}
-class PianoTranscriptionModel(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
-        self.fc1 = nn.Linear(64 * 32 * 32, 1024)
-        self.fc2 = nn.Linear(1024, 88 * 2)  # 88 klawiszy, onset i offset
+\begin{lstlisting}
+    class ReggressOnsetOffsetFrameVelocityCRNN(nn.Module):
+        def __init__(self, frames_per_second, classes_num):
+            super().__init__()
+            
+            window_size = 2048
+            hop_size = sample_rate // frames_per_second
+            mel_bins = 229
+            
+            # Ekstraktor cech spektralnych
+            self.spectrogram_extractor = Spectrograph(
+                n_fft=window_size,
+                hop_length=hop_size,
+                win_length=window_size,
+                window='hann',
+                center=True,
+                pad_mode='reflect',
+                freeze_parameters=True)
+                
+            # Ekstraktor cech mel-spektrogramu
+            self.logmel_extractor = LogmelFilterBank(
+                sr=sample_rate,
+                n_fft=window_size,
+                n_mels=mel_bins,
+                fmin=30,
+                fmax=sample_rate // 2,
+                freeze_parameters=True)
+                
+            # @*Modele do detekcji różnych aspektów*@
+            self.frame_model = AcousticModelCRnn8Dropout(
+                classes_num, midfeat, momentum)
+            self.reg_onset_model = AcousticModelCRnn8Dropout(
+                classes_num, midfeat, momentum)
+            self.reg_offset_model = AcousticModelCRnn8Dropout(
+                classes_num, midfeat, momentum)
+            self.velocity_model = AcousticModelCRnn8Dropout(
+                classes_num, midfeat, momentum)
+                
+            # GRU do przetwarzania sekwencyjnego
+            self.reg_onset_gru = nn.GRU(
+                input_size=88 * 2,
+                hidden_size=256,
+                num_layers=1,
+                batch_first=True,
+                bidirectional=True)
+\end{lstlisting}
 
-    def forward(self, x):
-        x = F.relu(self.conv1(x))
-        x = F.max_pool2d(x, 2)
-        x = F.relu(self.conv2(x))
-        x = F.max_pool2d(x, 2)
-        x = x.view(-1, 64 * 32 * 32)
-        x = F.relu(self.fc1(x))
-        x = self.fc2(x)
-        return x
-\end{verbatim}
+\subsection{Implementacja systemu kolejkowania transkrypcji}
 
-\subsection{Implementacja API GraphQL}
+System kolejkowania zadań został zaprojektowany do obsługi długotrwałego procesu transkrypcji w sposób asynchroniczny. Proces rozpoczyna się od pobrania i przygotowania pliku audio do analizy. Następnie wykonywana jest właściwa transkrypcja przy użyciu modelu uczenia maszynowego, którego wyniki są przekształcane w plik MIDI. W kolejnym kroku system generuje partytury w formacie PDF na podstawie utworzonego pliku MIDI. Cały proces jest monitorowany, a jego status jest na bieżąco aktualizowany w bazie danych. Implementacja wykorzystuje framework Celery do zarządzania zadaniami, zapewniając mechanizm ponownych prób w przypadku wystąpienia błędów, co zwiększa niezawodność systemu.
 
-Backend wykorzystuje Graphene do implementacji API GraphQL. Oto przykład definicji typu i mutacji dla transkrypcji:
+\begin{lstlisting}
+@shared_task(bind=True, max_retries=3)
+def process_transcription(self, transcription_id):
+    try:
+        transcription = Transcription.objects.get(pk=transcription_id)
+        audio_file = transcription.audio_file
 
-\begin{verbatim}
-class TranscriptionType(DjangoObjectType):
-    class Meta:
-        model = Transcription
-        fields = ("id", "title", "audio_file", "midi_file", "pdf_file")
+        # Wczytanie i preprocessing audio
+        audio, _ = load_audio(
+            audio_file.audio_file.path, 
+            sr=sample_rate, 
+            mono=True)
+        
+        # Inicjalizacja modelu transkrypcji
+        transcriptor = PianoTranscription(device='cpu')
+        
+        # Generowanie pliku MIDI
+        with tempfile.NamedTemporaryFile(
+            delete=False, suffix='.mid') as tmp_midi:
+            midi_path = tmp_midi.name
+            transcriptor.transcribe(audio, midi_path)
+            
+        # Zapisywanie pliku MIDI
+        with open(midi_path, 'rb') as midi_file:
+            midi_instance = MIDIFile(transcription=transcription)
+            midi_instance.midi_file.save(
+                f"{transcription.title}.mid", 
+                File(midi_file))
+                
+        # Generowanie PDF z MIDI
+        pdf_path = os.path.splitext(midi_path)[0] + '.pdf'
+        convert_midi_to_pdf(midi_data, pdf_path)
+        
+        # Zapisywanie pliku PDF
+        with open(pdf_path, 'rb') as pdf_file:
+            sheet_music = SheetMusic(transcription=transcription)
+            sheet_music.pdf_file.save(
+                f"{transcription.title}.pdf", 
+                File(pdf_file))
+        
+        transcription.status = 'COMPLETED'
+        transcription.save()
+        
+    except Exception as e:
+        transcription.status = 'FAILED'
+        transcription.save()
+        raise self.retry(exc=e, countdown=60)
+\end{lstlisting}
 
-class CreateTranscription(graphene.Mutation):
-    class Arguments:
-        title = graphene.String(required=True)
-        audio_file = graphene.String(required=True)
+\subsection{Implementacja systemu SSE do monitorowania postępu}
 
-    transcription = graphene.Field(TranscriptionType)
+Mechanizm Server-Sent Events (SSE) umożliwia przekazywanie informacji o postępie transkrypcji do interfejsu użytkownika w czasie rzeczywistym. Po zainicjowaniu połączenia, system ustanawia długotrwałe połączenie HTTP z przeglądarką klienta. W regularnych odstępach czasu sprawdzany jest status transkrypcji w bazie danych, a wszelkie zmiany są natychmiast przesyłane do klienta. System monitoruje nie tylko sam proces transkrypcji, ale również dostępność wygenerowanych plików MIDI i PDF. Połączenie jest automatycznie zamykane po zakończeniu transkrypcji lub w przypadku wystąpienia błędu. Implementacja zawiera również mechanizmy obsługi sytuacji wyjątkowych, takich jak nieistniejące transkrypcje czy przerwane połączenia.
 
-    def mutate(self, info, title, audio_file):
-        user = info.context.user
-        transcription = Transcription.objects.create(
-            title=title,
-            audio_file=audio_file,
-            user=user
-        )
-        return CreateTranscription(transcription=transcription)
-\end{verbatim}
+\begin{lstlisting}
+@require_GET
+@csrf_exempt
+def sse_stream(request, transcription_id):
+    def event_stream():
+        while True:
+            try:
+                _, db_id = from_global_id(transcription_id)
+                transcription = Transcription.objects.get(pk=db_id)
+                
+                # Przygotowanie danych o statusie
+                data = {
+                    'transcription_id': transcription_id,
+                    'status': transcription.status,
+                    'title': transcription.title,
+                    'midi_file_url': (
+                        f"{settings.BASE_URL}{midi_file.midi_file.url}"
+                        if transcription.midifile_set.exists()
+                        else None
+                    ),
+                    'sheet_music_url': (
+                        f"{settings.BASE_URL}{sheet_music.pdf_file.url}"
+                        if transcription.sheetmusic_set.exists()
+                        else None
+                    )
+                }
+                
+                yield f"data: {json.dumps(data)}\n\n"
+                
+                if transcription.status in ['COMPLETED', 'FAILED']:
+                    break
+                    
+                time.sleep(2)  # Sprawdzanie co 2 sekundy
+                
+            except Transcription.DoesNotExist:
+                yield f"data: {json.dumps({'error': 'Not found'})}\n\n"
+                break
+                
+    response = StreamingHttpResponse(
+        event_stream(), 
+        content_type='text/event-stream')
+    response['Cache-Control'] = 'no-cache'
+    response['X-Accel-Buffering'] = 'no'
+    return response
+\end{lstlisting}
 
 \section{Diagramy UML}
 
