@@ -36,7 +36,7 @@
 \contentsline {section}{\numberline {5.6}Szczegóły implementacji wybranych fragmentów}{23}{section.5.6}%
 \contentsline {subsection}{\numberline {5.6.1}Implementacja modelu transkrypcji}{23}{subsection.5.6.1}%
 \contentsline {subsection}{\numberline {5.6.2}Implementacja systemu kolejkowania transkrypcji}{24}{subsection.5.6.2}%
-\contentsline {subsection}{\numberline {5.6.3}Implementacja systemu SSE do monitorowania postępu}{25}{subsection.5.6.3}%
+\contentsline {subsection}{\numberline {5.6.3}Implementacja systemu SSE do monitorowania postępu}{26}{subsection.5.6.3}%
 \contentsline {section}{\numberline {5.7}Diagramy UML}{27}{section.5.7}%
 \contentsline {chapter}{\numberline {6}Weryfikacja i walidacja}{31}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Organizacja testów}{31}{section.6.1}%
