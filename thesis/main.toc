@@ -27,7 +27,6 @@
 \contentsline {section}{\numberline {4.4}Administracja systemem}{17}{section.4.4}%
 \contentsline {section}{\numberline {4.5}Kwestie bezpieczeństwa}{17}{section.4.5}%
 \contentsline {section}{\numberline {4.6}Przykład działania}{17}{section.4.6}%
-\contentsline {section}{\numberline {4.7}Scenariusze korzystania z systemu}{18}{section.4.7}%
 \contentsline {chapter}{\numberline {5}Specyfikacja wewnętrzna}{19}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Przedstawienie idei}{19}{section.5.1}%
 \contentsline {section}{\numberline {5.2}Architektura systemu}{19}{section.5.2}%
