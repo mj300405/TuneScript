@@ -1033,26 +1033,47 @@ Kluczowe aspekty idei TuneScript obejmują:
 
 \section{Architektura systemu}
 
-TuneScript został zaprojektowany w oparciu o modularną architekturę, która łączy elementy aplikacji monolitycznej z pewnymi aspektami architektury rozproszonej. Takie podejście zapewnia elastyczność, skalowalność i łatwość utrzymania. Główne komponenty systemu to:
+TuneScript wykorzystuje architekturę mikroserwisową (Microservices Architecture), która umożliwia niezależne rozwijanie, wdrażanie i skalowanie poszczególnych komponentów systemu. Architektura składa się z następujących serwisów:
 
 \begin{enumerate}
-	\item \textbf{Frontend}: Implementowany w Next.js i TypeScript, zapewniający responsywny i interaktywny interfejs użytkownika.
-	\item \textbf{Backend API}: Napisany w Django i Graphene, obsługujący żądania od frontendu i zarządzający logiką biznesową.
-	\item \textbf{Usługa transkrypcji}: Zintegrowana z backendem, odpowiedzialna za przetwarzanie plików audio i generowanie transkrypcji MIDI.
-	\item \textbf{Usługa generowania partytur}: Zintegrowana z backendem, konwertuje pliki MIDI na partytury PDF.
-	\item \textbf{Baza danych}: PostgreSQL przechowujący dane użytkowników, metadane transkrypcji i inne informacje.
-	\item \textbf{System kolejkowania}: Implementowany z użyciem Celery i Redis, zarządzający asynchronicznymi zadaniami.
-	\item \textbf{Chatbot}: Oddzielny serwis oparty na Flask, implementujący system RAG do odpowiadania na pytania użytkowników dotyczące funkcjonalności systemu.
+	\item \textbf{Serwis frontendowy} jest implementowany w Next.js i TypeScript. Głównym zadaniem tego serwisu jest zapewnienie responsywnego interfejsu użytkownika. Komunikacja z backendem odbywa się poprzez GraphQL API. Serwis ten jest również odpowiedzialny za monitorowanie postępu transkrypcji poprzez SSE.
+ 
+	\item \textbf{Serwis backendowy} został zbudowany przy użyciu Django z GraphQL (Graphene). Jest odpowiedzialny za zarządzanie logiką biznesową aplikacji oraz autentykację i autoryzację użytkowników. Serwis koordynuje również proces transkrypcji i generowania partytur.
+ 
+	\item \textbf{Serwis pracownika (worker)} bazuje na technologii Celery i jest odpowiedzialny za przetwarzanie zadań asynchronicznych. Jego głównym zadaniem jest wykonywanie transkrypcji plików audio do formatu MIDI oraz generowanie partytur PDF z plików MIDI.
+ 
+	\item \textbf{Serwis chatbota} jest implementowany przy użyciu Flask. Wykorzystuje architekturę RAG do obsługi zapytań użytkowników i zapewnia wsparcie w czasie rzeczywistym. Działa jako niezależny serwis pomocniczy, wspierający interakcję z użytkownikiem.
+ \end{enumerate}
+
+\textbf{Komponenty infrastrukturalne:}
+
+\begin{enumerate}
+   \item \textbf{Serwisy przechowywania}:
+   \begin{itemize}
+       \item PostgreSQL jako główna baza danych
+       \item Redis do cachowania i kolejkowania zadań
+       \item System plików do przechowywania plików multimedialnych
+   \end{itemize}
 \end{enumerate}
 
-Ta architektura, choć nie jest klasyczną implementacją mikrousług, pozwala na efektywne zarządzanie złożonością systemu i umożliwia niezależne skalowanie poszczególnych komponentów, szczególnie w przypadku chatbota i systemu kolejkowania.
-
 \begin{figure}[h]
-	\centering
-	\includegraphics[width=0.8\textwidth]{diagrams/architecture_diagram.png}
-	\caption{Diagram architektury systemu TuneScript}
-	\label{fig:architecture_diagram}
+   \centering
+   \includegraphics[width=0.9\textwidth]{diagrams/architecture_diagram.png}
+   \caption{Architektura systemu TuneScript}
+   \label{fig:microservices_architecture}
 \end{figure}
+
+Zastosowana architektura mikroserwisowa zapewnia następujące korzyści:
+
+\begin{itemize}
+   \item \textbf{Modularność}: Każdy serwis jest niezależnym komponentem
+   \item \textbf{Skalowalność}: Możliwość skalowania poszczególnych serwisów według potrzeb
+   \item \textbf{Niezawodność}: Awaria jednego serwisu nie wpływa na działanie pozostałych
+   \item \textbf{Elastyczność technologiczna}: Możliwość wyboru optymalnych technologii dla każdego serwisu
+   \item \textbf{Efektywność rozwoju}: Łatwiejsze zarządzanie kodem i wdrożeniami
+\end{itemize}
+
+Całość systemu jest konteneryzowana przy użyciu Docker, a orkiestracja serwisów odbywa się za pomocą Docker Compose, co zapewnia spójne środowisko zarówno dla rozwoju, jak i wdrożenia.
 
 \section{Opis struktur danych i organizacji bazy danych}
 
@@ -1088,50 +1109,6 @@ Modele te są ze sobą powiązane za pomocą kluczy obcych, tworząc kompleksow�
 	\caption{Schemat bazy danych TuneScript}
 	\label{fig:database_schema}
 \end{figure}
-
-\section{Komponenty i moduły}
-
-System TuneScript został zorganizowany w modularną strukturę, gdzie każdy moduł odpowiada za konkretny aspekt funkcjonalności. Poniżej przedstawiono główne moduły systemu:
-
-\begin{itemize}
-    \item \textbf{Moduł transkrypcji i generacji partytur}: 
-          \begin{itemize}
-            \item Przetwarza pliki audio MP3 i WAV.
-            \item Implementuje model głębokiego uczenia oparty na architekturze konwolucyjnej do detekcji nut.
-            \item Wykrywa początki (onset) i końce (offset) nut fortepianowych.
-            \item Generuje transkrypcje w formacie MIDI z uwzględnieniem dynamiki.
-            \item Konwertuje pliki MIDI do partytur PDF przy użyciu MuseScore.
-            \item Wykorzystuje Celery do asynchronicznego przetwarzania zadań.
-          \end{itemize}
-    
-    \item \textbf{Moduł interfejsu użytkownika}:
-          \begin{itemize}
-            \item Zapewnia responsywny interfejs zbudowany w Next.js i Tailwind CSS.
-            \item Implementuje system Server-Side Events (SSE) do śledzenia postępu transkrypcji.
-            \item Umożliwia zarządzanie transkrypcjami (przesyłanie, edycja, usuwanie).
-            \item Obsługuje system ocen i ulubionych transkrypcji.
-            \item Zapewnia funkcjonalności wyszukiwania i filtrowania.
-          \end{itemize}
-    
-    \item \textbf{Moduł zarządzania danymi}:
-          \begin{itemize}
-            \item Wykorzystuje PostgreSQL do przechowywania danych użytkowników i metadanych.
-            \item Implementuje system cachowania z użyciem Redis.
-            \item Zarządza przechowywaniem plików audio, MIDI i PDF.
-            \item Wykorzystuje GraphQL do efektywnej komunikacji między frontendem a backendem.
-            \item Zapewnia system autoryzacji oparty na tokenach JWT.
-          \end{itemize}
-    
-    \item \textbf{Moduł asystenta}:
-          \begin{itemize}
-            \item Implementuje system RAG (Retrieval-Augmented Generation) oparty na modelu TinyLlama.
-            \item Wykorzystuje embeddingi semantyczne do wyszukiwania odpowiedzi.
-            \item Zapewnia asynchroniczne przetwarzanie zapytań przez Flask.
-            \item Integruje się z głównym systemem poprzez API REST.
-          \end{itemize}
-\end{itemize}
-
-Moduły są zintegrowane ze sobą za pomocą precyzyjnie zdefiniowanych interfejsów, wykorzystując GraphQL jako główny protokół komunikacyjny między frontendem a backendem oraz REST API dla modułu asystenta. System wykorzystuje architekturę event-driven dla operacji asynchronicznych, z Celery i Redis jako podstawą systemu kolejkowania. Całość jest zorganizowana w kontenerach Docker, co umożliwia niezależne skalowanie poszczególnych komponentów i ułatwia proces wdrażania.
 
 \section{Skrypty deweloperskie}
 
