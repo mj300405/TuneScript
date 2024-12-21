@@ -11,7 +11,8 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {6.1}{\ignorespaces Nagłówek tabeli jest nad tabelą.}}{37}{table.caption.17}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {7.1}{\ignorespaces Wyniki testów przetwarzania plików}}{42}{table.caption.19}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \babel@toc {british}{}\relax 

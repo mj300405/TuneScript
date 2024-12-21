@@ -146,6 +146,7 @@
 \usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{tikz}
+\usetikzlibrary{positioning,calc}
 \usepackage{pgfplots}
 \usepackage{mathtools}
 \usepackage{geometry}
@@ -545,7 +546,7 @@
 
 
 %%%%%%%%%%%%%%%%%% SPIS TRESCI %%%%%%%%%%%%%%%%%%%%%%
-% Add \thispagestyle{empty} to the toc file (main.toc), because \pagestyle{empty} doesn't work if the TOC has multiple pages
+% Add \thispagestyle{empty} to the toc file (main.toc), beca1\pagestyle{empty} doesn't work if the TOC has multiple pages
 \addtocontents{toc}{\protect\thispagestyle{empty}}
 \tableofcontents
 
@@ -592,6 +593,7 @@ Praca składa się z sześciu rozdziałów. Po wstępie, w rozdziale drugim prze
 
 
 \chapter{Analiza tematu}
+W dzisiejszym świecie cyfrowa muzyka fortepianowa jest szeroko rozpowszechniona, a dostępność nagrań w formatach takich jak MP3 znacznie ułatwia ich odtwarzanie. Jednocześnie powstaje potrzeba narzędzi, które umożliwią analizę i edycję muzyki w sposób bardziej zaawansowany, szczególnie dla muzyków, nauczycieli i entuzjastów fortepianu. Niniejsza praca podejmuje próbę stworzenia kompleksowego rozwiązania, które przekształca nagrania audio w czytelne partytury, wspierając edukację, kompozycję i praktykę muzyczną. Poniżej zaprezentowane są szczegółowe wyniki testów systemu, które ilustrują jego wydajność i precyzję działania w różnych scenariuszach.
 
 \section{Sformułowanie problemu}
 
@@ -1335,6 +1337,76 @@ Diagram przedstawiony na Rysunku \ref{fig:rag_class_diagram} pokazuje strukturę
 
 Na Rysunku \ref{fig:ai_class_diagram} zaprezentowano strukturę modułu odpowiedzialnego za transkrypcję muzyczną. Widoczne są klasy implementujące model głębokiego uczenia, przetwarzanie sygnału audio oraz generowanie partytur. System ten wykorzystuje zaawansowane techniki uczenia maszynowego do precyzyjnej detekcji nut i ich parametrów.
 
+\chapter{Model transkrypcji}
+
+Implementacja modelu do transkrypcji została oparta na pracy Kong et al. (2020) \cite{bib:kong2020high}, która przedstawia wysokorozdzielczościowy system transkrypcji fortepianu. System ten wyróżnia się możliwością precyzyjnego określania czasów początku i końca dźwięków.
+
+\section{Architektura modelu}
+
+Model składa się z czterech głównych podmodułów:
+\begin{itemize}
+   \item Moduł regresji głośności dźwięku
+   \item Moduł regresji początku dźwięku
+   \item Moduł klasyfikacji ramek czasowych
+   \item Moduł regresji końca dźwięku
+\end{itemize}
+
+Każdy z podmodułów jest zbudowany w oparciu o model akustyczny składający się z warstw konwolucyjnych (CNN) i rekurencyjnych (biGRU). Architektura pojedynczego modelu akustycznego zawiera:
+
+\begin{itemize}
+   \item 4 bloki konwolucyjne z kanałami wyjściowymi kolejno: 48, 64, 96 i 128
+   \item Każdy blok konwolucyjny zawiera:
+   \begin{itemize}
+       \item Dwie warstwy konwolucyjne 3x3
+       \item Normalizację wsadową
+       \item Aktywację ReLU
+       \item Redukcję wymiarowości w dziedzinie częstotliwości (2x)
+   \end{itemize}
+   \item Warstwę w pełni połączoną (768 jednostek)
+   \item Dwie dwukierunkowe warstwy GRU (256 jednostek ukrytych)
+   \item Końcową warstwę w pełni połączoną z funkcją aktywacji sigmoid
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/ai_architecture.png}
+    \caption{Diagram architektury modelu transkrypcji}
+    \label{fig:ai_architecture}
+\end{figure}
+
+
+\section{Proces uczenia}
+Proces uczenia modelu obejmuje kilka kluczowych etapów, począwszy od odpowiedniego przetworzenia danych wejściowych, przez konfigurację parametrów treningu, aż po zdefiniowanie funkcji straty. Każdy z tych elementów został starannie dobrany w celu osiągnięcia optymalnej jakości transkrypcji.
+
+\subsection{Przetwarzanie wstępne danych}
+
+Do treningu wykorzystano zbiór MAESTRO V2.0.0 \cite{bib:hawthorne2018enabling}. W ramach przetwarzania wstępnego nagrania zostały przekonwertowane do postaci monofonicznej oraz przepróbkowane do częstotliwości 16 kHz. Następnie dane zostały podzielone na 10-sekundowe fragmenty, które były następnie przekształcane do postaci mel-spektrogramu. W procesie tym wykorzystano okno Hanna o rozmiarze 2048 próbek, stosując 229 filtrów melowych w zakresie częstotliwości od 30 Hz do 8000 Hz. Krok przesunięcia okna został ustalony na 10 ms, co zapewnia odpowiednią rozdzielczość czasową dla analizy dźwięku fortepianowego.
+
+\subsection{Parametry treningu}
+
+Proces uczenia modelu został skonfigurowany z wykorzystaniem optymalizatora Adam, dla którego przyjęto początkowy współczynnik uczenia równy 0.0005. W trakcie treningu współczynnik ten był redukowany o mnożnik 0.9 co 10000 iteracji, co pozwoliło na stopniowe dostrajanie parametrów modelu. Trening przeprowadzono z rozmiarem wsadu równym 12, przez 200000 iteracji. W celu zapobiegania przeuczeniu zastosowano regularyzację typu dropout, przyjmując współczynnik 0.2 dla warstw po blokach konwolucyjnych oraz 0.5 dla warstw w pełni połączonych.
+
+\subsection{Funkcja straty}
+
+Całkowita funkcja straty jest sumą czterech składowych:
+
+\begin{equation}
+l_{note} = l_{fr} + l_{bp} + l_{kd} + l_{g}
+\end{equation}
+
+gdzie:
+\begin{itemize}
+   \item $l_{fr}$ - strata ramek czasowych
+   \item $l_{bp}$ - strata początku dźwięku
+   \item $l_{kd}$ - strata końca dźwięku
+   \item $l_{g}$ - strata głośności
+\end{itemize}
+
+Wszystkie składowe wykorzystują entropię krzyżową jako funkcję straty bazową.
+
+\section{Wnioskowanie}
+
+Podczas wnioskowania model przetwarza mel-spektrogram nagrania i generuje prawdopodobieństwa dla każdej ramki czasowej. Wykrywanie precyzyjnych czasów początku i końca dźwięku wykorzystuje algorytm analityczny bazujący na lokalnych maksimach w przewidywaniach modelu. Progi decyzyjne zostały ustalone eksperymentalnie na poziomie 0.3 dla wszystkich typów detekcji (początku dźwięku, końca dźwięku, ramki).
 
 
 
@@ -1354,10 +1426,13 @@ Testy jednostkowe stanowią fundament procesu testowego w systemie TuneScript. I
 Testy integracyjne weryfikują poprawność współdziałania poszczególnych komponentów systemu. Jest to szczególnie istotne w kontekście aplikacji webowej, gdzie wiele elementów musi ze sobą współpracować w sposób bezproblemowy. System zawiera kompleksowe testy integracyjne dla wszystkich kluczowych przepływów danych, ze szczególnym uwzględnieniem komunikacji między frontendem a backendem, obsługi autoryzacji oraz przetwarzania strumieni audio.
 
 \section{Przypadki testowe i wykryte błędy}
+W ramach procesu rozwoju systemu przeprowadzono szereg testów mających na celu weryfikację poprawności działania poszczególnych komponentów oraz wykrycie potencjalnych błędów. Testy obejmowały zarówno automatyczną weryfikację kodu poprzez testy jednostkowe i integracyjne, jak również manualne testowanie funkcjonalności z perspektywy użytkownika końcowego. Proces testowania pozwolił na wykrycie i naprawę wielu istotnych błędów, przyczyniając się do zwiększenia niezawodności systemu.
 
 \subsection{Testy automatyczne}
+Testy automatyczne stanowią fundament procesu weryfikacji jakości kodu w systemie. Wykorzystano framework Jest wraz z biblioteką React Testing Library oraz PyTest do tworzenia i wykonywania testów jednostkowych. Dzięki automatyzacji testów możliwe było szybkie wykrywani błędów wprowadzanych podczas rozwoju aplikacji.
+
 \subsubsection{Testy interfejsu użytkownika}
-W ramach testów automatycznych interfejsu użytkownika wykryto i naprawiono szereg błędów związanych z zarządzaniem stanem aplikacji:
+W ramach testów automatycznych interfejsu użytkownika wykryto i naprawiono szereg istotnych błędów. Kluczowym problemem było nieprawidłowe przywracanie stanu autoryzacji użytkownika po odświeżeniu strony, co mogło prowadzić do utraty sesji użytkownika. Test przedstawiony w listingu \ref{lst:auth-state} pozwolił zidentyfikować i naprawić ten problem poprzez implementację poprawnej obsługi tokena autoryzacji w pamięci lokalnej przeglądarki.
 
 \begin{lstlisting}[language=typescript, caption={Test przywracania stanu autoryzacji}, label={lst:auth-state}]
 it('restores authentication state from localStorage', async () => {
@@ -1381,80 +1456,14 @@ it('restores authentication state from localStorage', async () => {
 });
 \end{lstlisting}
 
-\subsubsection{Testy walidacji danych}
-System wykorzystuje również kompleksowe testy walidacji danych wprowadzanych przez użytkownika:
+\subsubsection{Testy komunikacji API} 
+Przeprowadzono szereg testów weryfikujących poprawność działania interfejsu API, szczególnie w kontekście strumieniowania danych podczas procesu transkrypcji. Test przedstawiony w listingu \ref{lst:sse-stream} pozwolił wykryć problemy z obsługą długotrwałych połączeń SSE (Server-Sent Events) oraz błędy w obsłudze przerwanych połączeń.
 
-\begin{lstlisting}[language=typescript, caption={Test walidacji danych}, label={lst:data-validation}]
-it('shows error when passwords do not match', async () => {
-  render(<PasswordChange />);
-  
-  fireEvent.change(screen.getByPlaceholderText('New password'), { 
-      target: { value: 'password123' } 
-  });
-  fireEvent.change(screen.getByPlaceholderText('Confirm new password'), { 
-      target: { value: 'password456' } 
-  });
-  
-  fireEvent.click(screen.getByRole('button', { name: 'Change Password' }));
+\begin{lstlisting}[language=typescript, caption={Test strumienia SSE}, label={lst:sse-stream}]
+it('should handle successful SSE stream', async () => {
+  const handlerPromise = handler(mockReq as NextApiRequest, mockRes as NextApiResponse);
 
-  await waitFor(() => {
-    expect(screen.getByText("Passwords don't match."))
-      .toBeInTheDocument();
-  });
-});
-\end{lstlisting}
-
-\subsection{Testy manualne}
-\subsubsection{Test procesu transkrypcji}
-\begin{enumerate}
-   \item \textbf{Scenariusz testowy:} Przesłanie pliku audio o dużym rozmiarze (15MB)
-   \item \textbf{Kroki:}
-       \begin{itemize}
-           \item Zalogowano się na konto testowe
-           \item Wybrano plik audio z długim utworem fortepianowym (10 minut)
-           \item Rozpoczęto proces transkrypcji
-           \item Obserwowano postęp przez 30 minut
-       \end{itemize}
-   \item \textbf{Wykryty błąd:} System przestawał wysyłać aktualizacje statusu przez SSE po 15 minutach
-   \item \textbf{Rozwiązanie:} Zmodyfikowano konfigurację timeout'ów dla połączeń SSE i dodano mechanizm automatycznego reconnectu
-\end{enumerate}
-
-\subsubsection{Test równoległego przetwarzania}
-\begin{enumerate}
-   \item \textbf{Scenariusz testowy:} Jednoczesne przesłanie wielu plików do transkrypcji
-   \item \textbf{Kroki:}
-       \begin{itemize}
-           \item Zalogowano się na dwa różne konta
-           \item Przesłano jednocześnie 5 plików z pierwszego konta i 3 pliki z drugiego
-           \item Monitorowano postęp wszystkich transkrypcji
-       \end{itemize}
-   \item \textbf{Wykryty błąd:} Niektóre transkrypcje nie rozpoczynały się mimo poprawnego przesłania plików
-   \item \textbf{Rozwiązanie:} Zaimplementowano kolejkowanie zadań z priorytetyzacją i limitem równoległych procesów
-\end{enumerate}
-
-\subsubsection{Test interfejsu chatbota}
-\begin{enumerate}
-   \item \textbf{Scenariusz testowy:} Długotrwała konwersacja z chatbotem
-   \item \textbf{Kroki:}
-       \begin{itemize}
-           \item Rozpoczęto serię pytań o funkcjonalność systemu
-           \item Zadawano pytania nawiązujące do wcześniejszych odpowiedzi
-           \item Testowano różne formaty pytań i scenariusze błędów
-       \end{itemize}
-   \item \textbf{Wykryty błąd:} Chatbot tracił kontekst rozmowy po 10 interakcjach
-   \item \textbf{Rozwiązanie:} Zaimplementowano system zarządzania historią konwersacji z mechanizmem kompresji kontekstu
-\end{enumerate}
-
-\section{Eksperymentalne badania wydajności}
-Oprócz testów funkcjonalnych, przeprowadzono szereg badań wydajnościowych systemu. Szczególną uwagę poświęcono elementom krytycznym z punktu widzenia użytkownika końcowego, takim jak czas odpowiedzi interfejsu oraz wydajność przetwarzania strumieni audio. Testy te pozwoliły zoptymalizować działanie aplikacji i zapewnić płynność interakcji z użytkownikiem.
-
-\begin{lstlisting}[language=typescript, caption={Test wydajności SSE}, label={lst:sse-performance}]
-it('processes SSE stream efficiently', async () => {
-  const handlerPromise = handler(
-      mockReq as NextApiRequest, 
-      mockRes as NextApiResponse
-  );
-  
+  // Symulacja strumienia SSE
   mockStream.pushData('data: {"status":"PENDING"}\n\n');
   await new Promise(resolve => setTimeout(resolve, 10));
   mockStream.pushData('data: {"status":"COMPLETED"}\n\n');
@@ -1462,10 +1471,133 @@ it('processes SSE stream efficiently', async () => {
 
   await handlerPromise;
 
+  expect(mockRes.writeHead).toHaveBeenCalledWith(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+  });
+
   expect(mockRes.write).toHaveBeenCalledTimes(2);
+  expect(mockRes.write).toHaveBeenNthCalledWith(
+    1, 
+    'data: {"status":"PENDING"}\n\n'
+  );
+  expect(mockRes.write).toHaveBeenNthCalledWith(
+    2, 
+    'data: {"status":"COMPLETED"}\n\n'
+  );
   expect(mockRes.end).toHaveBeenCalled();
 });
 \end{lstlisting}
+ 
+\subsubsection{Testy endpointów}
+Istotnym elementem były również testy różnych endpointów API, w szczególności tych związanych z obsługą transkrypcji. Test pokazany w listingu \ref{lst:transcription-endpoint} ujawnił problemy z obsługą równoległych żądań transkrypcji oraz zarządzaniem stanem podczas długotrwałych operacji przetwarzania.
+
+\begin{lstlisting}[language=typescript, caption={Test endpointu transkrypcji}, label={lst:transcription-endpoint}]
+it('handles concurrent transcription uploads correctly', async () => {
+  const mockStream = new MockReadableStream();
+  const mockUseQuery = jest.requireMock('@apollo/client').useQuery;
+  
+  mockUseQuery.mockReturnValue({
+    loading: false, 
+    data: { transcriptions: [] }
+  });
+
+  render(<Upload />);
+  
+  // Symulacja rownoleglego przesylania plikow
+  const audioFiles = [
+    new File(['audio1'], 'song1.mp3', { type: 'audio/mpeg' }),
+    new File(['audio2'], 'song2.mp3', { type: 'audio/mpeg' })
+  ];
+
+  audioFiles.forEach(file => {
+    const fileInput = screen.getByLabelText(/audio file/i);
+    fireEvent.change(fileInput, { target: { files: [file] } });
+    fireEvent.click(screen.getByText(/upload/i));
+  });
+
+  // Weryfikacja kolejkowania zadan
+  await waitFor(() => {
+    expect(mockStream.pushData)
+      .toHaveBeenCalledWith('data: {"status":"PENDING"}\n\n');
+    expect(screen.getAllByText(/processing/i)).toHaveLength(2);
+  });
+});
+\end{lstlisting}
+
+Testy te pozwoliły wykryć i naprawić następujące problemy:
+\begin{itemize}
+  \item Nieprawidłową obsługę przerwanych połączeń SSE
+  \item Problemy z timeoutami podczas długotrwałych transkrypcji
+  \item Błędy w serializacji odpowiedzi JSON
+  \item Nieoptymalne zarządzanie zasobami przy wielu równoległych połączeniach
+\end{itemize}
+
+\subsection{Testy manualne}
+Poza testami automatycznymi przeprowadzono szereg testów manualnych, które pozwoliły na weryfikację systemu w rzeczywistych warunkach użytkowania. Szczególną uwagę poświęcono funkcjonalnościom wymagającym interakcji użytkownika oraz długotrwałym procesom przetwarzania danych.
+
+\subsubsection{Test importu z YouTube}
+W ramach testów przeprowadzono serię importów utworów fortepianowych z YouTube. Proces testowy obejmował:
+\begin{itemize}
+\item Import 10-minutowej sonaty fortepianowej Beethovena
+\item Weryfikację jakości pobranego dźwięku
+\item Monitorowanie postępu transkrypcji
+\end{itemize}
+Testy ujawniły problem z obsługą długich utworów, gdzie system przerywał proces transkrypcji po przekroczeniu domyślnego limitu czasu przetwarzania. Problem rozwiązano poprzez modyfikację konfiguracji Celery i wprowadzenie mechanizmu wznawiania przerwanych zadań.
+
+\subsubsection{Test zmiany zdjęcia profilowego}
+Wprowadzono testy mające na celu weryfikację poprawności zmiany zdjęcia profilowego. Proces testowy obejmował:
+\begin{itemize}
+\item Próby przesłania zdjęcia przez użytkownika
+\item Weryfikację poprawności wyświetlania przesłanego zdjęcia w profilu użytkownika
+\item Sprawdzenie konfiguracji plików statycznych i ścieżek w środowisku Docker
+\end{itemize}
+Testy ujawniły problem, w którym niepoprawnie załadowane zdjęcia pozostawały na domyślnym obrazie. Problem został rozwiązany poprzez modyfikację konfiguracji plików statycznych i ścieżek w Dockerze.
+
+\subsubsection{Test wyświetlania podglądu transkrypcji}
+W ramach testów zweryfikowano poprawność wyświetlania podglądu transkrypcji:
+\begin{itemize}
+\item Sprawdzono renderowanie podglądu dla różnych przykładów transkrypcji
+\item Zidentyfikowano problem z niepoprawnym wyświetlaniem podglądu transkrypcji
+\end{itemize}
+Testy wykazały potrzebę dalszych poprawek w celu poprawy renderowania podglądu transkrypcji.
+
+\section{Testowanie wydajności}
+W ramach testów wydajnościowych przeprowadzono serię pomiarów czasu przetwarzania różnych plików audio. Testy obejmowały pliki o różnej długości (od 20 sekund do prawie 9 minut) oraz w różnych formatach (MP3 i WAV). Wyniki przedstawiono w tabeli \ref{tab:wyniki_testow}. 
+
+Analiza wyników prowadzi do następujących wniosków:
+\begin{itemize}
+	\item Czas przetwarzania jest proporcjonalny do długości utworu
+	\item System zachowuje stabilność przy dłuższych plikach
+	\item Narzut czasowy na przetwarzanie wynosi średnio 10-15\% długości utworu
+	\item Format pliku (MP3 vs WAV) nie ma znaczącego wpływu na czas przetwarzania
+\end{itemize}
+
+\begin{table}[ht]
+\centering
+\caption{Wyniki testów przetwarzania plików}
+\label{tab:wyniki_testow}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Plik} & \textbf{Długość utworu} & \textbf{Długość przetwarzania} \\
+\hline
+bach.mp3 & 00:20 & 00:21 \\
+\hline
+liszt.mp3 & 00:40 & 00:42 \\
+\hline
+C'est la vie.mp3 & 00:49 & 01:07 \\
+\hline
+Fletcher's song.wav & 01:39 & 02:10 \\
+\hline
+Intermezz.wav & 04:48 & 05:06 \\
+\hline
+Misty.wav & 08:42 & 09:20 \\
+\hline
+\end{tabular}
+\end{table}
+
+
 
 \section{Najważniejsze pokrycie testami}
 Kompleksowa analiza pokrycia testami wykazała, że system TuneScript posiada wysoki poziom zabezpieczenia kodu testami. Testy jednostkowe pokrywają:
@@ -1477,33 +1609,6 @@ Kompleksowa analiza pokrycia testami wykazała, że system TuneScript posiada wy
 \end{itemize}
 
 System testów jest regularnie utrzymywany i rozszerzany wraz z rozwojem aplikacji, zapewniając wysoką jakość i niezawodność systemu. Regularne wykonywanie testów w procesie ciągłej integracji pozwala na szybkie wykrywanie i naprawę potencjalnych problemów, zanim dotrą one do użytkowników końcowych.
-
-\begin{table}
-	\centering
-	\caption{Nagłówek tabeli jest nad tabelą.}
-	\label{id:tab:wyniki}
-	\begin{tabular}{rrrrrrrr}
-		\toprule
-		&                                     \multicolumn{7}{c}{metoda}                                      \\
-		\cmidrule{2-8}
-		&         &         &        \multicolumn{3}{c}{alg. 3}        & \multicolumn{2}{c}{alg. 4, $\gamma = 2$} \\
-		\cmidrule(r){4-6}\cmidrule(r){7-8}
-		$\zeta$ & alg. 1  & alg. 2  & $\alpha= 1.5$ & $\alpha= 2$ & $\alpha= 3$ & $\beta = 0.1$ & $\beta = -0.1$ \\
-		\midrule
-		0       & 8.3250  & 1.45305 & 7.5791        & 14.8517     & 20.0028     & 1.16396       & 1.1365         \\
-		5       & 0.6111  & 2.27126 & 6.9952        & 13.8560     & 18.6064     & 1.18659       & 1.1630         \\
-		10      & 11.6126 & 2.69218 & 6.2520        & 12.5202     & 16.8278     & 1.23180       & 1.2045         \\
-		15      & 0.5665  & 2.95046 & 5.7753        & 11.4588     & 15.4837     & 1.25131       & 1.2614         \\
-		20      & 15.8728 & 3.07225 & 5.3071        & 10.3935     & 13.8738     & 1.25307       & 1.2217         \\
-		25      & 0.9791  & 3.19034 & 5.4575        & 9.9533      & 13.0721     & 1.27104       & 1.2640         \\
-		30      & 2.0228  & 3.27474 & 5.7461        & 9.7164      & 12.2637     & 1.33404       & 1.3209         \\
-		35      & 13.4210 & 3.36086 & 6.6735        & 10.0442     & 12.0270     & 1.35385       & 1.3059         \\
-		40      & 13.2226 & 3.36420 & 7.7248        & 10.4495     & 12.0379     & 1.34919       & 1.2768         \\
-		45      & 12.8445 & 3.47436 & 8.5539        & 10.8552     & 12.2773     & 1.42303       & 1.4362         \\
-		50      & 12.9245 & 3.58228 & 9.2702        & 11.2183     & 12.3990     & 1.40922       & 1.3724         \\
-		\bottomrule
-	\end{tabular}
-\end{table}  
 
 
 

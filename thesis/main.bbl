@@ -171,6 +171,79 @@
     \field{year}{2018}
   \endentry
 
+  \entry{bib:hawthorne2018enabling}{inproceedings}{}
+    \name{author}{9}{}{%
+      {{hash=HC}{%
+         family={Hawthorne},
+         familyi={H\bibinitperiod},
+         given={Curtis},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=SA}{%
+         family={Stasyuk},
+         familyi={S\bibinitperiod},
+         given={Andriy},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=RA}{%
+         family={Roberts},
+         familyi={R\bibinitperiod},
+         given={Adam},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=SI}{%
+         family={Simon},
+         familyi={S\bibinitperiod},
+         given={Ian},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=HCZA}{%
+         family={Huang},
+         familyi={H\bibinitperiod},
+         given={Cheng-Zhi\bibnamedelima Anna},
+         giveni={C\bibinithyphendelim Z\bibinitperiod\bibinitdelim
+  A\bibinitperiod},
+      }}%
+      {{hash=DS}{%
+         family={Dieleman},
+         familyi={D\bibinitperiod},
+         given={Sander},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=EE}{%
+         family={Elsen},
+         familyi={E\bibinitperiod},
+         given={Erich},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=EJ}{%
+         family={Engel},
+         familyi={E\bibinitperiod},
+         given={Jesse},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=ED}{%
+         family={Eck},
+         familyi={E\bibinitperiod},
+         given={Douglas},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HC+1}
+    \strng{fullhash}{HCSARASIHCZADSEEEJED1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{booktitle}{International Conference on Learning Representations}
+    \field{title}{Enabling Factorized Piano Music Modeling and Generation with
+  the {MAESTRO} Dataset}
+    \verb{url}
+    \verb https://openreview.net/forum?id=r1lYRjC9F7
+    \endverb
+    \field{year}{2019}
+  \endentry
+
   \entry{bib:jeong2017deep}{inproceedings}{}
     \name{author}{2}{}{%
       {{hash=JIY}{%

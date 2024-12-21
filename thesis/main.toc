@@ -38,28 +38,36 @@
 \contentsline {subsection}{\numberline {5.6.2}Implementacja systemu kolejkowania transkrypcji}{24}{subsection.5.6.2}%
 \contentsline {subsection}{\numberline {5.6.3}Implementacja systemu SSE do monitorowania postępu}{26}{subsection.5.6.3}%
 \contentsline {section}{\numberline {5.7}Diagramy UML}{27}{section.5.7}%
-\contentsline {chapter}{\numberline {6}Weryfikacja i walidacja}{33}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Organizacja testów}{33}{section.6.1}%
-\contentsline {subsection}{\numberline {6.1.1}Testy jednostkowe (Unit Tests)}{33}{subsection.6.1.1}%
-\contentsline {subsection}{\numberline {6.1.2}Testy integracyjne}{33}{subsection.6.1.2}%
-\contentsline {section}{\numberline {6.2}Przypadki testowe i wykryte błędy}{34}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Testy automatyczne}{34}{subsection.6.2.1}%
-\contentsline {subsubsection}{Testy interfejsu użytkownika}{34}{section*.12}%
-\contentsline {subsubsection}{Testy walidacji danych}{34}{section*.13}%
-\contentsline {subsection}{\numberline {6.2.2}Testy manualne}{35}{subsection.6.2.2}%
-\contentsline {subsubsection}{Test procesu transkrypcji}{35}{section*.14}%
-\contentsline {subsubsection}{Test równoległego przetwarzania}{35}{section*.15}%
-\contentsline {subsubsection}{Test interfejsu chatbota}{36}{section*.16}%
-\contentsline {section}{\numberline {6.3}Eksperymentalne badania wydajności}{36}{section.6.3}%
-\contentsline {section}{\numberline {6.4}Najważniejsze pokrycie testami}{37}{section.6.4}%
-\contentsline {chapter}{\numberline {7}Podsumowanie i wnioski}{39}{chapter.7}%
-\contentsline {chapter}{Bibliografia}{41}{chapter*.18}%
-\contentsline {chapter}{Spis skrótów i symboli}{45}{appendix*.19}%
+\contentsline {chapter}{\numberline {6}Model transkrypcji}{33}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Architektura modelu}{33}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Proces uczenia}{34}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Przetwarzanie wstępne danych}{34}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Parametry treningu}{35}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Funkcja straty}{35}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}Wnioskowanie}{35}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Weryfikacja i walidacja}{37}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Organizacja testów}{37}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Testy jednostkowe (Unit Tests)}{37}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Testy integracyjne}{37}{subsection.7.1.2}%
+\contentsline {section}{\numberline {7.2}Przypadki testowe i wykryte błędy}{38}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Testy automatyczne}{38}{subsection.7.2.1}%
+\contentsline {subsubsection}{Testy interfejsu użytkownika}{38}{section*.13}%
+\contentsline {subsubsection}{Testy komunikacji API}{39}{section*.14}%
+\contentsline {subsubsection}{Testy endpointów}{40}{section*.15}%
+\contentsline {subsection}{\numberline {7.2.2}Testy manualne}{41}{subsection.7.2.2}%
+\contentsline {subsubsection}{Test importu z YouTube}{41}{section*.16}%
+\contentsline {subsubsection}{Test zmiany zdjęcia profilowego}{41}{section*.17}%
+\contentsline {subsubsection}{Test wyświetlania podglądu transkrypcji}{41}{section*.18}%
+\contentsline {section}{\numberline {7.3}Testowanie wydajności}{42}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Najważniejsze pokrycie testami}{42}{section.7.4}%
+\contentsline {chapter}{\numberline {8}Podsumowanie i wnioski}{43}{chapter.8}%
+\contentsline {chapter}{Bibliografia}{45}{chapter*.20}%
+\contentsline {chapter}{Spis skrótów i symboli}{49}{appendix*.21}%
 \babel@toc {british}{}\relax 
 \babel@toc {polish}{}\relax 
 \babel@toc {british}{}\relax 
 \babel@toc {polish}{}\relax 
-\contentsline {chapter}{Źródła}{47}{appendix*.20}%
-\contentsline {chapter}{Lista dodatkowych plików, uzupełniających tekst pracy}{49}{appendix*.21}%
-\contentsline {chapter}{Spis rysunków}{51}{appendix*.22}%
-\contentsline {chapter}{Spis tabel}{53}{appendix*.23}%
+\contentsline {chapter}{Źródła}{51}{appendix*.22}%
+\contentsline {chapter}{Lista dodatkowych plików, uzupełniających tekst pracy}{53}{appendix*.23}%
+\contentsline {chapter}{Spis rysunków}{55}{appendix*.24}%
+\contentsline {chapter}{Spis tabel}{57}{appendix*.25}%
