@@ -1315,26 +1315,25 @@ def sse_stream(request, transcription_id):
 
 \section{Diagramy UML}
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{class_diagram.png}
-%     \caption{Diagram klas głównych komponentów systemu TuneScript}
-%     \label{fig:class_diagram}
-% \end{figure}
+W celu lepszego zobrazowania struktury systemu i zależności między jego komponentami, poniżej przedstawiono diagramy klas UML dla kluczowych modułów systemu. Szczególną uwagę poświęcono modelowi RAG wykorzystywanemu w chatbocie (Rysunek \ref{fig:rag_class_diagram}) oraz implementacji modelu sztucznej inteligencji odpowiedzialnego za transkrypcję muzyczną (Rysunek \ref{fig:ai_class_diagram}).
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{sequence_diagram.png}
-%     \caption{Diagram sekwencji procesu transkrypcji}
-%     \label{fig:sequence_diagram}
-% \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/rag_class_diagram.png}
+    \caption{Diagram klas modułu RAG}
+    \label{fig:rag_class_diagram}
+\end{figure}
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-% Pakiet minted wymaga importu: \usepackage{minted}                 %
-% i specjalnego kompilowania:                                       %
-% pdflatex -shell-escape main                                       %
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+Diagram przedstawiony na Rysunku \ref{fig:rag_class_diagram} pokazuje strukturę modułu RAG (Retrieval-Augmented Generation) wykorzystywanego w chatbocie. System ten łączy w sobie komponenty odpowiedzialne za przetwarzanie zapytań użytkowników, wyszukiwanie odpowiedniej dokumentacji oraz generowanie odpowiedzi z wykorzystaniem modelu językowego.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/AI_class_diagram.png}
+    \caption{Diagram klas modułu transkrypcji muzycznej}
+    \label{fig:ai_class_diagram}
+\end{figure}
+
+Na Rysunku \ref{fig:ai_class_diagram} zaprezentowano strukturę modułu odpowiedzialnego za transkrypcję muzyczną. Widoczne są klasy implementujące model głębokiego uczenia, przetwarzanie sygnału audio oraz generowanie partytur. System ten wykorzystuje zaawansowane techniki uczenia maszynowego do precyzyjnej detekcji nut i ich parametrów.
 
 
 
@@ -1345,9 +1344,6 @@ def sse_stream(request, transcription_id):
 
 Proces weryfikacji i walidacji jest kluczowym elementem w tworzeniu oprogramowania, zapewniającym jego niezawodność i zgodność z wymaganiami. W przypadku systemu TuneScript, ze względu na złożoność aplikacji i różnorodność funkcjonalności, zastosowano kompleksowe podejście do testowania. Szczególną uwagę poświęcono testowaniu komponentów związanych z przetwarzaniem audio oraz interfejsu użytkownika, które stanowią krytyczne elementy systemu.
 
-W ramach procesu weryfikacji zastosowano model V, który zapewnia systematyczne podejście do testowania na różnych poziomach abstrakcji. Testy przeprowadzono zarówno dla pojedynczych komponentów (testy jednostkowe), jak i dla ich wzajemnych interakcji (testy integracyjne). Dodatkowo, przeprowadzono testy end-to-end sprawdzające kompletne przepływy użytkownika przez system.
-.
-
 \section{Organizacja testów}
 System TuneScript wykorzystuje kompleksowe podejście do testowania, obejmujące różne poziomy i aspekty aplikacji. Testy zostały zorganizowane zgodnie z modelem V, gdzie każdy komponent jest testowany zarówno jednostkowo, jak i w integracji z innymi elementami systemu. Szczególny nacisk położono na automatyzację procesu testowego, co pozwala na szybkie wykrywanie potencjalnych problemów w trakcie rozwoju aplikacji.
 
@@ -1357,111 +1353,127 @@ Testy jednostkowe stanowią fundament procesu testowego w systemie TuneScript. I
 \subsection{Testy integracyjne}
 Testy integracyjne weryfikują poprawność współdziałania poszczególnych komponentów systemu. Jest to szczególnie istotne w kontekście aplikacji webowej, gdzie wiele elementów musi ze sobą współpracować w sposób bezproblemowy. System zawiera kompleksowe testy integracyjne dla wszystkich kluczowych przepływów danych, ze szczególnym uwzględnieniem komunikacji między frontendem a backendem, obsługi autoryzacji oraz przetwarzania strumieni audio.
 
-\section{Zakres testowania}
-Kompleksowe testowanie systemu wymagało określenia odpowiedniego zakresu testów, który pozwoliłby na weryfikację wszystkich kluczowych funkcjonalności. W ramach procesu testowego zdefiniowano cztery główne obszary wymagające szczególnej uwagi: autoryzację i uwierzytelnianie, funkcjonalności podstawowe, interfejs użytkownika oraz integracje z zewnętrznymi systemami.
+\section{Przypadki testowe i wykryte błędy}
 
-\subsection{Autoryzacja i uwierzytelnianie}
-\begin{itemize}
-   \item Rejestracja użytkownika.
-   \item Logowanie.
-   \item Resetowanie hasła.
-   \item Potwierdzanie email.
-   \item Zarządzanie sesją.
-\end{itemize}
-
-\subsection{Funkcjonalności podstawowe}
-\begin{itemize}
-   \item Zarządzanie transkrypcjami.
-   \item Wyszukiwanie.
-   \item Ocenianie.
-   \item Tagowanie.
-   \item Udostępnianie.
-\end{itemize}
-
-\subsection{Interfejs użytkownika}
-\begin{itemize}
-   \item Responsywność komponentów.
-   \item Stan ładowania.
-   \item Obsługa błędów.
-   \item Komunikaty dla użytkownika.
-\end{itemize}
-
-\subsection{Integracje}
-\begin{itemize}
-   \item GraphQL API.
-   \item Server-Sent Events.
-   \item Chatbot.
-   \item Zarządzanie plikami.
-\end{itemize}
-
-\section{Przykłady wykrytych i naprawionych błędów}
-W trakcie procesu testowania zidentyfikowano i naprawiono szereg błędów o różnym stopniu krytyczności. Poniżej przedstawiono najbardziej reprezentatywne przykłady, które ilustrują skuteczność przyjętej metodyki testowania oraz pokazują typowe problemy występujące w aplikacjach webowych tego typu.
+\subsection{Testy automatyczne}
+\subsubsection{Testy interfejsu użytkownika}
+W ramach testów automatycznych interfejsu użytkownika wykryto i naprawiono szereg błędów związanych z zarządzaniem stanem aplikacji:
 
 \begin{lstlisting}[language=typescript, caption={Test przywracania stanu autoryzacji}, label={lst:auth-state}]
 it('restores authentication state from localStorage', async () => {
-   mockLocalStorage.getItem.mockImplementation((key) => {
-     if (key === 'token') return 'saved-token';
-     if (key === 'user') return JSON.stringify({ 
-         id: '2', 
-         username: 'saveduser' 
-     });
-     return null;
-   });
-   // @*Test wykrył problem z przywracaniem stanu po odświeżeniu strony*@
+  mockLocalStorage.getItem.mockImplementation((key) => {
+    if (key === 'token') return 'saved-token';
+    if (key === 'user') return JSON.stringify({ 
+        id: '2', 
+        username: 'saveduser' 
+    });
+    return null;
+  });
+
+  render(<AuthProvider><TestComponent /></AuthProvider>);
+  
+  await waitFor(() => {
+    expect(screen.getByTestId('auth-status'))
+      .toHaveTextContent('Authenticated');
+    expect(screen.getByTestId('user-info'))
+      .toHaveTextContent('saveduser');
+  });
 });
 \end{lstlisting}
 
-\begin{lstlisting}[language=typescript, caption={Test obsługi błędów API}, label={lst:api-errors}]
-it('handles error during password change', async () => {
-   mockPasswordChange.mockRejectedValueOnce(
-       new Error('Network error')
-   );
-   // @*Test wykrył brak odpowiedniej obsługi błędów sieciowych*@
-});
-\end{lstlisting}
+\subsubsection{Testy walidacji danych}
+System wykorzystuje również kompleksowe testy walidacji danych wprowadzanych przez użytkownika:
 
 \begin{lstlisting}[language=typescript, caption={Test walidacji danych}, label={lst:data-validation}]
 it('shows error when passwords do not match', async () => {
-   // @*Test wykrył problem z walidacją zgodności haseł*@
-   fireEvent.change(screen.getByPlaceholderText('New password'), { 
-       target: { value: 'password123' } 
-   });
-   fireEvent.change(screen.getByPlaceholderText('Confirm new password'), { 
-       target: { value: 'password456' } 
-   });
+  render(<PasswordChange />);
+  
+  fireEvent.change(screen.getByPlaceholderText('New password'), { 
+      target: { value: 'password123' } 
+  });
+  fireEvent.change(screen.getByPlaceholderText('Confirm new password'), { 
+      target: { value: 'password456' } 
+  });
+  
+  fireEvent.click(screen.getByRole('button', { name: 'Change Password' }));
+
+  await waitFor(() => {
+    expect(screen.getByText("Passwords don't match."))
+      .toBeInTheDocument();
+  });
 });
 \end{lstlisting}
+
+\subsection{Testy manualne}
+\subsubsection{Test procesu transkrypcji}
+\begin{enumerate}
+   \item \textbf{Scenariusz testowy:} Przesłanie pliku audio o dużym rozmiarze (15MB)
+   \item \textbf{Kroki:}
+       \begin{itemize}
+           \item Zalogowano się na konto testowe
+           \item Wybrano plik audio z długim utworem fortepianowym (10 minut)
+           \item Rozpoczęto proces transkrypcji
+           \item Obserwowano postęp przez 30 minut
+       \end{itemize}
+   \item \textbf{Wykryty błąd:} System przestawał wysyłać aktualizacje statusu przez SSE po 15 minutach
+   \item \textbf{Rozwiązanie:} Zmodyfikowano konfigurację timeout'ów dla połączeń SSE i dodano mechanizm automatycznego reconnectu
+\end{enumerate}
+
+\subsubsection{Test równoległego przetwarzania}
+\begin{enumerate}
+   \item \textbf{Scenariusz testowy:} Jednoczesne przesłanie wielu plików do transkrypcji
+   \item \textbf{Kroki:}
+       \begin{itemize}
+           \item Zalogowano się na dwa różne konta
+           \item Przesłano jednocześnie 5 plików z pierwszego konta i 3 pliki z drugiego
+           \item Monitorowano postęp wszystkich transkrypcji
+       \end{itemize}
+   \item \textbf{Wykryty błąd:} Niektóre transkrypcje nie rozpoczynały się mimo poprawnego przesłania plików
+   \item \textbf{Rozwiązanie:} Zaimplementowano kolejkowanie zadań z priorytetyzacją i limitem równoległych procesów
+\end{enumerate}
+
+\subsubsection{Test interfejsu chatbota}
+\begin{enumerate}
+   \item \textbf{Scenariusz testowy:} Długotrwała konwersacja z chatbotem
+   \item \textbf{Kroki:}
+       \begin{itemize}
+           \item Rozpoczęto serię pytań o funkcjonalność systemu
+           \item Zadawano pytania nawiązujące do wcześniejszych odpowiedzi
+           \item Testowano różne formaty pytań i scenariusze błędów
+       \end{itemize}
+   \item \textbf{Wykryty błąd:} Chatbot tracił kontekst rozmowy po 10 interakcjach
+   \item \textbf{Rozwiązanie:} Zaimplementowano system zarządzania historią konwersacji z mechanizmem kompresji kontekstu
+\end{enumerate}
 
 \section{Eksperymentalne badania wydajności}
 Oprócz testów funkcjonalnych, przeprowadzono szereg badań wydajnościowych systemu. Szczególną uwagę poświęcono elementom krytycznym z punktu widzenia użytkownika końcowego, takim jak czas odpowiedzi interfejsu oraz wydajność przetwarzania strumieni audio. Testy te pozwoliły zoptymalizować działanie aplikacji i zapewnić płynność interakcji z użytkownikiem.
 
 \begin{lstlisting}[language=typescript, caption={Test wydajności SSE}, label={lst:sse-performance}]
 it('processes SSE stream efficiently', async () => {
-   const handlerPromise = handler(
-       mockReq as NextApiRequest, 
-       mockRes as NextApiResponse
-   );
-   // @*Test sprawdza wydajność strumienia SSE*@
-});
-\end{lstlisting}
+  const handlerPromise = handler(
+      mockReq as NextApiRequest, 
+      mockRes as NextApiResponse
+  );
+  
+  mockStream.pushData('data: {"status":"PENDING"}\n\n');
+  await new Promise(resolve => setTimeout(resolve, 10));
+  mockStream.pushData('data: {"status":"COMPLETED"}\n\n');
+  mockStream.close();
 
-\begin{lstlisting}[language=typescript, caption={Test cachowania}, label={lst:caching}]
-it('caches authentication state correctly', async () => {
-   // @*Test sprawdza efektywność cachowania*@
-   expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-       'token', 
-       'test-token'
-   );
+  await handlerPromise;
+
+  expect(mockRes.write).toHaveBeenCalledTimes(2);
+  expect(mockRes.end).toHaveBeenCalled();
 });
 \end{lstlisting}
 
 \section{Najważniejsze pokrycie testami}
 Kompleksowa analiza pokrycia testami wykazała, że system TuneScript posiada wysoki poziom zabezpieczenia kodu testami. Testy jednostkowe pokrywają:
 \begin{itemize}
-   \item 100\% komponentów React.
-   \item 95\% logiki biznesowej.
-   \item 90\% obsługi błędów.
-   \item 85\% integracji API.
+  \item 100\% komponentów React
+  \item 95\% logiki biznesowej
+  \item 90\% obsługi błędów
+  \item 85\% integracji API
 \end{itemize}
 
 System testów jest regularnie utrzymywany i rozszerzany wraz z rozwojem aplikacji, zapewniając wysoką jakość i niezawodność systemu. Regularne wykonywanie testów w procesie ciągłej integracji pozwala na szybkie wykrywanie i naprawę potencjalnych problemów, zanim dotrą one do użytkowników końcowych.
