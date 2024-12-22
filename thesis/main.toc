@@ -66,14 +66,18 @@
 \contentsline {subsubsection}{Test wyświetlania podglądu transkrypcji}{47}{section*.30}%
 \contentsline {section}{\numberline {7.3}Testowanie wydajności}{48}{section.7.3}%
 \contentsline {section}{\numberline {7.4}Najważniejsze pokrycie testami}{48}{section.7.4}%
-\contentsline {chapter}{\numberline {8}Podsumowanie i wnioski}{49}{chapter.8}%
-\contentsline {chapter}{Bibliografia}{51}{chapter*.32}%
-\contentsline {chapter}{Spis skrótów i symboli}{55}{appendix*.33}%
-\babel@toc {british}{}\relax 
-\babel@toc {polish}{}\relax 
-\babel@toc {british}{}\relax 
-\babel@toc {polish}{}\relax 
-\contentsline {chapter}{Źródła}{57}{appendix*.34}%
-\contentsline {chapter}{Lista dodatkowych plików, uzupełniających tekst pracy}{59}{appendix*.35}%
-\contentsline {chapter}{Spis rysunków}{61}{appendix*.36}%
-\contentsline {chapter}{Spis tabel}{63}{appendix*.37}%
+\contentsline {section}{\numberline {7.5}Porównanie wygenerowanych i oryginalnych partytur}{49}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}F. Chopin - Etiuda op. 10 nr 5}{49}{subsection.7.5.1}%
+\contentsline {subsubsection}{Wygenerowana partytura}{49}{section*.32}%
+\contentsline {subsubsection}{Oryginalna partytura}{49}{section*.33}%
+\contentsline {subsection}{\numberline {7.5.2}L. van Beethoven - Sonata op. 53 nr 21 "Waldstein", Allegro con brio}{49}{subsection.7.5.2}%
+\contentsline {subsubsection}{Wygenerowana partytura}{49}{section*.34}%
+\contentsline {subsubsection}{Oryginalna partytura}{49}{section*.35}%
+\contentsline {subsection}{\numberline {7.5.3}L. van Beethoven - Sonata op. 13 nr 8 "Patetyczna", Adagio cantabile}{49}{subsection.7.5.3}%
+\contentsline {subsubsection}{Wygenerowana partytura}{49}{section*.36}%
+\contentsline {subsubsection}{Oryginalna partytura}{49}{section*.37}%
+\contentsline {chapter}{\numberline {8}Podsumowanie i wnioski}{57}{chapter.8}%
+\contentsline {chapter}{Bibliografia}{59}{chapter*.50}%
+\contentsline {chapter}{Lista dodatkowych plików, uzupełniających tekst pracy}{63}{appendix*.51}%
+\contentsline {chapter}{Spis rysunków}{65}{appendix*.52}%
+\contentsline {chapter}{Spis tabel}{67}{appendix*.53}%

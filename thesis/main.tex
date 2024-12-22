@@ -151,6 +151,7 @@
 \usepackage{mathtools}
 \usepackage{geometry}
 \usepackage{subcaption}   % subfigures
+\usepackage{pdfpages}     % for including PDF pages
 \usepackage[page]{appendix} % toc,
 \renewcommand{\appendixtocname}{Dodatki}
 \renewcommand{\appendixpagename}{Dodatki}
@@ -1678,6 +1679,74 @@ Kompleksowa analiza pokrycia testami wykazała, że system TuneScript posiada wy
 
 System testów jest regularnie utrzymywany i rozszerzany wraz z rozwojem aplikacji, zapewniając wysoką jakość i niezawodność systemu. Regularne wykonywanie testów w procesie ciągłej integracji pozwala na szybkie wykrywanie i naprawę potencjalnych problemów, zanim dotrą one do użytkowników końcowych.
 
+\section{Porównanie wygenerowanych i oryginalnych partytur}
+Poniższe sekcje przedstawiają porównanie wygenerowanych partytur z oryginalnymi pod względem wysokości dźwięków. Wygenerowane partytury zostały stworzone przez model AI, podczas gdy oryginalne partytury to opublikowane wersje utworów. Znaczenie kolorów użytych w wygenerowanych partyturach:
+\begin{itemize}
+    \item \textbf{Czerwony:} nieprawidłowy dźwięk (pod względem wysokości).
+    \item \textbf{Zielony:} prawidłowa melodia (pod względem wysokości).
+    \item \textbf{Niebieski:} prawidłowy akompaniament (pod względem wysokości).
+\end{itemize}
+
+\subsection{F. Chopin - Etiuda op. 10 nr 5}
+\subsubsection{Wygenerowana partytura}
+\hyperref[fig:generated_chopin]{Link do wygenerowanej partytury}
+\subsubsection{Oryginalna partytura}
+\hyperref[fig:original_chopin]{Link do oryginalnej partytury}
+
+\subsection{L. van Beethoven - Sonata op. 53 nr 21 "Waldstein", Allegro con brio}
+\subsubsection{Wygenerowana partytura}
+\hyperref[fig:generated_waldstein]{Link do wygenerowanej partytury}
+\subsubsection{Oryginalna partytura}
+\hyperref[fig:original_waldstein]{Link do oryginalnej partytury}
+
+\subsection{L. van Beethoven - Sonata op. 13 nr 8 "Patetyczna", Adagio cantabile}
+\subsubsection{Wygenerowana partytura}
+\hyperref[fig:generated_pathetique]{Link do wygenerowanej partytury}
+\subsubsection{Oryginalna partytura}
+\hyperref[fig:original_pathetique]{Link do oryginalnej partytury}
+
+\clearpage
+\begin{figure}[htbp]
+    \centering
+    \phantomsection
+    \label{fig:generated_chopin}
+    \includepdf[pages={1}]{notes/chopin.pdf}
+\end{figure}
+\clearpage
+\begin{figure}[htbp]
+    \centering
+    \phantomsection
+    \label{fig:original_chopin}
+    \includepdf[pages={22}]{notes/Chopin_Op.10.pdf}
+\end{figure}
+\clearpage
+\begin{figure}[htbp]
+    \centering
+    \phantomsection
+    \label{fig:generated_waldstein}
+    \includepdf[pages={1}]{notes/waldstein.pdf}
+\end{figure}
+\clearpage
+\begin{figure}[htbp]
+    \centering
+    \phantomsection
+    \label{fig:original_waldstein}
+    \includepdf[pages={3}]{notes/waldstein-1st-movement.pdf}
+\end{figure}
+\clearpage
+\begin{figure}[htbp]
+    \centering
+    \phantomsection
+    \label{fig:generated_pathetique}
+    \includepdf[pages={1}]{notes/Adagio-cantabile.pdf}
+\end{figure}
+\clearpage
+\begin{figure}[htbp]
+    \centering
+    \phantomsection
+    \label{fig:original_pathetique}
+    \includepdf[pages={8}]{notes/Pathetique.pdf}
+\end{figure}
 
 
 % TODO
@@ -1700,53 +1769,29 @@ System testów jest regularnie utrzymywany i rozszerzany wraz z rozwojem aplikac
 \begin{appendices}
 	
 	% TODO
-	\chapter{Spis skrótów i symboli}
+	% \chapter{Spis skrótów i symboli}
 	
-	\begin{itemize}
-		\item[DNA] kwas deoksyrybonukleinowy (ang. \english{deoxyribonucleic acid})
-		\item[MVC] model -- widok -- kontroler (ang. \english{model--view--controller}) 
-		\item[$N$] liczebność zbioru danych
-		\item[$\mu$] stopnień przyleżności do zbioru
-		\item[$\mathbb{E}$] zbiór krawędzi grafu
-		\item[$\mathcal{L}$] transformata Laplace'a 
-	\end{itemize}
-	
-	
-	% TODO
-	\chapter{Źródła}
-	
-	Jeżeli w pracy konieczne jest umieszczenie długich fragmentów kodu źródłowego, należy je przenieść w to miejsce.
-	
-	
-	
-	% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-	% Pakiet minted wymaga odkomentowania w pliku config/settings.tex   %
-	% importu pakietu minted: \usepackage{minted}                       %
-	% i specjalnego kompilowania:                                       %
-	% pdflatex -shell-escape praca                                      %
-	% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
-	
-	%\begin{minted}[linenos,breaklines,frame=lines]{c++}
-	%if (_nClusters < 1)
-	%   throw std::string ("unknown number of clusters");
-	%if (_nIterations < 1 and _epsilon < 0)
-	%   throw std::string ("You should set a maximal number of iteration or minimal difference -- epsilon.");
-	%if (_nIterations > 0 and _epsilon > 0)
-	%   throw std::string ("Both number of iterations and minimal epsilon set -- you should set either number of iterations or minimal epsilon.");
-	%\end{minted}
+	% \begin{itemize}
+	% 	\item[DNA] kwas deoksyrybonukleinowy (ang. \english{deoxyribonucleic acid})
+	% 	\item[MVC] model -- widok -- kontroler (ang. \english{model--view--controller}) 
+	% 	\item[$N$] liczebność zbioru danych
+	% 	\item[$\mu$] stopnień przyleżności do zbioru
+	% 	\item[$\mathbb{E}$] zbiór krawędzi grafu
+	% 	\item[$\mathcal{L}$] transformata Laplace'a 
+	% \end{itemize}
 	
 	
 	% TODO
 	\chapter{Lista dodatkowych plików, uzupełniających tekst pracy} 
 	
 	
-	W systemie do pracy dołączono dodatkowe pliki zawierające:
-	\begin{itemize}
-		\item źródła programu,
-		\item dane testowe,
-		\item film pokazujący działanie opracowanego oprogramowania lub zaprojektowanego i~wykonanego urządzenia,
-		\item itp.
-	\end{itemize}
+	% W systemie do pracy dołączono dodatkowe pliki zawierające:
+	% \begin{itemize}
+	% 	\item źródła programu,
+	% 	\item dane testowe,
+	% 	\item film pokazujący działanie opracowanego oprogramowania lub zaprojektowanego i~wykonanego urządzenia,
+	% 	\item itp.
+	% \end{itemize}
 	
 	
 	\listoffigures
