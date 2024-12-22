@@ -1343,29 +1343,20 @@ Implementacja modelu do transkrypcji została oparta na pracy Kong et al. (2020)
 
 \section{Architektura modelu}
 
-Model składa się z czterech głównych podmodułów:
-\begin{itemize}
-   \item Moduł regresji głośności dźwięku
-   \item Moduł regresji początku dźwięku
-   \item Moduł klasyfikacji ramek czasowych
-   \item Moduł regresji końca dźwięku
-\end{itemize}
+Model transkrypcji dźwięku został zaprojektowany jako struktura zawierająca cztery główne podmoduły: moduł regresji głośności dźwięku, moduł regresji początku dźwięku, moduł klasyfikacji ramek czasowych oraz moduł regresji końca dźwięku. Każdy z tych podmodułów jest oparty na wspólnej architekturze akustycznej, która wykorzystuje kombinację warstw konwolucyjnych (CNN) i rekurencyjnych (biGRU).
 
-Każdy z podmodułów jest zbudowany w oparciu o model akustyczny składający się z warstw konwolucyjnych (CNN) i rekurencyjnych (biGRU). Architektura pojedynczego modelu akustycznego zawiera:
+Architektura pojedynczego modelu akustycznego składa się z kilku kluczowych elementów. Na początku znajduje się cztery bloki konwolucyjne, z których każdy zwiększa liczbę kanałów wyjściowych w kolejnych krokach: 48, 64, 96 i 128. Każdy blok konwolucyjny obejmuje dwie warstwy konwolucyjne o wymiarach 3x3, po których następuje normalizacja wsadowa oraz funkcja aktywacji ReLU. Dodatkowo każdy blok redukuje wymiarowość danych w dziedzinie częstotliwości o połowę.
 
-\begin{itemize}
-   \item 4 bloki konwolucyjne z kanałami wyjściowymi kolejno: 48, 64, 96 i 128
-   \item Każdy blok konwolucyjny zawiera:
-   \begin{itemize}
-       \item Dwie warstwy konwolucyjne 3x3
-       \item Normalizację wsadową
-       \item Aktywację ReLU
-       \item Redukcję wymiarowości w dziedzinie częstotliwości (2x)
-   \end{itemize}
-   \item Warstwę w pełni połączoną (768 jednostek)
-   \item Dwie dwukierunkowe warstwy GRU (256 jednostek ukrytych)
-   \item Końcową warstwę w pełni połączoną z funkcją aktywacji sigmoid
-\end{itemize}
+Następnie dane przechodzą przez warstwę w pełni połączoną zawierającą 768 jednostek, a potem przez dwie dwukierunkowe warstwy GRU, z których każda ma 256 jednostek ukrytych. Na końcu każda ścieżka kończy się warstwą w pełni połączoną z funkcją aktywacji sigmoid, umożliwiającą odpowiednią interpretację wyników dla zadań regresji i klasyfikacji.
+
+Cztery główne podmoduły korzystają z opisanej architektury w kontekście różnych celów:
+- Moduł regresji głośności wykorzystuje informacje do przewidywania intensywności dźwięku.\\
+- Moduł regresji początku dźwięku przewiduje momenty inicjacji dźwięków.\\
+- Moduł klasyfikacji ramek czasowych określa, które ramki należą do danego dźwięku.\\
+- Moduł regresji końca dźwięku odpowiada za przewidywanie momentu zakończenia dźwięków.\\
+
+Cała architektura została zaprojektowana tak, aby skutecznie wykorzystywać dane wejściowe w postaci spektrogramu melowego, jak przedstawiono na Rysunku \ref{fig:ai_architecture}.
+
 
 \begin{figure}[h]
     \centering
@@ -1380,11 +1371,11 @@ Proces uczenia modelu obejmuje kilka kluczowych etapów, począwszy od odpowiedn
 
 \subsection{Przetwarzanie wstępne danych}
 
-Do treningu wykorzystano zbiór MAESTRO V2.0.0 \cite{bib:hawthorne2018enabling}. W ramach przetwarzania wstępnego nagrania zostały przekonwertowane do postaci monofonicznej oraz przepróbkowane do częstotliwości 16 kHz. Następnie dane zostały podzielone na 10-sekundowe fragmenty, które były następnie przekształcane do postaci mel-spektrogramu. W procesie tym wykorzystano okno Hanna o rozmiarze 2048 próbek, stosując 229 filtrów melowych w zakresie częstotliwości od 30 Hz do 8000 Hz. Krok przesunięcia okna został ustalony na 10 ms, co zapewnia odpowiednią rozdzielczość czasową dla analizy dźwięku fortepianowego.
+Do treningu wykorzystano zbiór MAESTRO V2.0.0 \cite{bib:hawthorne2018enabling}, zawierający ponad 200 godzin nagrań fortepianowych pochodzących z Międzynarodowego Konkursu Pianistycznego e-Competition. Nagrania zostały wykonane na fortepianach koncertowych Yamaha Disklavier wyposażonych w precyzyjny system rejestracji i odtwarzania MIDI. W ramach przetwarzania wstępnego nagrania zostały przekonwertowane do postaci monofonicznej oraz przepróbkowane do częstotliwości 16 kHz. Następnie dane zostały podzielone na 10-sekundowe fragmenty, które były następnie przekształcane do postaci mel-spektrogramu. W procesie tym wykorzystano okno Hanna o rozmiarze 2048 próbek, stosując 229 filtrów melowych w zakresie częstotliwości od 30 Hz do 8000 Hz. Krok przesunięcia okna został ustalony na 10 ms, co zapewnia odpowiednią rozdzielczość czasową dla analizy dźwięku fortepianowego.
 
 \subsection{Parametry treningu}
 
-Proces uczenia modelu został skonfigurowany z wykorzystaniem optymalizatora Adam, dla którego przyjęto początkowy współczynnik uczenia równy 0.0005. W trakcie treningu współczynnik ten był redukowany o mnożnik 0.9 co 10000 iteracji, co pozwoliło na stopniowe dostrajanie parametrów modelu. Trening przeprowadzono z rozmiarem wsadu równym 12, przez 200000 iteracji. W celu zapobiegania przeuczeniu zastosowano regularyzację typu dropout, przyjmując współczynnik 0.2 dla warstw po blokach konwolucyjnych oraz 0.5 dla warstw w pełni połączonych.
+Proces uczenia modelu został skonfigurowany z wykorzystaniem optymalizatora Adam, dla którego przyjęto początkowy współczynnik uczenia równy 0.0005. W trakcie treningu współczynnik ten był redukowany o mnożnik 0.9 co 10000 iteracji, co pozwoliło na stopniowe dostrajanie parametrów modelu. Trening przeprowadzono z rozmiarem wsadu równym 12, przez 200000 iteracji, co zajęło około 4 dni na pojedynczej karcie graficznej Tesla-V100-PCIE-32GB. W celu zapobiegania przeuczeniu zastosowano regularyzację typu dropout, przyjmując współczynnik 0.2 dla warstw po blokach konwolucyjnych oraz 0.5 dla warstw w pełni połączonych. Wszystkie hiperparametry zostały zoptymalizowane na zbiorze walidacyjnym.
 
 \subsection{Funkcja straty}
 
@@ -1402,7 +1393,7 @@ gdzie:
    \item $l_{g}$ - strata głośności
 \end{itemize}
 
-Wszystkie składowe wykorzystują entropię krzyżową jako funkcję straty bazową.
+Wszystkie składowe wykorzystują entropię krzyżową jako funkcję straty bazową. Składowe funkcji straty są traktowane z równymi wagami, co okazało się skuteczne w eksperymentach.
 
 \section{Wnioskowanie}
 
