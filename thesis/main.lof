@@ -9,13 +9,25 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Strona główna systemu TuneScript}}{19}{figure.caption.8}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Panel główny użytkownika}}{19}{figure.caption.9}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Ekran przesyłania pliku audio}}{19}{figure.caption.10}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Status procesu transkrypcji}}{20}{figure.caption.11}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Zakończenie procesu transkrypcji}}{20}{figure.caption.12}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Szczegółowy widok transkrypcji}}{21}{figure.caption.13}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Lista transkrypcji użytkownika}}{22}{figure.caption.14}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Wyszukiwanie transkrypcji}}{22}{figure.caption.15}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Profil użytkownika}}{22}{figure.caption.16}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Ustawienia preferencji użytkownika}}{23}{figure.caption.17}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Lista ulubionych transkrypcji}}{23}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Asystent chatbot}}{24}{figure.caption.19}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Architektura systemu TuneScript}}{28}{figure.caption.8}%
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Schemat bazy danych TuneScript}}{29}{figure.caption.9}%
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Diagram klas modułu RAG}}{30}{figure.caption.10}%
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Diagram klas modułu transkrypcji muzycznej}}{31}{figure.caption.11}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Architektura systemu TuneScript}}{34}{figure.caption.20}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Schemat bazy danych TuneScript}}{35}{figure.caption.21}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Diagram klas modułu RAG}}{36}{figure.caption.22}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Diagram klas modułu transkrypcji muzycznej}}{37}{figure.caption.23}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Diagram architektury modelu transkrypcji}}{34}{figure.caption.12}%
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Diagram architektury modelu transkrypcji}}{40}{figure.caption.24}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

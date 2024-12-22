@@ -971,47 +971,124 @@ Bezpieczeństwo danych i prywatność użytkowników stanowią kluczowy aspekt s
 
 \section{Przykład działania}
 
-Dla lepszego zrozumienia funkcjonowania systemu, poniżej przedstawiono typowy scenariusz użycia aplikacji TuneScript:
+Dla lepszego zrozumienia funkcjonowania systemu, poniżej przedstawiono szczegółowy scenariusz użycia aplikacji TuneScript wraz z rzeczywistymi widokami interfejsu użytkownika. Przykład ten ilustruje typową ścieżkę użytkownika od momentu pierwszego kontaktu z systemem do pełnego wykorzystania jego funkcjonalności.
 
-\begin{enumerate}
-    \item Użytkownik rozpoczyna od rejestracji w systemie, podając wymagane dane osobowe.
-    \item Po potwierdzeniu rejestracji poprzez link aktywacyjny, użytkownik loguje się do systemu.
-    \item Następnie przesyła plik audio zawierający nagranie fortepianowe w jednym z obsługiwanych formatów.
-    \item System automatycznie rozpoczyna proces przetwarzania pliku i generowania transkrypcji.
-    \item W czasie rzeczywistym wyświetlany jest postęp procesu transkrypcji.
-    \item Po zakończeniu procesu, użytkownik otrzymuje dostęp do wygenerowanej transkrypcji.
-    \item Transkrypcję można przeglądać, edytować parametry oraz pobierać w różnych formatach.
-    \item Użytkownik może zdecydować o udostępnieniu transkrypcji publicznie.
-    \item Inni użytkownicy mogą wyszukać, przeglądać i oceniać udostępnioną transkrypcję.
-\end{enumerate}
+\subsection{Rozpoczęcie pracy z systemem}
+Użytkownik rozpoczyna swoją przygodę z systemem od strony głównej (Rys. \ref{fig:landing_page}). Interfejs powitalny prezentuje podstawowe informacje o możliwościach systemu oraz oferuje opcje rejestracji i logowania. Strona główna została zaprojektowana w sposób przejrzysty i intuicyjny, umożliwiając szybkie zapoznanie się z głównym przeznaczeniem aplikacji.
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{registration_screen.png}
-%     \caption{Ekran rejestracji użytkownika}
-%     \label{fig:registration_screen}
-% \end{figure}
+\subsection{Panel główny i podstawowe funkcje}
+Po pomyślnym zalogowaniu, użytkownik zostaje przekierowany do panelu głównego (Rys. \ref{fig:dashboard}). Jest to centralne miejsce systemu, prezentujące najważniejsze funkcje i statystyki. Panel zawiera sekcje z najwyżej ocenianymi transkrypcjami, ostatnio dodanymi utworami oraz personalizowanymi rekomendacjami. Użytkownik może stąd szybko przejść do wszystkich głównych funkcji systemu.
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{upload_screen.png}
-%     \caption{Ekran przesyłania pliku audio}
-%     \label{fig:upload_screen}
-% \end{figure}
+\subsection{Proces transkrypcji}
+Kluczową funkcjonalnością systemu jest proces transkrypcji plików audio. Użytkownik może rozpocząć ten proces przechodząc do dedykowanego ekranu przesyłania plików (Rys. \ref{fig:upload}). Interfejs umożliwia zarówno przesłanie pliku z dysku lokalnego, jak i podanie linku do nagrania w serwisie YouTube. W trakcie przetwarzania pliku, system wyświetla szczegółowy status postępu transkrypcji (Rys. \ref{fig:upload_waiting}), informując o kolejnych etapach procesu.
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{transcription_view.png}
-%     \caption{Widok wygenerowanej transkrypcji}
-%     \label{fig:transcription_view}
-% \end{figure}
+Po zakończeniu transkrypcji (Rys. \ref{fig:upload_finish}), system automatycznie generuje podgląd wyników. Użytkownik otrzymuje dostęp do szczegółowego widoku transkrypcji (Rys. \ref{fig:details_preview}), gdzie może przeglądać wygenerowane materiały, w tym nuty w formacie PDF oraz plik MIDI. W tym miejscu możliwe jest również odsłuchanie oryginalnego nagrania i porównanie go z wygenerowaną transkrypcją.
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{search_results.png}
-%     \caption{Wyniki wyszukiwania transkrypcji}
-%     \label{fig:search_results}
-% \end{figure}
+\subsection{Zarządzanie transkrypcjami}
+Wszystkie transkrypcje użytkownika są dostępne w dedykowanej sekcji "Moje transkrypcje" (Rys. \ref{fig:my_transcriptions}). Interfejs ten umożliwia łatwe zarządzanie własną biblioteką, włączając w to możliwość edycji metadanych, usuwania transkrypcji czy zmiany ich widoczności. System oferuje również zaawansowane możliwości wyszukiwania i filtrowania (Rys. \ref{fig:search}), co jest szczególnie przydatne przy większej liczbie utworów.
+
+\subsection{Personalizacja i ustawienia}
+System zapewnia rozbudowane możliwości personalizacji poprzez panel profilu użytkownika (Rys. \ref{fig:profile}). Użytkownik może tu dostosować swoje preferencje (Rys. \ref{fig:profile_choices}), zarządzać ustawieniami prywatności oraz modyfikować szczegóły swojego konta. Dodatkowo, istnieje możliwość utworzenia listy ulubionych transkrypcji (Rys. \ref{fig:favorite_transcriptions}), co ułatwia szybki dostęp do najczęściej używanych materiałów.
+
+\subsection{Wsparcie użytkownika}
+Ważnym elementem systemu jest wbudowany asystent chatbot, który służy pomocą w przypadku pytań czy problemów. Asystent oferuje natychmiastową pomoc (Rys. \ref{fig:chatbot}), odpowiadając na pytania dotyczące funkcjonalności systemu, procesu transkrypcji czy rozwiązywania potencjalnych problemów. Jest to szczególnie przydatne dla nowych użytkowników, którzy dopiero zapoznają się z systemem.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/landingpage.png}
+    \caption{Strona główna systemu TuneScript}
+    \label{fig:landing_page}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/dashboard.png}
+    \caption{Panel główny użytkownika}
+    \label{fig:dashboard}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/upload.png}
+    \caption{Ekran przesyłania pliku audio}
+    \label{fig:upload}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/upload_waiting.png}
+    \caption{Status procesu transkrypcji}
+    \label{fig:upload_waiting}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/upload_finish.png}
+    \caption{Zakończenie procesu transkrypcji}
+    \label{fig:upload_finish}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/details_preview.png}
+    \caption{Szczegółowy widok transkrypcji}
+    \label{fig:details_preview}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/my_transcriptions.png}
+    \caption{Lista transkrypcji użytkownika}
+    \label{fig:my_transcriptions}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/search.png}
+    \caption{Wyszukiwanie transkrypcji}
+    \label{fig:search}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/profile.png}
+    \caption{Profil użytkownika}
+    \label{fig:profile}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{screenshots/profile_choices.png}
+    \caption{Ustawienia preferencji użytkownika}
+    \label{fig:profile_choices}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{screenshots/favorite_transcriptions.png}
+    \caption{Lista ulubionych transkrypcji}
+    \label{fig:favorite_transcriptions}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{screenshots/chatbot_waiting.png}
+        \caption{Oczekiwanie na odpowiedź}
+        \label{fig:chatbot_waiting}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{screenshots/chatbot_response.png}
+        \caption{Odpowiedź}
+        \label{fig:chatbot_response}
+    \end{subfigure}
+    \caption{Asystent chatbot}
+    \label{fig:chatbot}
+\end{figure}
 
 
 
