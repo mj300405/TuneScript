@@ -1672,7 +1672,7 @@ Misty.wav & 08:42 & 09:20 \\
 Kompleksowa analiza pokrycia testami wykazała, że system TuneScript posiada wysoki poziom zabezpieczenia kodu testami. Testy jednostkowe pokrywają:
 \begin{itemize}
   \item 100\% komponentów React
-  \item 95\% logiki biznesowej
+  \item 100\% logiki biznesowej
   \item 90\% obsługi błędów
   \item 85\% integracji API
 \end{itemize}
@@ -1686,6 +1686,24 @@ Poniższe sekcje przedstawiają porównanie wygenerowanych partytur z oryginalny
     \item \textbf{Zielony:} prawidłowa melodia (pod względem wysokości).
     \item \textbf{Niebieski:} prawidłowy akompaniament (pod względem wysokości).
 \end{itemize}
+
+\subsection{Dokładność i ograniczenia transkrypcji}
+Analiza wygenerowanych transkrypcji wykazuje kilka charakterystycznych cech i ograniczeń systemu:
+
+\begin{itemize}
+    \item \textbf{Wysokość dźwięków:} System wykazuje bardzo wysoką dokładność w identyfikacji wysokości dźwięków, co potwierdza skuteczność modelu w rozpoznawaniu częstotliwości.
+    
+    \item \textbf{Notacja rytmiczna:} Transkrypcje cechują się nadmierną dokładnością w zapisie rytmicznym. System skrupulatnie zapisuje wszelkie, nawet najmniejsze odchylenia tempa, nierówności rytmiczne oraz naturalne dla wykonania muzycznego acceleranda i ritenuta. Ta przesadna precyzja prowadzi do zaciemnienia obrazu utworu i utrudnia jego czytelność.
+    
+    \item \textbf{Pedalizacja:} System dosłownie interpretuje brzmienie dźwięków przedłużonych pedałem, zapisując je jako nuty przetrzymane przez cały czas ich realnego brzmienia. Prowadzi to do znacznego zagęszczenia notacji, podczas gdy w standardowym zapisie nutowym efekt ten osiąga się poprzez oznaczenie pedalizacji.
+    
+    \item \textbf{Organizacja metryczna:} System wykazuje pewne ograniczenia w zakresie właściwego doboru metrum oraz podziału na takty, co może prowadzić do nietypowych lub nieprawidłowych rozwiązań w zapisie metrycznym.
+    
+    \item \textbf{Dobór kluczy:} Zauważalne są również niedoskonałości w wyborze odpowiednich kluczy, co czasami prowadzi do mniej optymalnego zapisu nutowego niż w wersjach oryginalnych.
+\end{itemize}
+
+Powyższe cechy wskazują, że system, mimo wysokiej skuteczności w rozpoznawaniu wysokości dźwięków, wymaga dalszego rozwoju w zakresie tworzenia czytelnej i praktycznej notacji muzycznej, która lepiej odzwierciedlałaby konwencje przyjęte w tradycyjnym zapisie nutowym.
+
 
 \subsection{F. Chopin - Etiuda op. 10 nr 5}
 \subsubsection{Wygenerowana partytura}
@@ -1751,11 +1769,53 @@ Poniższe sekcje przedstawiają porównanie wygenerowanych partytur z oryginalny
 
 % TODO
 \chapter{Podsumowanie i wnioski}
+\label{ch:podsumowanie}
+
+W niniejszej pracy przedstawiono projekt i implementację aplikacji webowej pod nazwą TuneScript, umożliwiającej automatyczną transkrypcję nagrań fortepianowych z formatu audio (MP3, WAV) do notacji muzycznej w formacie PDF. W celu realizacji tego zadania wykorzystano zaawansowane modele sztucznej inteligencji, oparte na uczeniu głębokim. 
+
+Głównym założeniem projektu była budowa kompleksowego systemu, który łączy w sobie przetwarzanie sygnału dźwiękowego, generowanie plików MIDI, a następnie ich konwersję do czytelnej partytury. W realizacji tego celu uwzględniono następujące aspekty:
+
 \begin{itemize}
-	\item uzyskane wyniki w świetle postawionych celów i zdefiniowanych wyżej wymagań
-	\item kierunki ewentualnych danych prac (rozbudowa funkcjonalna …)
-	\item problemy napotkane w trakcie pracy
+    \item \textbf{Architektura systemu:} Zastosowano podejście mikroserwisowe, gdzie poszczególne komponenty (frontend, backend, worker, chatbot) działają niezależnie, komunikując się między sobą za pomocą protokołu HTTP i kolejki zadań asynchronicznych. Rozwiązanie takie zwiększa skalowalność i ułatwia wdrażanie zmian w systemie.
+    \item \textbf{Model transkrypcji AI:} Istotą systemu jest model sieci neuronowej przetwarzającej mel-spektrogram nagrania i przewidującej początek i koniec dźwięków, ich wysokość, a także dynamikę. Rozwiązanie opiera się na wynikach prac Kong et al. (2020) \cite{bib:kong2020high}, a także na wcześniejszych podejściach Hawthorne'a \cite{bib:hawthorne2018onsets}.
+    \item \textbf{Interfejs użytkownika:} Zaimplementowano przyjazną dla użytkownika aplikację frontendową opartą na Next.js i TypeScript. Pozwala ona na przesyłanie plików audio, śledzenie procesu transkrypcji w czasie rzeczywistym, a także przeglądanie i ocenianie gotowych transkrypcji.
+    \item \textbf{Weryfikacja i testy:} Przeprowadzono testy jednostkowe, integracyjne oraz manualne (m.in. import z YouTube, testy wydajności dla długich plików). System w obecnej postaci osiąga satysfakcjonujące wyniki, zarówno pod względem poprawności rozpoznawania wysokości dźwięków, jak i stabilności działania.
 \end{itemize}
+
+\section{Ocena osiągniętych celów}
+Przedstawiony w rozdziale pierwszym cel główny — stworzenie kompletnego narzędzia do transkrypcji muzyki fortepianowej — został osiągnięty. Udało się zintegrować kluczowe funkcjonalności: przesyłanie plików audio, asynchroniczne przetwarzanie w workerze, generowanie i wizualizację wyników w postaci plików MIDI i PDF. Wysoka dokładność transkrypcji została potwierdzona w rozdziale dotyczącym walidacji, gdzie porównano wygenerowane partytury z oryginalnymi zapisami nutowymi.
+
+Spośród celów szczegółowych udało się zrealizować wszystkie najistotniejsze:
+\begin{itemize}
+  \item Opracowano model uczenia głębokiego do dokładnego rozpoznawania nut fortepianowych.
+  \item Zbudowano wydajny serwis backendowy wraz z bazą danych (PostgreSQL) i systemem kolejkowania (Celery + Redis).
+  \item Zapewniono narzędzia do generowania partytur PDF na podstawie plików MIDI.
+  \item Stworzono intuicyjny interfejs webowy, ułatwiający pracę z transkrypcjami, w tym mechanizmy oceniania, wyszukiwania i dodawania do ulubionych.
+\end{itemize}
+
+\section{Ograniczenia i problemy napotkane w trakcie pracy}
+W trakcie realizacji projektu zidentyfikowano kilka trudności i ograniczeń:
+\begin{itemize}
+    \item \textbf{Zbyt szczegółowy zapis rytmiczny:} Model w niektórych przypadkach generuje nadmiernie dokładny zapis wszelkich niuansów wykonawczych (rubato, niewielkie przyspieszenia), co prowadzi do powstawania bardzo skomplikowanej notacji.
+    \item \textbf{Pedalizacja fortepianowa:} Z uwagi na cechy nagrań fortepianowych, model dosłownie interpretuje przedłużenie dźwięków, co może utrudniać czytelność zapisu nutowego — w standardowej notacji stosuje się bowiem oznaczenia pedalizacji zamiast wielokrotnie przeciąganych nut.
+    \item \textbf{Składnia nutowa (metrum i klucze):} Automatyczne dobieranie metrum i kluczy w zapisie wciąż wymaga dalszego udoskonalenia, zwłaszcza w utworach o nieregularnej strukturze rytmicznej lub częstej modulacji.
+\end{itemize}
+
+\section{Możliwe kierunki dalszego rozwoju}
+Rozwijając dalej system TuneScript, można rozważyć następujące usprawnienia:
+\begin{enumerate}
+    \item \textbf{Lepsza interpretacja rytmiczna:} Wprowadzenie dodatkowych algorytmów do „wygładzania” zapisu rytmicznego i uwzględniania konwencji notacji klasycznej.
+    \item \textbf{Zaawansowane oznaczenia wykonawcze:} Implementacja mechanizmów rozpoznawania artykulacji (legato, staccato), dynamicznych oznaczeń (p, f) i bardziej przyjazne przedstawianie użycia pedałów.
+    \item \textbf{Rozszerzenie na inne instrumenty:} Choć obecna architektura skupia się na fortepianie, możliwa jest adaptacja modelu do innych instrumentów (np. gitara czy skrzypce) lub do pełnej partytury orkiestrowej.
+    \item \textbf{Usprawnienia UX/UI:} Rozbudowa interfejsu o dodatkowe podpowiedzi, wizualizacje przebiegu transkrypcji w czasie czy personalizowane rekomendacje utworów dla użytkowników.
+    \item \textbf{Zastosowanie w edukacji:} Stworzenie trybu ćwiczebnego, w którym uczniowie mieliby dostęp do transkrypcji własnych nagrań i automatycznych wskazówek dotyczących techniki gry lub potencjalnych błędów w interpretacji.
+\end{enumerate}
+
+\section{Zakończenie}
+Podsumowując, praca osiągnęła wyznaczone cele. System TuneScript stanowi dowód na to, że najnowsze osiągnięcia w dziedzinie głębokiego uczenia maszynowego mogą być skutecznie wykorzystane w automatycznej transkrypcji muzyki fortepianowej, zapewniając użytkownikom wygodne narzędzie do analizy i zapisu nagrań w formacie PDF. 
+
+Mimo zauważonych ograniczeń, wyniki są na tyle obiecujące, że aplikacja ma realną szansę stać się wartościowym rozwiązaniem nie tylko dla muzyków i pedagogów, ale także dla szeroko pojętego środowiska zajmującego się przetwarzaniem informacji muzycznej. Dalsze prace pozwolą na rozszerzenie funkcjonalności, zwiększenie wygody użytkowników oraz poprawę jakości generowanego zapisu nutowego, tak by TuneScript mógł jeszcze skuteczniej służyć w codziennej praktyce muzycznej i edukacji.
+
 
 
 

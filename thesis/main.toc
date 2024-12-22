@@ -67,17 +67,22 @@
 \contentsline {section}{\numberline {7.3}Testowanie wydajności}{48}{section.7.3}%
 \contentsline {section}{\numberline {7.4}Najważniejsze pokrycie testami}{48}{section.7.4}%
 \contentsline {section}{\numberline {7.5}Porównanie wygenerowanych i oryginalnych partytur}{49}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}F. Chopin - Etiuda op. 10 nr 5}{49}{subsection.7.5.1}%
-\contentsline {subsubsection}{Wygenerowana partytura}{49}{section*.32}%
-\contentsline {subsubsection}{Oryginalna partytura}{49}{section*.33}%
-\contentsline {subsection}{\numberline {7.5.2}L. van Beethoven - Sonata op. 53 nr 21 "Waldstein", Allegro con brio}{49}{subsection.7.5.2}%
-\contentsline {subsubsection}{Wygenerowana partytura}{49}{section*.34}%
-\contentsline {subsubsection}{Oryginalna partytura}{49}{section*.35}%
-\contentsline {subsection}{\numberline {7.5.3}L. van Beethoven - Sonata op. 13 nr 8 "Patetyczna", Adagio cantabile}{49}{subsection.7.5.3}%
-\contentsline {subsubsection}{Wygenerowana partytura}{49}{section*.36}%
-\contentsline {subsubsection}{Oryginalna partytura}{49}{section*.37}%
+\contentsline {subsection}{\numberline {7.5.1}Dokładność i ograniczenia transkrypcji}{49}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}F. Chopin - Etiuda op. 10 nr 5}{50}{subsection.7.5.2}%
+\contentsline {subsubsection}{Wygenerowana partytura}{50}{section*.32}%
+\contentsline {subsubsection}{Oryginalna partytura}{50}{section*.33}%
+\contentsline {subsection}{\numberline {7.5.3}L. van Beethoven - Sonata op. 53 nr 21 "Waldstein", Allegro con brio}{50}{subsection.7.5.3}%
+\contentsline {subsubsection}{Wygenerowana partytura}{50}{section*.34}%
+\contentsline {subsubsection}{Oryginalna partytura}{50}{section*.35}%
+\contentsline {subsection}{\numberline {7.5.4}L. van Beethoven - Sonata op. 13 nr 8 "Patetyczna", Adagio cantabile}{50}{subsection.7.5.4}%
+\contentsline {subsubsection}{Wygenerowana partytura}{50}{section*.36}%
+\contentsline {subsubsection}{Oryginalna partytura}{50}{section*.37}%
 \contentsline {chapter}{\numberline {8}Podsumowanie i wnioski}{57}{chapter.8}%
-\contentsline {chapter}{Bibliografia}{59}{chapter*.50}%
-\contentsline {chapter}{Lista dodatkowych plików, uzupełniających tekst pracy}{63}{appendix*.51}%
-\contentsline {chapter}{Spis rysunków}{65}{appendix*.52}%
-\contentsline {chapter}{Spis tabel}{67}{appendix*.53}%
+\contentsline {section}{\numberline {8.1}Ocena osiągniętych celów}{58}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Ograniczenia i problemy napotkane w trakcie pracy}{58}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Możliwe kierunki dalszego rozwoju}{58}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Zakończenie}{59}{section.8.4}%
+\contentsline {chapter}{Bibliografia}{61}{chapter*.50}%
+\contentsline {chapter}{Lista dodatkowych plików, uzupełniających tekst pracy}{65}{appendix*.51}%
+\contentsline {chapter}{Spis rysunków}{67}{appendix*.52}%
+\contentsline {chapter}{Spis tabel}{69}{appendix*.53}%
