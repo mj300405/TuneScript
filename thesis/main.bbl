@@ -1,0 +1,410 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{nty/global//global/global}
+  \entry{bib:benetos2013automatic}{article}{}
+    \name{author}{5}{}{%
+      {{hash=BE}{%
+         family={Benetos},
+         familyi={B\bibinitperiod},
+         given={Emmanouil},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=DS}{%
+         family={Dixon},
+         familyi={D\bibinitperiod},
+         given={Simon},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=GD}{%
+         family={Giannoulis},
+         familyi={G\bibinitperiod},
+         given={Dimitrios},
+         giveni={D\bibinitperiod},
+      }}%
+      {{hash=KH}{%
+         family={Kirchhoff},
+         familyi={K\bibinitperiod},
+         given={Holger},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=KA}{%
+         family={Klapuri},
+         familyi={K\bibinitperiod},
+         given={Anssi},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{BE+1}
+    \strng{fullhash}{BEDSGDKHKA1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{B}
+    \field{sortinithash}{B}
+    \field{number}{3}
+    \field{pages}{407\bibrangedash 434}
+    \field{title}{Automatic music transcription: challenges and future
+  directions}
+    \field{volume}{41}
+    \field{journaltitle}{Journal of Intelligent Information Systems}
+    \field{year}{2013}
+  \endentry
+
+  \entry{bib:cheng2016attack}{article}{}
+    \name{author}{3}{}{%
+      {{hash=CT}{%
+         family={Cheng},
+         familyi={C\bibinitperiod},
+         given={Tian},
+         giveni={T\bibinitperiod},
+      }}%
+      {{hash=DS}{%
+         family={Dixon},
+         familyi={D\bibinitperiod},
+         given={Simon},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=MM}{%
+         family={Mauch},
+         familyi={M\bibinitperiod},
+         given={Matthias},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{CTDSMM1}
+    \strng{fullhash}{CTDSMM1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{number}{6}
+    \field{pages}{4332\bibrangedash 4341}
+    \field{title}{Attack/decay analysis of piano sounds using an exponential
+  model}
+    \field{volume}{139}
+    \field{journaltitle}{Journal of the Acoustical Society of America}
+    \field{year}{2016}
+  \endentry
+
+  \entry{bib:hawthorne2018onsets}{inproceedings}{}
+    \name{author}{9}{}{%
+      {{hash=HC}{%
+         family={Hawthorne},
+         familyi={H\bibinitperiod},
+         given={Curtis},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=EE}{%
+         family={Elsen},
+         familyi={E\bibinitperiod},
+         given={Erich},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=SJ}{%
+         family={Song},
+         familyi={S\bibinitperiod},
+         given={Jialin},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=RA}{%
+         family={Roberts},
+         familyi={R\bibinitperiod},
+         given={Adam},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=SI}{%
+         family={Simon},
+         familyi={S\bibinitperiod},
+         given={Ian},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=RC}{%
+         family={Raffel},
+         familyi={R\bibinitperiod},
+         given={Colin},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=EJ}{%
+         family={Engel},
+         familyi={E\bibinitperiod},
+         given={Jesse},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=OS}{%
+         family={Oore},
+         familyi={O\bibinitperiod},
+         given={Sageev},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=ED}{%
+         family={Eck},
+         familyi={E\bibinitperiod},
+         given={Douglas},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HC+1}
+    \strng{fullhash}{HCEESJRASIRCEJOSED1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{booktitle}{Proceedings of the 19th International Society for Music
+  Information Retrieval Conference}
+    \field{pages}{50\bibrangedash 57}
+    \field{title}{Onsets and frames: Dual-objective piano transcription}
+    \field{year}{2018}
+  \endentry
+
+  \entry{bib:hawthorne2018enabling}{inproceedings}{}
+    \name{author}{9}{}{%
+      {{hash=HC}{%
+         family={Hawthorne},
+         familyi={H\bibinitperiod},
+         given={Curtis},
+         giveni={C\bibinitperiod},
+      }}%
+      {{hash=SA}{%
+         family={Stasyuk},
+         familyi={S\bibinitperiod},
+         given={Andriy},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=RA}{%
+         family={Roberts},
+         familyi={R\bibinitperiod},
+         given={Adam},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=SI}{%
+         family={Simon},
+         familyi={S\bibinitperiod},
+         given={Ian},
+         giveni={I\bibinitperiod},
+      }}%
+      {{hash=HCZA}{%
+         family={Huang},
+         familyi={H\bibinitperiod},
+         given={Cheng-Zhi\bibnamedelima Anna},
+         giveni={C\bibinithyphendelim Z\bibinitperiod\bibinitdelim
+  A\bibinitperiod},
+      }}%
+      {{hash=DS}{%
+         family={Dieleman},
+         familyi={D\bibinitperiod},
+         given={Sander},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=EE}{%
+         family={Elsen},
+         familyi={E\bibinitperiod},
+         given={Erich},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=EJ}{%
+         family={Engel},
+         familyi={E\bibinitperiod},
+         given={Jesse},
+         giveni={J\bibinitperiod},
+      }}%
+      {{hash=ED}{%
+         family={Eck},
+         familyi={E\bibinitperiod},
+         given={Douglas},
+         giveni={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{HC+1}
+    \strng{fullhash}{HCSARASIHCZADSEEEJED1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{booktitle}{International Conference on Learning Representations}
+    \field{title}{Enabling Factorized Piano Music Modeling and Generation with
+  the {MAESTRO} Dataset}
+    \verb{url}
+    \verb https://openreview.net/forum?id=r1lYRjC9F7
+    \endverb
+    \field{year}{2019}
+  \endentry
+
+  \entry{bib:jeong2017deep}{inproceedings}{}
+    \name{author}{2}{}{%
+      {{hash=JIY}{%
+         family={Jeong},
+         familyi={J\bibinitperiod},
+         given={Il-Young},
+         giveni={I\bibinithyphendelim Y\bibinitperiod},
+      }}%
+      {{hash=LK}{%
+         family={Lee},
+         familyi={L\bibinitperiod},
+         given={Kyeongok},
+         giveni={K\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{JIYLK1}
+    \strng{fullhash}{JIYLK1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{J}
+    \field{sortinithash}{J}
+    \field{booktitle}{Proceedings of the 18th International Society for Music
+  Information Retrieval Conference}
+    \field{pages}{463\bibrangedash 469}
+    \field{title}{Deep Learning for Music}
+    \field{year}{2017}
+  \endentry
+
+  \entry{bib:kelz2016potential}{inproceedings}{}
+    \name{author}{6}{}{%
+      {{hash=KR}{%
+         family={Kelz},
+         familyi={K\bibinitperiod},
+         given={Rainer},
+         giveni={R\bibinitperiod},
+      }}%
+      {{hash=DM}{%
+         family={Dorfer},
+         familyi={D\bibinitperiod},
+         given={Matthias},
+         giveni={M\bibinitperiod},
+      }}%
+      {{hash=KF}{%
+         family={Korzeniowski},
+         familyi={K\bibinitperiod},
+         given={Filip},
+         giveni={F\bibinitperiod},
+      }}%
+      {{hash=BS}{%
+         family={Böck},
+         familyi={B\bibinitperiod},
+         given={Sebastian},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=AA}{%
+         family={Arzt},
+         familyi={A\bibinitperiod},
+         given={Andreas},
+         giveni={A\bibinitperiod},
+      }}%
+      {{hash=WG}{%
+         family={Widmer},
+         familyi={W\bibinitperiod},
+         given={Gerhard},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KR+1}
+    \strng{fullhash}{KRDMKFBSAAWG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{booktitle}{Proceedings of the 17th International Society for Music
+  Information Retrieval Conference}
+    \field{pages}{475\bibrangedash 481}
+    \field{title}{On the Potential of Simple Framewise Approaches to Piano
+  Transcription}
+    \field{year}{2016}
+  \endentry
+
+  \entry{bib:kong2020high}{article}{}
+    \name{author}{5}{}{%
+      {{hash=KQ}{%
+         family={Kong},
+         familyi={K\bibinitperiod},
+         given={Qiuqiang},
+         giveni={Q\bibinitperiod},
+      }}%
+      {{hash=LB}{%
+         family={Li},
+         familyi={L\bibinitperiod},
+         given={Bochen},
+         giveni={B\bibinitperiod},
+      }}%
+      {{hash=SX}{%
+         family={Song},
+         familyi={S\bibinitperiod},
+         given={Xuchen},
+         giveni={X\bibinitperiod},
+      }}%
+      {{hash=WY}{%
+         family={Wan},
+         familyi={W\bibinitperiod},
+         given={Yuan},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=WY}{%
+         family={Wang},
+         familyi={W\bibinitperiod},
+         given={Yuxuan},
+         giveni={Y\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{KQ+1}
+    \strng{fullhash}{KQLBSXWYWY1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{K}
+    \field{sortinithash}{K}
+    \field{title}{High-resolution Piano Transcription with Pedals by Regressing
+  Onsets and Offsets Times}
+    \field{journaltitle}{arXiv preprint arXiv:2010.01815}
+    \field{year}{2020}
+  \endentry
+
+  \entry{bib:sigtia2016end}{article}{}
+    \name{author}{3}{}{%
+      {{hash=SS}{%
+         family={Sigtia},
+         familyi={S\bibinitperiod},
+         given={Siddharth},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=BE}{%
+         family={Benetos},
+         familyi={B\bibinitperiod},
+         given={Emmanouil},
+         giveni={E\bibinitperiod},
+      }}%
+      {{hash=DS}{%
+         family={Dixon},
+         familyi={D\bibinitperiod},
+         given={Simon},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SSBEDS1}
+    \strng{fullhash}{SSBEDS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{number}{5}
+    \field{pages}{927\bibrangedash 939}
+    \field{title}{An end-to-end neural network for polyphonic piano music
+  transcription}
+    \field{volume}{24}
+    \field{journaltitle}{IEEE/ACM Transactions on Audio, Speech, and Language
+  Processing}
+    \field{year}{2016}
+  \endentry
+\enddatalist
+\endinput
