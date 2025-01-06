@@ -17,6 +17,29 @@
 \endgroup
 
 \datalist[entry]{nty/global//global/global}
+  \entry{bib:apollo}{online}{}
+    \name{author}{1}{}{%
+      {{hash=A}{%
+         family={{Apollo GraphQL}},
+         familyi={A\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{A1}
+    \strng{fullhash}{A1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{Apollo Client Documentation}
+    \verb{url}
+    \verb https://www.apollographql.com/docs/react/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
   \entry{bib:benetos2013automatic}{article}{}
     \name{author}{5}{}{%
       {{hash=BE}{%
@@ -65,6 +88,29 @@
     \field{year}{2013}
   \endentry
 
+  \entry{bib:celery}{online}{}
+    \name{author}{1}{}{%
+      {{hash=C}{%
+         family={{Celery Project}},
+         familyi={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{C1}
+    \strng{fullhash}{C1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Celery Documentation}
+    \verb{url}
+    \verb https://docs.celeryq.dev/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
   \entry{bib:cheng2016attack}{article}{}
     \name{author}{3}{}{%
       {{hash=CT}{%
@@ -99,6 +145,98 @@
     \field{volume}{139}
     \field{journaltitle}{Journal of the Acoustical Society of America}
     \field{year}{2016}
+  \endentry
+
+  \entry{bib:django}{online}{}
+    \name{author}{1}{}{%
+      {{hash=D}{%
+         family={{Django Software Foundation}},
+         familyi={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{D1}
+    \strng{fullhash}{D1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{title}{Django Documentation}
+    \verb{url}
+    \verb https://docs.djangoproject.com/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:docker}{online}{}
+    \name{author}{1}{}{%
+      {{hash=D}{%
+         family={{Docker Inc.}},
+         familyi={D\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{D2}
+    \strng{fullhash}{D2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \field{title}{Docker Documentation}
+    \verb{url}
+    \verb https://docs.docker.com/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:eslint}{online}{}
+    \name{author}{1}{}{%
+      {{hash=E}{%
+         family={{ESLint}},
+         familyi={E\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{E1}
+    \strng{fullhash}{E1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{E}
+    \field{sortinithash}{E}
+    \field{title}{ESLint Documentation}
+    \verb{url}
+    \verb https://eslint.org/docs/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:factoryboy}{online}{}
+    \name{author}{1}{}{%
+      {{hash=F}{%
+         family={{Factory Boy}},
+         familyi={F\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{F1}
+    \strng{fullhash}{F1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \field{title}{Factory Boy Documentation}
+    \verb{url}
+    \verb https://factoryboy.readthedocs.io/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
   \endentry
 
   \entry{bib:hawthorne2018onsets}{inproceedings}{}
@@ -165,9 +303,13 @@
     \field{sortinit}{H}
     \field{sortinithash}{H}
     \field{booktitle}{Proceedings of the 19th International Society for Music
-  Information Retrieval Conference}
+  Information Retrieval Conference (ISMIR)}
     \field{pages}{50\bibrangedash 57}
     \field{title}{Onsets and frames: Dual-objective piano transcription}
+    \list{location}{1}{%
+      {Paris, France}%
+    }
+    \field{month}{09}
     \field{year}{2018}
   \endentry
 
@@ -235,13 +377,41 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{H}
     \field{sortinithash}{H}
-    \field{booktitle}{International Conference on Learning Representations}
+    \field{booktitle}{International Conference on Learning Representations
+  (ICLR)}
     \field{title}{Enabling Factorized Piano Music Modeling and Generation with
   the {MAESTRO} Dataset}
     \verb{url}
     \verb https://openreview.net/forum?id=r1lYRjC9F7
     \endverb
+    \list{location}{1}{%
+      {New Orleans, USA}%
+    }
+    \field{month}{05}
     \field{year}{2019}
+  \endentry
+
+  \entry{bib:transformers}{online}{}
+    \name{author}{1}{}{%
+      {{hash=H}{%
+         family={{Hugging Face}},
+         familyi={H\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{H1}
+    \strng{fullhash}{H1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Transformers Documentation}
+    \verb{url}
+    \verb https://huggingface.co/docs/transformers/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
   \endentry
 
   \entry{bib:jeong2017deep}{inproceedings}{}
@@ -266,9 +436,13 @@
     \field{sortinit}{J}
     \field{sortinithash}{J}
     \field{booktitle}{Proceedings of the 18th International Society for Music
-  Information Retrieval Conference}
+  Information Retrieval Conference (ISMIR)}
     \field{pages}{463\bibrangedash 469}
     \field{title}{Deep Learning for Music}
+    \list{location}{1}{%
+      {Suzhou, China}%
+    }
+    \field{month}{10}
     \field{year}{2017}
   \endentry
 
@@ -293,7 +467,7 @@
          giveni={F\bibinitperiod},
       }}%
       {{hash=BS}{%
-         family={Böck},
+         family={B{\"o}ck},
          familyi={B\bibinitperiod},
          given={Sebastian},
          giveni={S\bibinitperiod},
@@ -318,10 +492,14 @@
     \field{sortinit}{K}
     \field{sortinithash}{K}
     \field{booktitle}{Proceedings of the 17th International Society for Music
-  Information Retrieval Conference}
+  Information Retrieval Conference (ISMIR)}
     \field{pages}{475\bibrangedash 481}
     \field{title}{On the Potential of Simple Framewise Approaches to Piano
   Transcription}
+    \list{location}{1}{%
+      {New York, USA}%
+    }
+    \field{month}{08}
     \field{year}{2016}
   \endentry
 
@@ -370,6 +548,268 @@
     \field{year}{2020}
   \endentry
 
+  \entry{bib:v_model}{article}{}
+    \name{author}{2}{}{%
+      {{hash=MS}{%
+         family={Mathur},
+         familyi={M\bibinitperiod},
+         given={Sonali},
+         giveni={S\bibinitperiod},
+      }}%
+      {{hash=MS}{%
+         family={Malik},
+         familyi={M\bibinitperiod},
+         given={Shaily},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {Foundation of Computer Science}%
+    }
+    \strng{namehash}{MSMS1}
+    \strng{fullhash}{MSMS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{number}{12}
+    \field{pages}{29\bibrangedash 34}
+    \field{title}{Advancements in the {V-Model}}
+    \field{volume}{1}
+    \field{journaltitle}{International Journal of Computer Applications}
+    \field{year}{2010}
+  \endentry
+
+  \entry{bib:jest}{online}{}
+    \name{author}{1}{}{%
+      {{hash=M}{%
+         family={{Meta Open Source}},
+         familyi={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{M1}
+    \strng{fullhash}{M1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{Jest Documentation}
+    \verb{url}
+    \verb https://jestjs.io/docs/getting-started
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:typescript}{online}{}
+    \name{author}{1}{}{%
+      {{hash=M}{%
+         family={{Microsoft}},
+         familyi={M\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{M2}
+    \strng{fullhash}{M2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{M}
+    \field{sortinithash}{M}
+    \field{title}{TypeScript Documentation}
+    \verb{url}
+    \verb https://www.typescriptlang.org/docs/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:postgresql}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{PostgreSQL Global Development Group}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{P1}
+    \strng{fullhash}{P1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{PostgreSQL Documentation}
+    \verb{url}
+    \verb https://www.postgresql.org/docs/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:prettier}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{Prettier}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{P2}
+    \strng{fullhash}{P2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Prettier Documentation}
+    \verb{url}
+    \verb https://prettier.io/docs/en/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:pytest}{online}{}
+    \name{author}{1}{}{%
+      {{hash=p}{%
+         family={{pytest team}},
+         familyi={p\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{p1}
+    \strng{fullhash}{p1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{pytest Documentation}
+    \verb{url}
+    \verb https://docs.pytest.org/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:poetry}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{Python Poetry}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{P1}
+    \strng{fullhash}{P1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Poetry Documentation}
+    \verb{url}
+    \verb https://python-poetry.org/docs/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:black}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{Python Software Foundation}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{P2}
+    \strng{fullhash}{P2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Black Documentation}
+    \verb{url}
+    \verb https://black.readthedocs.io/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:python}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{Python Software Foundation}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{P2}
+    \strng{fullhash}{P2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Python Documentation}
+    \verb{url}
+    \verb https://docs.python.org/3/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:pytorch}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{PyTorch Team}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{P3}
+    \strng{fullhash}{P3}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{PyTorch Documentation}
+    \verb{url}
+    \verb https://pytorch.org/docs/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:redis}{online}{}
+    \name{author}{1}{}{%
+      {{hash=R}{%
+         family={{Redis Ltd.}},
+         familyi={R\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{R1}
+    \strng{fullhash}{R1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{R}
+    \field{sortinithash}{R}
+    \field{title}{Redis Documentation}
+    \verb{url}
+    \verb https://redis.io/documentation
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
   \entry{bib:sigtia2016end}{article}{}
     \name{author}{3}{}{%
       {{hash=SS}{%
@@ -405,6 +845,52 @@
     \field{journaltitle}{IEEE/ACM Transactions on Audio, Speech, and Language
   Processing}
     \field{year}{2016}
+  \endentry
+
+  \entry{bib:react-testing-library}{online}{}
+    \name{author}{1}{}{%
+      {{hash=T}{%
+         family={{Testing Library}},
+         familyi={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{T1}
+    \strng{fullhash}{T1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{React Testing Library Documentation}
+    \verb{url}
+    \verb https://testing-library.com/docs/react-testing-library/intro/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:nextjs}{online}{}
+    \name{author}{1}{}{%
+      {{hash=V}{%
+         family={{Vercel Inc.}},
+         familyi={V\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{V1}
+    \strng{fullhash}{V1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{V}
+    \field{sortinithash}{V}
+    \field{title}{Next.js Documentation}
+    \verb{url}
+    \verb https://nextjs.org/docs
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
   \endentry
 \enddatalist
 \endinput
