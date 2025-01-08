@@ -147,6 +147,29 @@
     \field{year}{2016}
   \endentry
 
+  \entry{bib:cypress}{online}{}
+    \name{author}{1}{}{%
+      {{hash=C}{%
+         family={{Cypress}},
+         familyi={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{C2}
+    \strng{fullhash}{C2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Cypress Documentation}
+    \verb{url}
+    \verb https://docs.cypress.io/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
   \entry{bib:django}{online}{}
     \name{author}{1}{}{%
       {{hash=D}{%
@@ -626,6 +649,29 @@
     \field{urlyear}{2024}
   \endentry
 
+  \entry{bib:flask}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{Pallets Projects}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{P1}
+    \strng{fullhash}{P1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Flask Documentation}
+    \verb{url}
+    \verb https://flask.palletsprojects.com/en/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
   \entry{bib:postgresql}{online}{}
     \name{author}{1}{}{%
       {{hash=P}{%
@@ -633,8 +679,8 @@
          familyi={P\bibinitperiod},
       }}%
     }
-    \strng{namehash}{P1}
-    \strng{fullhash}{P1}
+    \strng{namehash}{P2}
+    \strng{fullhash}{P2}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{sortinit}{P}
@@ -656,8 +702,8 @@
          familyi={P\bibinitperiod},
       }}%
     }
-    \strng{namehash}{P2}
-    \strng{fullhash}{P2}
+    \strng{namehash}{P3}
+    \strng{fullhash}{P3}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{sortinit}{P}

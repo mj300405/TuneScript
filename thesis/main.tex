@@ -125,6 +125,7 @@
 \usepackage{xurl}
 \usepackage{xstring}
 \usepackage{ifthen}
+\usepackage{float}
 
 
 
@@ -764,6 +765,12 @@ Realizacja systemu TuneScript wymaga wykorzystania szeregu nowoczesnych technolo
                     \item ORM (ang. \textit{Object-Relational Mapping}, mapowanie obiektowo-relacyjne) ułatwiającego pracę z bazą danych.
                     \item Wbudowanych mechanizmów bezpieczeństwa.
                   \end{itemize}
+            \item Flask \cite{bib:flask}: Lekki framework webowy wykorzystany dla:
+                  \begin{itemize}
+                    \item Implementacji serwisu chatbota.
+                    \item Prostej integracji z modelami uczenia maszynowego.
+                    \item Elastyczności w tworzeniu mikrousług.
+                  \end{itemize}
             \item Celery \cite{bib:celery} z Redis \cite{bib:redis}: System kolejkowania wybrany dla:
                   \begin{itemize}
                     \item Asynchronicznego przetwarzania długotrwałych zadań.
@@ -818,9 +825,10 @@ Mimo że projekt był realizowany indywidualnie, zdecydowano się na wdrożenie 
           \end{itemize}
     \item \textbf{Testowanie}:
           \begin{itemize}
-            \item pytest \cite{bib:pytest}: Kompleksowe testowanie komponentów Pythona.
+            \item Pytest \cite{bib:pytest}: Kompleksowe testowanie komponentów Pythona.
             \item Jest \cite{bib:jest}: Testy jednostkowe i integracyjne frontendu.
             \item Factory Boy \cite{bib:factoryboy}: Generowanie danych testowych.
+            \item Cypress \cite{bib:cypress}: Testy end-to-end interfejsu użytkownika.
           \end{itemize}
 \end{itemize}
 
@@ -938,9 +946,9 @@ Dla zapewnienia płynnej pracy systemu, serwer musi spełniać następujące wym
 
 Zdefiniowane przypadki użycia przedstawiają typowe interakcje użytkowników z systemem TuneScript. Dokumentacja przypadków użycia pozwala na lepsze zrozumienie sposobu, w jaki różni użytkownicy będą korzystać z systemu oraz jakie funkcjonalności muszą być dostępne dla poszczególnych grup użytkowników.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{diagrams/use_case.pdf}
+    \includegraphics[width=1.0\textwidth]{diagrams/use_case.pdf}
     \caption{Diagram przypadków użycia systemu TuneScript}
     \label{fig:use_case}
 \end{figure}
@@ -1023,108 +1031,116 @@ Panel administracyjny systemu TuneScript zapewnia administratorom pełną kontro
 Bezpieczeństwo danych i prywatność użytkowników stanowią kluczowy aspekt systemu TuneScript. Wszystkie dane przesyłane między klientem a serwerem są szyfrowane przy użyciu protokołu HTTPS, a hasła użytkowników przechowywane są w formie zaszyfrowanej z wykorzystaniem nowoczesnych algorytmów haszujących. System implementuje mechanizm uwierzytelniania oparty na tokenach JWT oraz zaawansowane zabezpieczenia przed popularnymi rodzajami ataków, takimi jak CSRF i XSS. Regularnie przeprowadzane są aktualizacje wszystkich wykorzystywanych bibliotek i zależności, co pozwala na utrzymanie wysokiego poziomu bezpieczeństwa. System został również wyposażony w mechanizmy monitorowania i wykrywania potencjalnych zagrożeń.
 
 \section{Przykład działania}
-
 Dla lepszego zrozumienia funkcjonowania systemu, poniżej przedstawiono szczegółowy scenariusz użycia aplikacji TuneScript wraz z rzeczywistymi widokami interfejsu użytkownika. Przykład ten ilustruje typową ścieżkę użytkownika od momentu pierwszego kontaktu z systemem do pełnego wykorzystania jego funkcjonalności.
 
 \subsection{Rozpoczęcie pracy z systemem}
-Użytkownik rozpoczyna swoją przygodę z systemem od strony głównej (Rys. \ref{fig:landing_page}). Interfejs powitalny prezentuje podstawowe informacje o możliwościach systemu oraz oferuje opcje rejestracji i logowania. Strona główna została zaprojektowana w sposób przejrzysty i intuicyjny, umożliwiając szybkie zapoznanie się z głównym przeznaczeniem aplikacji.
+Użytkownik rozpoczyna swoją przygodę z systemem od strony głównej (Rys.~\ref{fig:landing_page}). Interfejs powitalny prezentuje podstawowe informacje o możliwościach systemu oraz oferuje opcje rejestracji i logowania. Strona główna została zaprojektowana w sposób przejrzysty i intuicyjny, umożliwiając szybkie zapoznanie się z głównym przeznaczeniem aplikacji.
 
-\subsection{Panel główny i podstawowe funkcje}
-Po pomyślnym zalogowaniu, użytkownik zostaje przekierowany do panelu głównego (Rys. \ref{fig:dashboard}). Jest to centralne miejsce systemu, prezentujące najważniejsze funkcje i statystyki. Panel zawiera sekcje z najwyżej ocenianymi transkrypcjami, ostatnio dodanymi utworami oraz personalizowanymi rekomendacjami. Użytkownik może stąd szybko przejść do wszystkich głównych funkcji systemu.
-
-\subsection{Proces transkrypcji}
-Kluczową funkcjonalnością systemu jest proces transkrypcji plików audio. Użytkownik może rozpocząć ten proces przechodząc do dedykowanego ekranu przesyłania plików (Rys. \ref{fig:upload}). Interfejs umożliwia zarówno przesłanie pliku z dysku lokalnego, jak i podanie linku do nagrania w serwisie YouTube. W trakcie przetwarzania pliku, system wyświetla szczegółowy status postępu transkrypcji (Rys. \ref{fig:upload_waiting}), informując o kolejnych etapach procesu.
-
-Po zakończeniu transkrypcji (Rys. \ref{fig:upload_finish}), system automatycznie generuje podgląd wyników. Użytkownik otrzymuje dostęp do szczegółowego widoku transkrypcji (Rys. \ref{fig:details_preview}), gdzie może przeglądać wygenerowane materiały, w tym nuty w formacie PDF oraz plik MIDI. W tym miejscu możliwe jest również odsłuchanie oryginalnego nagrania i porównanie go z wygenerowaną transkrypcją.
-
-\subsection{Zarządzanie transkrypcjami}
-Wszystkie transkrypcje użytkownika są dostępne w dedykowanej sekcji "Moje transkrypcje" (Rys. \ref{fig:my_transcriptions}). Interfejs ten umożliwia łatwe zarządzanie własną biblioteką, włączając w to możliwość edycji metadanych, usuwania transkrypcji czy zmiany ich widoczności. System oferuje również zaawansowane możliwości wyszukiwania i filtrowania (Rys. \ref{fig:search}), co jest szczególnie przydatne przy większej liczbie utworów.
-
-\subsection{Personalizacja i ustawienia}
-System zapewnia rozbudowane możliwości personalizacji poprzez panel profilu użytkownika (Rys. \ref{fig:profile}). Użytkownik może tu dostosować swoje preferencje (Rys. \ref{fig:profile_choices}), zarządzać ustawieniami prywatności oraz modyfikować szczegóły swojego konta. Dodatkowo, istnieje możliwość utworzenia listy ulubionych transkrypcji (Rys. \ref{fig:favorite_transcriptions}), co ułatwia szybki dostęp do najczęściej używanych materiałów.
-
-\subsection{Wsparcie użytkownika}
-Ważnym elementem systemu jest wbudowany asystent chatbot, który służy pomocą w przypadku pytań czy problemów. Asystent oferuje natychmiastową pomoc (Rys. \ref{fig:chatbot}), odpowiadając na pytania dotyczące funkcjonalności systemu, procesu transkrypcji czy rozwiązywania potencjalnych problemów. Jest to szczególnie przydatne dla nowych użytkowników, którzy dopiero zapoznają się z systemem.
-
-
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{screenshots/landingpage.png}
+    \includegraphics[width=0.9\textwidth]{screenshots/landingpage.png}
     \caption{Strona główna systemu TuneScript}
     \label{fig:landing_page}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{Panel główny i podstawowe funkcje}
+Po pomyślnym zalogowaniu, użytkownik zostaje przekierowany do panelu głównego (Rys.~\ref{fig:dashboard}). Jest to centralne miejsce systemu, prezentujące najważniejsze funkcje i statystyki. Panel zawiera sekcje z najwyżej ocenianymi transkrypcjami, ostatnio dodanymi utworami oraz personalizowanymi rekomendacjami. Użytkownik może stąd szybko przejść do wszystkich głównych funkcji systemu.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{screenshots/dashboard.png}
+    \includegraphics[width=0.9\textwidth]{screenshots/dashboard.png}
     \caption{Panel główny użytkownika}
     \label{fig:dashboard}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{Proces transkrypcji}
+Kluczową funkcjonalnością systemu jest proces transkrypcji plików audio. Użytkownik może rozpocząć ten proces przechodząc do dedykowanego ekranu przesyłania plików (Rys.~\ref{fig:upload}). Interfejs umożliwia zarówno przesłanie pliku z dysku lokalnego, jak i podanie linku do nagrania w serwisie YouTube.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{screenshots/upload.png}
+    \includegraphics[width=0.9\textwidth]{screenshots/upload.png}
     \caption{Ekran przesyłania pliku audio}
     \label{fig:upload}
 \end{figure}
 
-\begin{figure}[h]
+W trakcie przetwarzania pliku, system wyświetla szczegółowy status postępu transkrypcji (Rys.~\ref{fig:upload_waiting}), informując o kolejnych etapach procesu.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{screenshots/upload_waiting.png}
+    \includegraphics[width=0.9\textwidth]{screenshots/upload_waiting.png}
     \caption{Status procesu transkrypcji}
     \label{fig:upload_waiting}
 \end{figure}
 
-\begin{figure}[h]
+Po zakończeniu transkrypcji (Rys.~\ref{fig:upload_finish}), system automatycznie generuje podgląd wyników.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{screenshots/upload_finish.png}
+    \includegraphics[width=0.9\textwidth]{screenshots/upload_finish.png}
     \caption{Zakończenie procesu transkrypcji}
     \label{fig:upload_finish}
 \end{figure}
 
-\begin{figure}[h]
+Użytkownik otrzymuje dostęp do szczegółowego widoku transkrypcji (Rys.~\ref{fig:details_preview}), gdzie może przeglądać wygenerowane materiały, w tym nuty w formacie PDF oraz plik MIDI. W tym miejscu możliwe jest również odsłuchanie oryginalnego nagrania i porównanie go z wygenerowaną transkrypcją.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{screenshots/details_preview.png}
     \caption{Szczegółowy widok transkrypcji}
     \label{fig:details_preview}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{Zarządzanie transkrypcjami}
+Wszystkie transkrypcje użytkownika są dostępne w dedykowanej sekcji "Moje transkrypcje" (Rys.~\ref{fig:my_transcriptions}). Interfejs ten umożliwia łatwe zarządzanie własną biblioteką, włączając w to możliwość edycji metadanych, usuwania transkrypcji czy zmiany ich widoczności.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{screenshots/my_transcriptions.png}
+    \includegraphics[width=0.9\textwidth]{screenshots/my_transcriptions.png}
     \caption{Lista transkrypcji użytkownika}
     \label{fig:my_transcriptions}
 \end{figure}
 
-\begin{figure}[h]
+System oferuje również zaawansowane możliwości wyszukiwania i filtrowania (Rys.~\ref{fig:search}), co jest szczególnie przydatne przy większej liczbie utworów.
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{screenshots/search.png}
+    \includegraphics[width=0.9\textwidth]{screenshots/search.png}
     \caption{Wyszukiwanie transkrypcji}
     \label{fig:search}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{Personalizacja i ustawienia}
+System zapewnia rozbudowane możliwości personalizacji poprzez panel profilu użytkownika (Rys.~\ref{fig:profile}). 
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{screenshots/profile.png}
+    \includegraphics[width=0.9\textwidth]{screenshots/profile.png}
     \caption{Profil użytkownika}
     \label{fig:profile}
 \end{figure}
 
-\begin{figure}[h]
+Użytkownik może tu dostosować swoje preferencje (Rys.~\ref{fig:profile_choices}), zarządzać ustawieniami prywatności oraz modyfikować szczegóły swojego konta.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{screenshots/profile_choices.png}
     \caption{Ustawienia preferencji użytkownika}
     \label{fig:profile_choices}
 \end{figure}
 
-\begin{figure}[h]
+Dodatkowo, istnieje możliwość utworzenia listy ulubionych transkrypcji (Rys.~\ref{fig:favorite_transcriptions}), co ułatwia szybki dostęp do najczęściej używanych materiałów.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{screenshots/favorite_transcriptions.png}
     \caption{Lista ulubionych transkrypcji}
     \label{fig:favorite_transcriptions}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{Wsparcie użytkownika}
+Ważnym elementem systemu jest wbudowany asystent chatbot, który służy pomocą w przypadku pytań czy problemów. Asystent oferuje natychmiastową pomoc (Rys.~\ref{fig:chatbot}), odpowiadając na pytania dotyczące funkcjonalności systemu, procesu transkrypcji czy rozwiązywania potencjalnych problemów. Jest to szczególnie przydatne dla nowych użytkowników, którzy dopiero zapoznają się z systemem.
+
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
@@ -1230,7 +1246,7 @@ TuneScript wykorzystuje relacyjną bazę danych PostgreSQL do przechowywania dan
 
 Tabele te są ze sobą powiązane za pomocą kluczy obcych, tworząc kompleksową strukturę danych, która umożliwia efektywne zarządzanie informacjami w systemie TuneScript. Jak widać na Rysunku \ref{fig:database_schema}, szczególną uwagę zwrócono na optymalizację wydajności poprzez zastosowanie indeksów oraz unikalnych ograniczeń tam, gdzie jest to konieczne.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\textwidth]{diagrams/database_diagram.pdf}
 	\caption{Schemat bazy danych TuneScript}
@@ -1239,9 +1255,9 @@ Tabele te są ze sobą powiązane za pomocą kluczy obcych, tworząc kompleksow�
 
 \section{Skrypty deweloperskie}
 
-Projekt TuneScript zawiera szereg skryptów ułatwiających proces rozwoju i testowania. Są one zdefiniowane w pliku \texttt{package.json}:
+Projekt TuneScript zawiera szereg skryptów ułatwiających proces rozwoju i testowania. Są one zdefiniowane w pliku \texttt{package.json} \ref{lst:development-scripts} i umożliwiają wygodne zarządzanie aplikacją. Skrypty te obejmują między innymi uruchamianie i zatrzymywanie kontenerów Docker, testowanie aplikacji oraz formatowanie kodu.
 
-  \begin{lstlisting} [float, language=json, caption={Skrypty deweloperskie}, label={lst:development-scripts}]
+  \begin{lstlisting} [float=h, language=json, caption={Skrypty deweloperskie}, label={lst:development-scripts}]
     {
       "name": "tunescript-devtools",
       "version": "1.0.0",
@@ -1251,26 +1267,24 @@ Projekt TuneScript zawiera szereg skryptów ułatwiających proces rozwoju i tes
         "stop": "docker-compose down -v",
         "start:persistent": "docker-compose -f docker-compose.persistent.yml up -d",
         "stop:persistent": "docker-compose -f docker-compose.persistent.yml down",
-    "start:fresh": "docker-compose -f docker-compose.fresh.yml up -d",
-    "stop:fresh": "docker-compose -f docker-compose.fresh.yml down -v",
-    "restart": "npm run stop && npm run start",
-    "restart:persistent": "npm run stop:persistent && npm run start:persistent",
-    "restart:fresh": "npm run stop:fresh && npm run start:fresh",
-    "logs": "docker-compose logs -f",
-    "test": "docker-compose exec frontend npm run test",
-    "test:watch": "docker-compose exec frontend npm run test:watch",
-    "test:coverage": "docker-compose exec frontend npm run test:coverage",
-    "test:backend": "docker-compose exec web poetry run pytest tunescript_app/tests",
-    "format": "docker-compose exec web /app/format.sh"
-    }
+        "start:fresh": "docker-compose -f docker-compose.fresh.yml up -d",
+        "stop:fresh": "docker-compose -f docker-compose.fresh.yml down -v",
+        "restart": "npm run stop && npm run start",
+        "restart:persistent": "npm run stop:persistent && npm run start:persistent",
+        "restart:fresh": "npm run stop:fresh && npm run start:fresh",
+        "logs": "docker-compose logs -f",
+        "test": "docker-compose exec frontend npm run test",
+        "test:watch": "docker-compose exec frontend npm run test:watch",
+        "test:coverage": "docker-compose exec frontend npm run test:coverage",
+        "test:backend": "docker-compose exec web poetry run pytest tunescript_app/tests",
+        "format": "docker-compose exec web /app/format.sh"
+      }
     }
   \end{lstlisting}
 
-  Te skrypty umożliwiają łatwe uruchamianie, zatrzymywanie i restartowanie aplikacji w różnych trybach, a także uruchamianie testów i formatowanie kodu.
-
 
   \section{Szczegóły implementacji wybranych fragmentów}
-  W tej sekcji przedstawiono szczegółową implementację kluczowych elementów systemu TuneScript. Szczególną uwagę poświęcono implementacji algorytmu transkrypcji przedstawionego w rozdziale \ref{ch:analiza}, a także systemowi kolejkowania zadań oraz mechanizmowi monitorowania postępu transkrypcji w czasie rzeczywistym.
+  W tej sekcji przedstawiono szczegółową implementację kluczowych elementów systemu TuneScript. Szczególną uwagę poświęcono implementacji algorytmu transkrypcji przedstawionego w rozdziale \ref{ch:analiza}, a także systemowi kolejkowania zadań oraz mechanizmowi monitorowania postępu transkrypcji w czasie rzeczywistym. Wszystkie fragmenty kodu znajdują się w dodatku \ref{app:sources}.
   
   \subsection{Implementacja modelu transkrypcji}
   
@@ -1288,159 +1302,22 @@ Projekt TuneScript zawiera szereg skryptów ułatwiających proces rozwoju i tes
   \end{enumerate}
 
 
-  \begin{lstlisting} [float, floatplacement=H, language=Python, caption={Model regresji dla momentu naciśnięcia i puszczenia klawisza}, label={lst:regression-model}]
-    class ReggressOnsetOffsetFrameVelocityCRNN(nn.Module):
-    def __init__(self, frames_per_second, classes_num):
-    super().__init__()
-    
-    window_size = 2048
-    hop_size = sample_rate // frames_per_second
-    mel_bins = 229
-    
-    # Ekstraktor cech spektralnych
-    self.spectrogram_extractor = Spectrograph(
-              n_fft=window_size,
-              hop_length=hop_size,
-              win_length=window_size,
-              window='hann',
-              center=True,
-              pad_mode='reflect',
-              freeze_parameters=True)
-              
-              # Ekstraktor cech mel-spektrogramu
-              self.logmel_extractor = LogmelFilterBank(
-                sr=sample_rate,
-                n_fft=window_size,
-                n_mels=mel_bins,
-                fmin=30,
-                fmax=sample_rate // 2,
-                freeze_parameters=True)
-                
-                # @*Modele do detekcji różnych aspektów*@
-                self.frame_model = AcousticModelCRnn8Dropout(
-                  classes_num, midfeat, momentum)
-                  self.reg_onset_model = AcousticModelCRnn8Dropout(
-                    classes_num, midfeat, momentum)
-                    self.reg_offset_model = AcousticModelCRnn8Dropout(
-                      classes_num, midfeat, momentum)
-                      self.velocity_model = AcousticModelCRnn8Dropout(
-                        classes_num, midfeat, momentum)
-                        
-                        # GRU do przetwarzania sekwencyjnego
-                        self.reg_onset_gru = nn.GRU(
-                          input_size=88 * 2,
-                          hidden_size=256,
-                          num_layers=1,
-                          batch_first=True,
-                          bidirectional=True)
-                        \end{lstlisting}
+  
 
-                \subsection{Implementacja systemu kolejkowania transkrypcji}
+\subsection{Implementacja systemu kolejkowania transkrypcji}
                 
-                System kolejkowania zadań został zaprojektowany do obsługi długotrwałego procesu transkrypcji w sposób asynchroniczny. Jak pokazano w listingu \ref{lst:transcription-task}, proces transkrypcji jest realizowany jako zadanie Celery z maksymalnie trzema próbami ponownego wykonania w przypadku błędu. Proces rozpoczyna się od pobrania i przygotowania pliku audio do analizy, włączając konwersję do formatu mono. Następnie wykonywana jest właściwa transkrypcja przy użyciu modelu uczenia maszynowego, którego wyniki są zapisywane w pliku tymczasowym w formacie MIDI. W kolejnym kroku system generuje partytury w formacie PDF na podstawie utworzonego pliku MIDI. Status zadania jest na bieżąco aktualizowany w bazie danych, co umożliwia monitorowanie postępu transkrypcji. W przypadku wystąpienia błędu, mechanizm ponownych prób zwiększa niezawodność systemu, próbując wykonać zadanie ponownie po 60 sekundach.
+System kolejkowania zadań został zaprojektowany do obsługi długotrwałego procesu transkrypcji w sposób asynchroniczny. Jak pokazano w listingu \ref{lst:transcription-task}, proces transkrypcji jest realizowany jako zadanie Celery z maksymalnie trzema próbami ponownego wykonania w przypadku błędu. Proces rozpoczyna się od pobrania i przygotowania pliku audio do analizy, włączając konwersję do formatu mono. Następnie wykonywana jest właściwa transkrypcja przy użyciu modelu uczenia maszynowego, którego wyniki są zapisywane w pliku tymczasowym w formacie MIDI. W kolejnym kroku system generuje partytury w formacie PDF na podstawie utworzonego pliku MIDI. Status zadania jest na bieżąco aktualizowany w bazie danych, co umożliwia monitorowanie postępu transkrypcji. W przypadku wystąpienia błędu, mechanizm ponownych prób zwiększa niezawodność systemu, próbując wykonać zadanie ponownie po 60 sekundach.
                 
-\begin{lstlisting}[float ,language=Python, caption={Asynchroniczne zadanie do transkrypcji}, label={lst:transcription-task}]
-@shared_task(bind=True, max_retries=3)
-def process_transcription(self, transcription_id):
-    try:
-        transcription = Transcription.objects.get(pk=transcription_id)
-        audio_file = transcription.audio_file
-        
-        # Wczytanie i preprocessing audio
-        audio, _ = load_audio(
-            audio_file.audio_file.path, 
-            sr=sample_rate, 
-            mono=True)
-        
-        # Inicjalizacja modelu transkrypcji
-        transcriptor = PianoTranscription(device='cpu')
-        
-        # Generowanie pliku MIDI
-        with tempfile.NamedTemporaryFile(
-            delete=False, suffix='.mid') as tmp_midi:
-            midi_path = tmp_midi.name
-            transcriptor.transcribe(audio, midi_path)
-            
-        # Zapisywanie pliku MIDI
-        with open(midi_path, 'rb') as midi_file:
-            midi_instance = MIDIFile(transcription=transcription)
-            midi_instance.midi_file.save(
-                f"{transcription.title}.mid", 
-                File(midi_file))
-                
-        # Generowanie PDF z MIDI
-        pdf_path = os.path.splitext(midi_path)[0] + '.pdf'
-        convert_midi_to_pdf(midi_data, pdf_path)
-        
-        # Zapisywanie pliku PDF
-        with open(pdf_path, 'rb') as pdf_file:
-            sheet_music = SheetMusic(transcription=transcription)
-            sheet_music.pdf_file.save(
-                f"{transcription.title}.pdf", 
-                File(pdf_file))
-        
-        transcription.status = 'COMPLETED'
-        transcription.save()
-        
-    except Exception as e:
-        transcription.status = 'FAILED'
-        transcription.save()
-        raise self.retry(exc=e, countdown=60)
-\end{lstlisting}
 
 \subsection{Implementacja systemu SSE do monitorowania postępu}
 
 Mechanizm SSE (zdarzenia wysyłane przez serwer) umożliwia przekazywanie informacji o postępie transkrypcji do interfejsu użytkownika w czasie rzeczywistym. Implementacja tego mechanizmu, przedstawiona w listingu \ref{lst:sse-stream}, obejmuje endpoint HTTP, który ustanawia długotrwałe połączenie z przeglądarką klienta. W regularnych odstępach czasu, co 2 sekundy, system sprawdza status transkrypcji w bazie danych i przesyła do klienta aktualne informacje o statusie transkrypcji, tytule utworu oraz URL-ach do wygenerowanych plików MIDI i PDF, jeśli są dostępne. Implementacja zawiera również mechanizmy obsługi sytuacji wyjątkowych, takich jak nieistniejące transkrypcje czy przerwane połączenia. Połączenie jest automatycznie zamykane po zakończeniu transkrypcji (status `COMPLETED`) lub w przypadku wystąpienia błędu (status `FAILED`).
 
-\begin{lstlisting}[float, language=Python, caption={Zdarzenia wysyłane przez serwer}, label={lst:sse-stream}]
-@require_GET
-@csrf_exempt
-def sse_stream(request, transcription_id):
-    def event_stream():
-        while True:
-            try:
-                _, db_id = from_global_id(transcription_id)
-                transcription = Transcription.objects.get(pk=db_id)
-                
-                # Przygotowanie danych o statusie
-                data = {
-                    'transcription_id': transcription_id,
-                    'status': transcription.status,
-                    'title': transcription.title,
-                    'midi_file_url': (
-                        f"{settings.BASE_URL}{midi_file.midi_file.url}"
-                        if transcription.midifile_set.exists()
-                        else None
-                    ),
-                    'sheet_music_url': (
-                        f"{settings.BASE_URL}{sheet_music.pdf_file.url}"
-                        if transcription.sheetmusic_set.exists()
-                        else None
-                    )
-                }
-                
-                yield f"data: {json.dumps(data)}\n\n"
-                
-                if transcription.status in ['COMPLETED', 'FAILED']:
-                    break
-                    
-                time.sleep(2)  # Sprawdzanie co 2 sekundy
-                
-            except Transcription.DoesNotExist:
-                yield f"data: {json.dumps({'error': 'Not found'})}\n\n"
-                break
-                
-    response = StreamingHttpResponse(
-        event_stream(), 
-        content_type='text/event-stream')
-    response['Cache-Control'] = 'no-cache'
-    response['X-Accel-Buffering'] = 'no'
-    return response
-\end{lstlisting}
+
 
 \section{Diagramy UML}
 
-W celu lepszego zobrazowania struktury systemu i zależności między jego komponentami, poniżej przedstawiono diagramy klas UML dla kluczowych modułów systemu. Szczególną uwagę poświęcono modelowi generacji ze wspomaganiem wyszukiwania (RAG, ang. \textit{Retrieval-Augmented Generation}) wykorzystywanemu w chatbocie (rys. \ref{fig:rag_class_diagram}) oraz implementacji modelu sztucznej inteligencji odpowiedzialnego za transkrypcję muzyczną (rys. \ref{fig:ai_class_diagram}).
+W celu lepszego zobrazowania struktury systemu i zależności między jego komponentami, poniżej przedstawiono diagramy klas UML dla kluczowych modułów systemu. Szczególną uwagę poświęcono modelowi generacji ze wspomaganiem wyszukiwania (RAG, ang. \textit{Retrieval-Augmented Generation}) wykorzystywanemu w chatbocie (rys.~\ref{fig:rag_class_diagram}) oraz implementacji modelu sztucznej inteligencji odpowiedzialnego za transkrypcję muzyczną (rys.~\ref{fig:ai_class_diagram}).
 
 \begin{figure}[h]
     \centering
@@ -1451,7 +1328,7 @@ W celu lepszego zobrazowania struktury systemu i zależności między jego kompo
 
 Diagram przedstawiony na rysunku \ref{fig:rag_class_diagram} pokazuje strukturę modułu RAG wykorzystywanego w chatbocie. System ten łączy w sobie komponenty odpowiedzialne za przetwarzanie zapytań użytkowników, wyszukiwanie odpowiedniej dokumentacji oraz generowanie odpowiedzi z wykorzystaniem modelu językowego.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{diagrams/AI_class_diagram.pdf}
     \caption{Diagram klas modułu transkrypcji muzycznej}
@@ -1479,10 +1356,10 @@ Cztery główne podmoduły korzystają z opisanej architektury w kontekście ró
 - Moduł klasyfikacji ramek czasowych określa, które ramki należą do danego dźwięku.\\
 - Moduł regresji końca dźwięku odpowiada za przewidywanie momentu zakończenia dźwięków.\\
 
-Cała architektura została zaprojektowana tak, aby skutecznie wykorzystywać dane wejściowe w postaci spektrogramu melowego, jak przedstawiono na Rysunku \ref{fig:ai_architecture}.
+Cała architektura została zaprojektowana tak, aby skutecznie wykorzystywać dane wejściowe w postaci spektrogramu melowego, jak przedstawiono na rysunku \ref{fig:ai_architecture}.
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{diagrams/ai_architecture.pdf}
     \caption{Diagram architektury modelu transkrypcji}
@@ -1574,9 +1451,9 @@ it('restores authentication state from localStorage', async () => {
 \end{lstlisting}
 
 \subsubsection{Testy komunikacji API} 
-Przeprowadzono szereg testów weryfikujących poprawność działania interfejsu API, szczególnie w kontekście strumieniowania danych podczas procesu transkrypcji. Test przedstawiony w listingu \ref{lst:sse-stream} pozwolił wykryć problemy z obsługą długotrwałych połączeń SSE oraz błędy w obsłudze przerwanych połączeń.
+Przeprowadzono szereg testów weryfikujących poprawność działania interfejsu API, szczególnie w kontekście strumieniowania danych podczas procesu transkrypcji. Test przedstawiony w listingu \ref{lst:sse-stream-test} pozwolił wykryć problemy z obsługą długotrwałych połączeń SSE oraz błędy w obsłudze przerwanych połączeń.
 
-\begin{lstlisting}[float, language=typescript, caption={Test strumienia SSE}, label={lst:sse-stream}]
+\begin{lstlisting}[float, language=typescript, caption={Test strumienia SSE}, label={lst:sse-stream-test}]
 it('should handle successful SSE stream', async () => {
   const handlerPromise = handler(mockReq as NextApiRequest, mockRes as NextApiResponse);
 
@@ -1759,13 +1636,13 @@ Powyższe cechy wskazują, że system, mimo wysokiej skuteczności w rozpoznawan
 \subsubsection{Oryginalna partytura}
 \hyperref[fig:original_chopin]{Link do oryginalnej partytury}
 
-\subsection{L. van Beethoven - Sonata op. 53 nr 21 "Waldstein", Allegro con brio}
+\subsection{L. van Beethoven - Sonata op. 53 nr 21 ``Waldstein'', Allegro con brio}
 \subsubsection{Wygenerowana partytura}
 \hyperref[fig:generated_waldstein]{Link do wygenerowanej partytury}
 \subsubsection{Oryginalna partytura}
 \hyperref[fig:original_waldstein]{Link do oryginalnej partytury}
 
-\subsection{L. van Beethoven - Sonata op. 13 nr 8 "Patetyczna", Adagio cantabile}
+\subsection{L. van Beethoven - Sonata op. 13 nr 8 ``Patetyczna'', Adagio cantabile}
 \subsubsection{Wygenerowana partytura}
 \hyperref[fig:generated_pathetique]{Link do wygenerowanej partytury}
 \subsubsection{Oryginalna partytura}
@@ -1875,6 +1752,161 @@ Mimo zauważonych ograniczeń, wyniki są na tyle obiecujące, że aplikacja ma 
 \printbibliography           % biblatex
 \addcontentsline{toc}{chapter}{Bibliografia}
 
+\begin{appendices}
+\label{ch:appendix}
+  % TODO
+  \chapter{Źródła}
+  \label{app:sources}
+  
+  \begin{lstlisting} [float=h, floatplacement=H, language=Python, caption={Model regresji dla momentu naciśnięcia i puszczenia klawisza}, label={lst:regression-model}]
+    class ReggressOnsetOffsetFrameVelocityCRNN(nn.Module):
+      def __init__(self, frames_per_second, classes_num):
+        super().__init__()
+        
+        window_size = 2048
+        hop_size = sample_rate // frames_per_second
+        mel_bins = 229
+        
+        # Ekstraktor cech spektralnych
+        self.spectrogram_extractor = Spectrograph(
+                  n_fft=window_size,
+                  hop_length=hop_size,
+                  win_length=window_size,
+                  window='hann',
+                  center=True,
+                  pad_mode='reflect',
+                  freeze_parameters=True)
+                  
+        # Ekstraktor cech mel-spektrogramu
+        self.logmel_extractor = LogmelFilterBank(
+                  sr=sample_rate,
+                  n_fft=window_size,
+                  n_mels=mel_bins,
+                  fmin=30,
+                  fmax=sample_rate // 2,
+                  freeze_parameters=True)
+                    
+        # @*Modele do detekcji różnych aspektów*@
+        self.frame_model = AcousticModelCRnn8Dropout(
+                    classes_num, midfeat, momentum)
+        self.reg_onset_model = AcousticModelCRnn8Dropout(
+                      classes_num, midfeat, momentum)
+        self.reg_offset_model = AcousticModelCRnn8Dropout(
+                        classes_num, midfeat, momentum)
+        self.velocity_model = AcousticModelCRnn8Dropout(
+                          classes_num, midfeat, momentum)
+                            
+        # GRU do przetwarzania sekwencyjnego
+        self.reg_onset_gru = nn.GRU(
+                              input_size=88 * 2,
+                              hidden_size=256,
+                              num_layers=1,
+                              batch_first=True,
+                              bidirectional=True)
+  \end{lstlisting}
+
+  \begin{lstlisting}[float=h, language=Python, caption={Asynchroniczne zadanie do transkrypcji}, label={lst:transcription-task}]
+    @shared_task(bind=True, max_retries=3)
+    def process_transcription(self, transcription_id):
+        try:
+            transcription = Transcription.objects.get(pk=transcription_id)
+            audio_file = transcription.audio_file
+            
+            # Wczytanie i preprocessing audio
+            audio, _ = load_audio(
+                audio_file.audio_file.path, 
+                sr=sample_rate, 
+                mono=True)
+            
+            # Inicjalizacja modelu transkrypcji
+            transcriptor = PianoTranscription(device='cpu')
+            
+            # Generowanie pliku MIDI
+            with tempfile.NamedTemporaryFile(
+                delete=False, suffix='.mid') as tmp_midi:
+                midi_path = tmp_midi.name
+                transcriptor.transcribe(audio, midi_path)
+                
+            # Zapisywanie pliku MIDI
+            with open(midi_path, 'rb') as midi_file:
+                midi_instance = MIDIFile(transcription=transcription)
+                midi_instance.midi_file.save(
+                    f"{transcription.title}.mid", 
+                    File(midi_file))
+                    
+            # Generowanie PDF z MIDI
+            pdf_path = os.path.splitext(midi_path)[0] + '.pdf'
+            convert_midi_to_pdf(midi_data, pdf_path)
+            
+            # Zapisywanie pliku PDF
+            with open(pdf_path, 'rb') as pdf_file:
+                sheet_music = SheetMusic(transcription=transcription)
+                sheet_music.pdf_file.save(
+                    f"{transcription.title}.pdf", 
+                    File(pdf_file))
+            
+            transcription.status = 'COMPLETED'
+            transcription.save()
+            
+        except Exception as e:
+            transcription.status = 'FAILED'
+            transcription.save()
+            raise self.retry(exc=e, countdown=60)
+    \end{lstlisting}
+
+    \begin{lstlisting}[float=h, language=Python, caption={Zdarzenia wysyłane przez serwer}, label={lst:sse-stream}]
+      @require_GET
+      @csrf_exempt
+      def sse_stream(request, transcription_id):
+          def event_stream():
+              while True:
+                  try:
+                      _, db_id = from_global_id(transcription_id)
+                      transcription = Transcription.objects.get(pk=db_id)
+                      
+                      # Przygotowanie danych o statusie
+                      data = {
+                          'transcription_id': transcription_id,
+                          'status': transcription.status,
+                          'title': transcription.title,
+                          'midi_file_url': (
+                              f"{settings.BASE_URL}{midi_file.midi_file.url}"
+                              if transcription.midifile_set.exists()
+                              else None
+                          ),
+                          'sheet_music_url': (
+                              f"{settings.BASE_URL}{sheet_music.pdf_file.url}"
+                              if transcription.sheetmusic_set.exists()
+                              else None
+                          )
+                      }
+                      
+                      yield f"data: {json.dumps(data)}\n\n"
+                      
+                      if transcription.status in ['COMPLETED', 'FAILED']:
+                          break
+                          
+                      time.sleep(2)  # Sprawdzanie co 2 sekundy
+                      
+                  except Transcription.DoesNotExist:
+                      yield f"data: {json.dumps({'error': 'Not found'})}\n\n"
+                      break
+                      
+          response = StreamingHttpResponse(
+              event_stream(), 
+              content_type='text/event-stream')
+          response['Cache-Control'] = 'no-cache'
+          response['X-Accel-Buffering'] = 'no'
+          return response
+      \end{lstlisting}
+  
+  
+  \listoffigures
+  \addcontentsline{toc}{chapter}{Spis rysunków}
+  \listoftables
+  \addcontentsline{toc}{chapter}{Spis tabel}
+  
+  \end{appendices}
 
 \end{document}
 
