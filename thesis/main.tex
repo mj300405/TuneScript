@@ -525,7 +525,7 @@
 \Title
 
 \subsubsection*{Streszczenie}  
-Niniejsza praca dotyczy opracowania i realizacji aplikacji webowej TuneScript, służącej do automatycznej transkrypcji nagrań fortepianowych do formatu partytur PDF. W projekcie wykorzystano zaawansowane modele sztucznej inteligencji, w szczególności sieci głębokie, przystosowane do detekcji nut i analizy sygnału audio. Aplikacja obejmuje moduł frontendowy, backendowy oraz specjalnie przygotowany moduł pracownika (worker) do asynchronicznego przetwarzania zadań. Głównym celem pracy była zarówno trafność rozpoznania nut, jak i czytelność generowanych partytur. Zrealizowany system, dzięki wykorzystaniu technik sztucznej inteligencji może być istotnym wsparciem dla muzyków, pedagogów oraz badaczy zainteresowanych automatycznym przetwarzaniem i analizą muzyki.
+Niniejsza praca dotyczy opracowania i realizacji aplikacji webowej TuneScript, służącej do automatycznej transkrypcji nagrań fortepianowych do formatu partytur PDF. W projekcie wykorzystano zaawansowane modele sztucznej inteligencji, w szczególności sieci głębokie, przystosowane do detekcji nut i analizy sygnału audio. Aplikacja obejmuje moduł frontendowy, backendowy oraz specjalnie przygotowany moduł pracownika do asynchronicznego przetwarzania zadań. Głównym celem pracy była zarówno trafność rozpoznania nut, jak i czytelność generowanych partytur. Zrealizowany system, dzięki wykorzystaniu technik sztucznej inteligencji może być istotnym wsparciem dla muzyków, pedagogów oraz badaczy zainteresowanych automatycznym przetwarzaniem i analizą muzyki.
 
 \subsubsection*{Słowa kluczowe} 
 transkrypcja audio, sztuczna inteligencja, fortepian, partytura PDF, sieci neuronowe
@@ -680,15 +680,16 @@ Warto zauważyć, że mimo znaczącego postępu w dziedzinie ATM dla fortepianu,
 
 \section{Analiza istniejących rozwiązań}
 
-W ramach analizy rynku przeprowadzono szczegółowe badanie istniejących rozwiązań do automatycznej transkrypcji muzyki fortepianowej. Proces poszukiwań obejmował systematyczny przegląd platform dystrybucji oprogramowania, w tym Google Play oraz App Store, a także analizę dostępnych rozwiązań na platformy PC. Dodatkowo przeanalizowano repozytoria kodu źródłowego takie jak GitHub i GitLab, przestudiowano literaturę branżową oraz fora muzyczne, a także przeprowadzono szczegółowe wyszukiwanie w internecie przy użyciu fraz kluczowych w różnych językach.
+W ramach analizy rynku przeprowadzono szczegółowe badanie istniejących rozwiązań do automatycznej transkrypcji muzyki fortepianowej. Proces poszukiwań obejmował systematyczny przegląd platform dystrybucji oprogramowania, w tym Google Play oraz App Store, a także analizę dostępnych rozwiązań na komputery osobiste (PC, ang. Personal Computer). Dodatkowo przeanalizowano repozytoria kodu źródłowego takie jak GitHub i GitLab, przestudiowano literaturę branżową oraz fora muzyczne, a także przeprowadzono szczegółowe wyszukiwanie w internecie przy użyciu fraz kluczowych w różnych językach.
 
-W wyniku analizy zidentyfikowano kilka znaczących rozwiązań komercyjnych. Pierwszym z nich jest AnthemScore (\url{https://www.lunaverus.com/}), aplikacja desktopowa służąca do transkrypcji audio na nuty. Mimo że oferuje podstawową funkcjonalność transkrypcji, produkt ten ma szereg istotnych ograniczeń. Przede wszystkim brakuje mu wersji webowej, co znacząco ogranicza dostępność. Ponadto aplikacja wykazuje ograniczoną dokładność w przypadku muzyki polifonicznej, stawia wysokie wymagania sprzętowe oraz nie oferuje automatycznej detekcji pedalizacji.
+W wyniku analizy zidentyfikowano kilka znaczących rozwiązań komercyjnych. Pierwszym z nich jest AnthemScore (\small{\url{https://www.lunaverus.com/}}), aplikacja desktopowa służąca do transkrypcji audio na nuty. Mimo że oferuje podstawową funkcjonalność transkrypcji, produkt ten ma szereg istotnych ograniczeń. Przede wszystkim brakuje mu wersji webowej, co znacząco ogranicza dostępność. Ponadto aplikacja wykazuje ograniczoną dokładność w przypadku muzyki polifonicznej, stawia wysokie wymagania sprzętowe oraz nie oferuje automatycznej detekcji pedalizacji.
 
-Kolejnym znaczącym rozwiązaniem jest ScoreCloud (\url{https://scorecloud.com/}), system umożliwiający transkrypcję zarówno audio jak i MIDI. System ten jednak zmaga się z istotnymi problemami w rozpoznawaniu złożonych struktur harmonicznych oraz wykazuje ograniczoną dokładność rytmiczną. Co więcej, brak specjalizacji pod fortepian oraz wysoki koszt subskrypcji stanowią znaczące bariery dla potencjalnych użytkowników.
+Kolejnym znaczącym rozwiązaniem jest ScoreCloud (\small{\url{https://scorecloud.com/}}), system umożliwiający transkrypcję zarówno audio jak i MIDI. System ten jednak zmaga się z istotnymi problemami w rozpoznawaniu złożonych struktur harmonicznych oraz wykazuje ograniczoną dokładność rytmiczną. Co więcej, brak specjalizacji pod fortepian oraz wysoki koszt subskrypcji stanowią znaczące bariery dla potencjalnych użytkowników.
 
-Na rynku obecny jest również Melodyne (\url{https://www.celemony.com/en/melodyne/}), profesjonalne narzędzie do edycji audio. Choć jest to zaawansowane oprogramowanie, jego główny nacisk położony jest na edycję dźwięku, nie na transkrypcję. Skomplikowany interfejs i bardzo wysoka cena czynią go mało dostępnym dla przeciętnego użytkownika, a brak automatycznego generowania partytur PDF znacząco ogranicza jego przydatność w kontekście transkrypcji fortepianowej.
+Na rynku obecny jest również Melodyne (\small{\url{https://www.celemony.com/en/melodyne/}}), profesjonalne narzędzie do edycji audio. Choć jest to zaawansowane oprogramowanie, jego główny nacisk położony jest na edycję dźwięku, nie na transkrypcję. Skomplikowany interfejs i bardzo wysoka cena czynią go mało dostępnym dla przeciętnego użytkownika, a brak automatycznego generowania partytur PDF znacząco ogranicza jego przydatność w kontekście transkrypcji fortepianowej.
 
-Wśród rozwiązań darmowych wyróżnia się Audacity z wtyczką AudioToScore. To rozwiązanie open-source, mimo że dostępne bez opłat, charakteryzuje się niską dokładnością transkrypcji, brakiem odpowiedniego wsparcia dla złożonej polifonii, problematycznym interfejsem użytkownika oraz ograniczonymi możliwościami eksportu.
+Wśród rozwiązań darmowych wyróżnia się Audacity (\small{\url{https://www.audacityteam.org/}}) z wtyczką AudioToScore. To rozwiązanie open-source, mimo że dostępne bez opłat, charakteryzuje się niską dokładnością transkrypcji, brakiem odpowiedniego wsparcia dla złożonej polifonii, problematycznym interfejsem użytkownika oraz ograniczonymi możliwościami eksportu.
+
 
 Przeprowadzona analiza jasno wskazuje na istotne luki w obecnych rozwiązaniach rynkowych. Główne problemy to brak specjalizacji pod muzykę fortepianową, niedostateczna dokładność w przypadku muzyki polifonicznej, brak integracji z nowoczesnymi modelami AI, ograniczona dostępność wynikająca z koncentracji na aplikacjach desktopowych zamiast webowych, oraz wysokie koszty licencji.
 
@@ -820,8 +821,8 @@ Mimo że projekt był realizowany indywidualnie, zdecydowano się na wdrożenie 
           \begin{itemize}
             \item Poetry \cite{bib:poetry}: Nowoczesne zarządzanie zależnościami Python.
             \item ESLint \cite{bib:eslint} i Prettier \cite{bib:prettier}: Spójne formatowanie kodu JavaScript/TypeScript.
-            \item Black \cite{bib:black} i isort: Automatyczne formatowanie kodu Python.
-            \item Flake8: Analiza statyczna kodu Python.
+            \item Black \cite{bib:black} i isort\cite{bib:isort}: Automatyczne formatowanie kodu Python.
+            \item Flake8 \cite{bib:flake8}: Analiza statyczna kodu Python.
           \end{itemize}
     \item \textbf{Testowanie}:
           \begin{itemize}
@@ -1028,7 +1029,7 @@ Panel administracyjny systemu TuneScript zapewnia administratorom pełną kontro
 
 \section{Kwestie bezpieczeństwa}
 
-Bezpieczeństwo danych i prywatność użytkowników stanowią kluczowy aspekt systemu TuneScript. Wszystkie dane przesyłane między klientem a serwerem są szyfrowane przy użyciu protokołu HTTPS, a hasła użytkowników przechowywane są w formie zaszyfrowanej z wykorzystaniem nowoczesnych algorytmów haszujących. System implementuje mechanizm uwierzytelniania oparty na tokenach JWT oraz zaawansowane zabezpieczenia przed popularnymi rodzajami ataków, takimi jak CSRF i XSS. Regularnie przeprowadzane są aktualizacje wszystkich wykorzystywanych bibliotek i zależności, co pozwala na utrzymanie wysokiego poziomu bezpieczeństwa. System został również wyposażony w mechanizmy monitorowania i wykrywania potencjalnych zagrożeń.
+Bezpieczeństwo danych i prywatność użytkowników stanowią kluczowy aspekt systemu TuneScript. Wszystkie dane przesyłane między klientem a serwerem są szyfrowane przy użyciu protokołu HTTPS (ang. Hypertext Transfer Protocol Secure, protokół bezpiecznej komunikacji w sieci), a hasła użytkowników przechowywane są w formie zaszyfrowanej z wykorzystaniem nowoczesnych algorytmów haszujących. System implementuje mechanizm uwierzytelniania oparty na tokenach JWT (ang. JSON Web Token, token uwierzytelniający w formacie JSON) oraz zaawansowane zabezpieczenia przed popularnymi rodzajami ataków, takimi jak CSRF (ang. Cross-Site Request Forgery, fałszowanie żądań międzywitrynowych) i XSS (ang. Cross-Site Scripting, skrypty międzywitrynowe). Regularnie przeprowadzane są aktualizacje wszystkich wykorzystywanych bibliotek i zależności, co pozwala na utrzymanie wysokiego poziomu bezpieczeństwa. System został również wyposażony w mechanizmy monitorowania i wykrywania potencjalnych zagrożeń.
 
 \section{Przykład działania}
 Dla lepszego zrozumienia funkcjonowania systemu, poniżej przedstawiono szczegółowy scenariusz użycia aplikacji TuneScript wraz z rzeczywistymi widokami interfejsu użytkownika. Przykład ten ilustruje typową ścieżkę użytkownika od momentu pierwszego kontaktu z systemem do pełnego wykorzystania jego funkcjonalności.
@@ -1083,7 +1084,7 @@ Po zakończeniu transkrypcji (Rys.~\ref{fig:upload_finish}), system automatyczni
 
 Użytkownik otrzymuje dostęp do szczegółowego widoku transkrypcji (Rys.~\ref{fig:details_preview}), gdzie może przeglądać wygenerowane materiały, w tym nuty w formacie PDF oraz plik MIDI. W tym miejscu możliwe jest również odsłuchanie oryginalnego nagrania i porównanie go z wygenerowaną transkrypcją.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{screenshots/details_preview.png}
     \caption{Szczegółowy widok transkrypcji}
@@ -1100,19 +1101,20 @@ Wszystkie transkrypcje użytkownika są dostępne w dedykowanej sekcji "Moje tra
     \label{fig:my_transcriptions}
 \end{figure}
 
-System oferuje również zaawansowane możliwości wyszukiwania i filtrowania (Rys.~\ref{fig:search}), co jest szczególnie przydatne przy większej liczbie utworów.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{screenshots/search.png}
-    \caption{Wyszukiwanie transkrypcji}
-    \label{fig:search}
+  \centering
+  \includegraphics[width=0.9\textwidth]{screenshots/search.png}
+  \caption{Wyszukiwanie transkrypcji}
+  \label{fig:search}
 \end{figure}
 
-\subsection{Personalizacja i ustawienia}
-System zapewnia rozbudowane możliwości personalizacji poprzez panel profilu użytkownika (Rys.~\ref{fig:profile}). 
+System oferuje również zaawansowane możliwości wyszukiwania i filtrowania (Rys.~\ref{fig:search}), co jest szczególnie przydatne przy większej liczbie utworów.
 
-\begin{figure}[H]
+\subsection{Personalizacja i ustawienia}
+System zapewnia możliwości personalizacji poprzez panel profilu użytkownika (Rys.~\ref{fig:profile}). 
+
+\begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{screenshots/profile.png}
     \caption{Profil użytkownika}
@@ -1132,7 +1134,7 @@ Dodatkowo, istnieje możliwość utworzenia listy ulubionych transkrypcji (Rys.~
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{screenshots/favorite_transcriptions.png}
+    \includegraphics[width=0.9\textwidth]{screenshots/favorite_transcriptions.png}
     \caption{Lista ulubionych transkrypcji}
     \label{fig:favorite_transcriptions}
 \end{figure}
@@ -1255,7 +1257,7 @@ Tabele te są ze sobą powiązane za pomocą kluczy obcych, tworząc kompleksow�
 
 \section{Skrypty deweloperskie}
 
-Projekt TuneScript zawiera szereg skryptów ułatwiających proces rozwoju i testowania. Są one zdefiniowane w pliku \texttt{package.json} \ref{lst:development-scripts} i umożliwiają wygodne zarządzanie aplikacją. Skrypty te obejmują między innymi uruchamianie i zatrzymywanie kontenerów Docker, testowanie aplikacji oraz formatowanie kodu.
+Projekt TuneScript zawiera skrypty ułatwiające proces rozwoju i testowania. Skrypty te, pokazane w listingu \ref{lst:development-scripts}, obejmują między innymi uruchamianie i zatrzymywanie kontenerów Docker, testowanie aplikacji oraz formatowanie kodu.
 
   \begin{lstlisting} [float=h, language=json, caption={Skrypty deweloperskie}, label={lst:development-scripts}]
     {
@@ -1414,10 +1416,10 @@ Proces weryfikacji i walidacji jest kluczowym elementem w tworzeniu oprogramowan
 System TuneScript wykorzystuje kompleksowe podejście do testowania, bazowane na modelu V \cite{bib:v_model}, gdzie testowanie odbywa się na różnych poziomach abstrakcji. W systemie zaimplementowano testy jednostkowe poszczególnych komponentów oraz testy integracyjne weryfikujące współdziałanie elementów systemu. Szczególny nacisk położono na automatyzację procesu testowego, co pozwala na szybkie wykrywanie potencjalnych problemów w trakcie rozwoju aplikacji.
 
 \subsection{Testy jednostkowe}
-Testy jednostkowe stanowią fundament procesu testowego w systemie TuneScript. Ich głównym celem jest weryfikacja poprawności działania pojedynczych komponentów w izolacji od reszty systemu. Aplikacja posiada łącznie 174 testy jednostkowe, w tym 114 testów dla części frontendowej oraz 60 testów dla części backendowej, obejmujących testy modeli, mutacji, zapytań i widoków. Testy te zapewniają, że każdy element systemu działa zgodnie z założeniami i specyfikacją.
+Testy jednostkowe stanowią fundament procesu testowego w systemie TuneScript. Ich głównym celem jest weryfikacja poprawności działania pojedynczych komponentów w izolacji od reszty systemu. Aplikacja posiada łącznie 174 testy jednostkowe, w tym 114 testów dla części frontendowej oraz 60 testów dla części backendowej, obejmujących testy modeli, mutacji, zapytań i widoków. Testy te zapewniają, że każdy element systemu działa zgodnie z założeniami.
 
 \subsection{Testy integracyjne}
-Testy integracyjne weryfikują poprawność współdziałania poszczególnych komponentów systemu. Jest to szczególnie istotne w kontekście aplikacji webowej, gdzie wiele elementów musi ze sobą współpracować w sposób bezproblemowy. System zawiera zestaw 10 kompleksowych testów integracyjnych, obejmujących wszystkie kluczowe przepływy danych, ze szczególnym uwzględnieniem komunikacji między frontendem a backendem, obsługi autoryzacji oraz przetwarzania strumieni audio.
+Testy integracyjne weryfikują poprawność współdziałania poszczególnych komponentów systemu. Jest to szczególnie istotne w kontekście aplikacji webowej, gdzie wiele elementów musi ze sobą współpracować w sposób bezproblemowy. System zawiera zestaw 10 testów integracyjnych, obejmujących wszystkie kluczowe przepływy danych, ze szczególnym uwzględnieniem komunikacji między frontendem a backendem, obsługi autoryzacji oraz przetwarzania strumieni audio.
 
 \section{Przypadki testowe i wykryte błędy}
 W ramach procesu rozwoju systemu przeprowadzono szereg testów mających na celu weryfikację poprawności działania poszczególnych komponentów oraz wykrycie potencjalnych błędów. Testy obejmowały zarówno automatyczną weryfikację kodu poprzez testy jednostkowe i integracyjne, jak również manualne testowanie funkcjonalności z perspektywy użytkownika końcowego. Proces testowania pozwolił na wykrycie i naprawę wielu istotnych błędów, przyczyniając się do zwiększenia niezawodności systemu.
@@ -1428,7 +1430,7 @@ Testy automatyczne stanowią fundament procesu weryfikacji jakości kodu w syste
 \subsubsection{Testy interfejsu użytkownika}
 W ramach testów automatycznych interfejsu użytkownika wykryto i naprawiono szereg istotnych błędów. Kluczowym problemem było nieprawidłowe przywracanie stanu autoryzacji użytkownika po odświeżeniu strony, co mogło prowadzić do utraty sesji użytkownika. Test przedstawiony w listingu \ref{lst:auth-state} pozwolił zidentyfikować i naprawić ten problem poprzez implementację poprawnej obsługi tokena autoryzacji w pamięci lokalnej przeglądarki.
 
-\begin{lstlisting}[float, language=typescript, caption={Test przywracania stanu autoryzacji}, label={lst:auth-state}]
+\begin{lstlisting}[float=h, language=typescript, caption={Test przywracania stanu autoryzacji}, label={lst:auth-state}]
 it('restores authentication state from localStorage', async () => {
   mockLocalStorage.getItem.mockImplementation((key) => {
     if (key === 'token') return 'saved-token';
@@ -1453,7 +1455,7 @@ it('restores authentication state from localStorage', async () => {
 \subsubsection{Testy komunikacji API} 
 Przeprowadzono szereg testów weryfikujących poprawność działania interfejsu API, szczególnie w kontekście strumieniowania danych podczas procesu transkrypcji. Test przedstawiony w listingu \ref{lst:sse-stream-test} pozwolił wykryć problemy z obsługą długotrwałych połączeń SSE oraz błędy w obsłudze przerwanych połączeń.
 
-\begin{lstlisting}[float, language=typescript, caption={Test strumienia SSE}, label={lst:sse-stream-test}]
+\begin{lstlisting}[float=h, language=typescript, caption={Test strumienia SSE}, label={lst:sse-stream-test}]
 it('should handle successful SSE stream', async () => {
   const handlerPromise = handler(mockReq as NextApiRequest, mockRes as NextApiResponse);
 
@@ -1485,7 +1487,7 @@ it('should handle successful SSE stream', async () => {
 \end{lstlisting}
  
 \subsubsection{Testy endpointów}
-Istotnym elementem były również testy różnych endpointów API, w szczególności tych związanych z obsługą transkrypcji. Test pokazany w listingu \ref{lst:transcription-endpoint} ujawnił problemy z obsługą równoległych żądań transkrypcji oraz zarządzaniem stanem podczas długotrwałych operacji przetwarzania.
+Istotnym elementem były również testy różnych endpointów API, w szczególności tych związanych z obsługą transkrypcji. Test pokazany w listingu \ref{lst:transcription-endpoint} ujawnił problemy z obsługą równoległych żądań transkrypcji oraz zarządzaniem stanem podczas długich operacji przetwarzania.
 
 \begin{lstlisting}[float, language=typescript, caption={Test endpointu transkrypcji}, label={lst:transcription-endpoint}]
 it('handles concurrent transcription uploads correctly', async () => {
@@ -1629,7 +1631,7 @@ Analiza wygenerowanych transkrypcji wykazuje kilka charakterystycznych cech i og
 
 Powyższe cechy wskazują, że system, mimo wysokiej skuteczności w rozpoznawaniu wysokości dźwięków, wymaga dalszego rozwoju w zakresie tworzenia czytelnej i praktycznej notacji muzycznej, która lepiej odzwierciedlałaby konwencje przyjęte w tradycyjnym zapisie nutowym.
 
-
+\newpage
 \subsection{F. Chopin - Etiuda op. 10 nr 5}
 \subsubsection{Wygenerowana partytura}
 \hyperref[fig:generated_chopin]{Link do wygenerowanej partytury}
@@ -1707,6 +1709,7 @@ Głównym założeniem projektu była budowa kompleksowego systemu, który łąc
     \item \textbf{Weryfikacja i testy:} Przeprowadzono testy jednostkowe, integracyjne oraz manualne (m.in. import z YouTube, testy wydajności dla długich plików). System w obecnej postaci osiąga satysfakcjonujące wyniki, zarówno pod względem poprawności rozpoznawania wysokości dźwięków, jak i stabilności działania.
 \end{itemize}
 
+\newpage
 \section{Ocena osiągniętych celów}
 Przedstawiony w rozdziale pierwszym cel główny — stworzenie kompletnego narzędzia do transkrypcji muzyki fortepianowej — został osiągnięty. Udało się zintegrować kluczowe funkcjonalności: przesyłanie plików audio, asynchroniczne przetwarzanie w workerze, generowanie i wizualizację wyników w postaci plików MIDI i PDF. Wysoka dokładność transkrypcji została potwierdzona w rozdziale dotyczącym walidacji, gdzie porównano wygenerowane partytury z oryginalnymi zapisami nutowymi.
 
@@ -1727,6 +1730,7 @@ W trakcie realizacji projektu zidentyfikowano kilka trudności i ograniczeń:
     \item \textbf{Problemy z kompatybilnością bibliotek:} W trakcie implementacji napotkano problem niekompatybilności wersji biblioteki PyTorch \cite{bib:pytorch} między modułem chatbota a modelem transkrypcji. Problem ten wymusił modyfikację architektury systemu - chatbot został wydzielony jako osobny serwis i uruchomiony w oddzielnym kontenerze, co pozwoliło na niezależne zarządzanie zależnościami obu komponentów.
 \end{itemize}
 
+\newpage
 \section{Możliwe kierunki dalszego rozwoju}
 Rozwijając dalej system TuneScript, można rozważyć następujące usprawnienia:
 \begin{enumerate}

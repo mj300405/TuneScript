@@ -16,75 +16,75 @@
 \contentsline {section}{\numberline {2.6}Proponowane rozwiązanie}{9}{section.2.6}%
 \contentsline {chapter}{\numberline {3}Wymagania i narzędzia}{11}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Komponenty, moduły i biblioteki}{11}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Wymagania funkcjonalne}{14}{section.3.2}%
+\contentsline {section}{\numberline {3.2}Wymagania funkcjonalne}{13}{section.3.2}%
 \contentsline {section}{\numberline {3.3}Wymagania niefunkcjonalne}{15}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Wymagania sprzętowe i programowe}{16}{section.3.4}%
+\contentsline {section}{\numberline {3.4}Wymagania sprzętowe i programowe}{15}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}Wymagania dla użytkowników końcowych}{16}{subsection.3.4.1}%
 \contentsline {subsection}{\numberline {3.4.2}Wymagania dla środowiska serwerowego}{16}{subsection.3.4.2}%
-\contentsline {section}{\numberline {3.5}Przypadki użycia}{17}{section.3.5}%
+\contentsline {section}{\numberline {3.5}Przypadki użycia}{16}{section.3.5}%
 \contentsline {chapter}{\numberline {4}Specyfikacja zewnętrzna}{19}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Wymagania sprzętowe i programowe}{19}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Wymagania programowe}{19}{subsection.4.1.1}%
 \contentsline {section}{\numberline {4.2}Kategorie użytkowników}{19}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Sposób obsługi}{20}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Administracja systemem}{21}{section.4.4}%
+\contentsline {section}{\numberline {4.4}Administracja systemem}{20}{section.4.4}%
 \contentsline {section}{\numberline {4.5}Kwestie bezpieczeństwa}{21}{section.4.5}%
 \contentsline {section}{\numberline {4.6}Przykład działania}{21}{section.4.6}%
 \contentsline {subsection}{\numberline {4.6.1}Rozpoczęcie pracy z systemem}{21}{subsection.4.6.1}%
 \contentsline {subsection}{\numberline {4.6.2}Panel główny i podstawowe funkcje}{22}{subsection.4.6.2}%
-\contentsline {subsection}{\numberline {4.6.3}Proces transkrypcji}{23}{subsection.4.6.3}%
-\contentsline {subsection}{\numberline {4.6.4}Zarządzanie transkrypcjami}{26}{subsection.4.6.4}%
-\contentsline {subsection}{\numberline {4.6.5}Personalizacja i ustawienia}{27}{subsection.4.6.5}%
+\contentsline {subsection}{\numberline {4.6.3}Proces transkrypcji}{22}{subsection.4.6.3}%
+\contentsline {subsection}{\numberline {4.6.4}Zarządzanie transkrypcjami}{24}{subsection.4.6.4}%
+\contentsline {subsection}{\numberline {4.6.5}Personalizacja i ustawienia}{26}{subsection.4.6.5}%
 \contentsline {subsection}{\numberline {4.6.6}Wsparcie użytkownika}{28}{subsection.4.6.6}%
-\contentsline {chapter}{\numberline {5}Specyfikacja wewnętrzna}{31}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Przedstawienie idei}{31}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Architektura systemu}{31}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Opis struktur danych i organizacji bazy danych}{33}{section.5.3}%
-\contentsline {section}{\numberline {5.4}Skrypty deweloperskie}{34}{section.5.4}%
-\contentsline {section}{\numberline {5.5}Szczegóły implementacji wybranych fragmentów}{34}{section.5.5}%
-\contentsline {subsection}{\numberline {5.5.1}Implementacja modelu transkrypcji}{35}{subsection.5.5.1}%
-\contentsline {subsection}{\numberline {5.5.2}Implementacja systemu kolejkowania transkrypcji}{36}{subsection.5.5.2}%
-\contentsline {subsection}{\numberline {5.5.3}Implementacja systemu SSE do monitorowania postępu}{36}{subsection.5.5.3}%
-\contentsline {section}{\numberline {5.6}Diagramy UML}{36}{section.5.6}%
-\contentsline {chapter}{\numberline {6}Model transkrypcji}{39}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Architektura modelu}{39}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Proces uczenia}{40}{section.6.2}%
-\contentsline {subsection}{\numberline {6.2.1}Przetwarzanie wstępne danych}{40}{subsection.6.2.1}%
-\contentsline {subsection}{\numberline {6.2.2}Parametry treningu}{41}{subsection.6.2.2}%
-\contentsline {subsection}{\numberline {6.2.3}Funkcja straty}{41}{subsection.6.2.3}%
-\contentsline {section}{\numberline {6.3}Wnioskowanie}{41}{section.6.3}%
-\contentsline {chapter}{\numberline {7}Weryfikacja i walidacja}{43}{chapter.7}%
-\contentsline {section}{\numberline {7.1}Organizacja testów}{43}{section.7.1}%
-\contentsline {subsection}{\numberline {7.1.1}Testy jednostkowe}{43}{subsection.7.1.1}%
-\contentsline {subsection}{\numberline {7.1.2}Testy integracyjne}{44}{subsection.7.1.2}%
-\contentsline {section}{\numberline {7.2}Przypadki testowe i wykryte błędy}{44}{section.7.2}%
-\contentsline {subsection}{\numberline {7.2.1}Testy automatyczne}{44}{subsection.7.2.1}%
-\contentsline {subsubsection}{Testy interfejsu użytkownika}{44}{section*.27}%
-\contentsline {subsubsection}{Testy komunikacji API}{44}{section*.29}%
-\contentsline {subsubsection}{Testy endpointów}{46}{section*.31}%
-\contentsline {subsection}{\numberline {7.2.2}Testy manualne}{47}{subsection.7.2.2}%
-\contentsline {subsubsection}{Test importu z YouTube}{47}{section*.33}%
-\contentsline {subsubsection}{Test zmiany zdjęcia profilowego}{47}{section*.34}%
-\contentsline {subsubsection}{Test wyświetlania podglądu transkrypcji}{47}{section*.35}%
-\contentsline {section}{\numberline {7.3}Testowanie wydajności}{48}{section.7.3}%
-\contentsline {section}{\numberline {7.4}Najważniejsze pokrycie testami}{48}{section.7.4}%
-\contentsline {section}{\numberline {7.5}Porównanie wygenerowanych i oryginalnych partytur}{49}{section.7.5}%
-\contentsline {subsection}{\numberline {7.5.1}Dokładność i ograniczenia transkrypcji}{49}{subsection.7.5.1}%
-\contentsline {subsection}{\numberline {7.5.2}F. Chopin - Etiuda op. 10 nr 5}{50}{subsection.7.5.2}%
-\contentsline {subsubsection}{Wygenerowana partytura}{50}{section*.37}%
-\contentsline {subsubsection}{Oryginalna partytura}{50}{section*.38}%
-\contentsline {subsection}{\numberline {7.5.3}L. van Beethoven - Sonata op. 53 nr 21 ``Waldstein'', Allegro con brio}{50}{subsection.7.5.3}%
-\contentsline {subsubsection}{Wygenerowana partytura}{50}{section*.39}%
-\contentsline {subsubsection}{Oryginalna partytura}{50}{section*.40}%
-\contentsline {subsection}{\numberline {7.5.4}L. van Beethoven - Sonata op. 13 nr 8 ``Patetyczna'', Adagio cantabile}{50}{subsection.7.5.4}%
-\contentsline {subsubsection}{Wygenerowana partytura}{50}{section*.41}%
-\contentsline {subsubsection}{Oryginalna partytura}{50}{section*.42}%
-\contentsline {chapter}{\numberline {8}Podsumowanie i wnioski}{57}{chapter.8}%
-\contentsline {section}{\numberline {8.1}Ocena osiągniętych celów}{58}{section.8.1}%
-\contentsline {section}{\numberline {8.2}Ograniczenia i problemy napotkane w trakcie pracy}{58}{section.8.2}%
-\contentsline {section}{\numberline {8.3}Możliwe kierunki dalszego rozwoju}{59}{section.8.3}%
-\contentsline {section}{\numberline {8.4}Zakończenie}{59}{section.8.4}%
-\contentsline {chapter}{Bibliografia}{63}{chapter*.55}%
-\contentsline {chapter}{Źródła}{67}{appendix*.56}%
-\contentsline {chapter}{Spis rysunków}{71}{appendix*.60}%
-\contentsline {chapter}{Spis tabel}{73}{appendix*.61}%
+\contentsline {chapter}{\numberline {5}Specyfikacja wewnętrzna}{29}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Przedstawienie idei}{29}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Architektura systemu}{29}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Opis struktur danych i organizacji bazy danych}{30}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Skrypty deweloperskie}{32}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Szczegóły implementacji wybranych fragmentów}{32}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Implementacja modelu transkrypcji}{32}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Implementacja systemu kolejkowania transkrypcji}{34}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}Implementacja systemu SSE do monitorowania postępu}{34}{subsection.5.5.3}%
+\contentsline {section}{\numberline {5.6}Diagramy UML}{34}{section.5.6}%
+\contentsline {chapter}{\numberline {6}Model transkrypcji}{37}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Architektura modelu}{37}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Proces uczenia}{38}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Przetwarzanie wstępne danych}{38}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Parametry treningu}{39}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Funkcja straty}{39}{subsection.6.2.3}%
+\contentsline {section}{\numberline {6.3}Wnioskowanie}{39}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Weryfikacja i walidacja}{41}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Organizacja testów}{41}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Testy jednostkowe}{41}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Testy integracyjne}{41}{subsection.7.1.2}%
+\contentsline {section}{\numberline {7.2}Przypadki testowe i wykryte błędy}{42}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Testy automatyczne}{42}{subsection.7.2.1}%
+\contentsline {subsubsection}{Testy interfejsu użytkownika}{42}{section*.27}%
+\contentsline {subsubsection}{Testy komunikacji API}{43}{section*.29}%
+\contentsline {subsubsection}{Testy endpointów}{43}{section*.31}%
+\contentsline {subsection}{\numberline {7.2.2}Testy manualne}{45}{subsection.7.2.2}%
+\contentsline {subsubsection}{Test importu z YouTube}{45}{section*.33}%
+\contentsline {subsubsection}{Test zmiany zdjęcia profilowego}{45}{section*.34}%
+\contentsline {subsubsection}{Test wyświetlania podglądu transkrypcji}{45}{section*.35}%
+\contentsline {section}{\numberline {7.3}Testowanie wydajności}{46}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Najważniejsze pokrycie testami}{46}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Porównanie wygenerowanych i oryginalnych partytur}{47}{section.7.5}%
+\contentsline {subsection}{\numberline {7.5.1}Dokładność i ograniczenia transkrypcji}{47}{subsection.7.5.1}%
+\contentsline {subsection}{\numberline {7.5.2}F. Chopin - Etiuda op. 10 nr 5}{48}{subsection.7.5.2}%
+\contentsline {subsubsection}{Wygenerowana partytura}{48}{section*.37}%
+\contentsline {subsubsection}{Oryginalna partytura}{48}{section*.38}%
+\contentsline {subsection}{\numberline {7.5.3}L. van Beethoven - Sonata op. 53 nr 21 ``Waldstein'', Allegro con brio}{48}{subsection.7.5.3}%
+\contentsline {subsubsection}{Wygenerowana partytura}{48}{section*.39}%
+\contentsline {subsubsection}{Oryginalna partytura}{48}{section*.40}%
+\contentsline {subsection}{\numberline {7.5.4}L. van Beethoven - Sonata op. 13 nr 8 ``Patetyczna'', Adagio cantabile}{48}{subsection.7.5.4}%
+\contentsline {subsubsection}{Wygenerowana partytura}{48}{section*.41}%
+\contentsline {subsubsection}{Oryginalna partytura}{48}{section*.42}%
+\contentsline {chapter}{\numberline {8}Podsumowanie i wnioski}{55}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Ocena osiągniętych celów}{56}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Ograniczenia i problemy napotkane w trakcie pracy}{56}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Możliwe kierunki dalszego rozwoju}{57}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Zakończenie}{57}{section.8.4}%
+\contentsline {chapter}{Bibliografia}{61}{chapter*.55}%
+\contentsline {chapter}{Źródła}{65}{appendix*.56}%
+\contentsline {chapter}{Spis rysunków}{69}{appendix*.60}%
+\contentsline {chapter}{Spis tabel}{71}{appendix*.61}%

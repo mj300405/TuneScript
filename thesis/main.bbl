@@ -718,6 +718,29 @@
     \field{urlyear}{2024}
   \endentry
 
+  \entry{bib:flake8}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{PyCQA}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{P4}
+    \strng{fullhash}{P4}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Flake8 Documentation}
+    \verb{url}
+    \verb https://flake8.pycqa.org/en/latest/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
   \entry{bib:pytest}{online}{}
     \name{author}{1}{}{%
       {{hash=p}{%
@@ -909,6 +932,29 @@
     \field{title}{React Testing Library Documentation}
     \verb{url}
     \verb https://testing-library.com/docs/react-testing-library/intro/
+    \endverb
+    \field{year}{2024}
+    \field{urlday}{05}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{bib:isort}{online}{}
+    \name{author}{1}{}{%
+      {{hash=T}{%
+         family={{Timothy Crosley}},
+         familyi={T\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{T2}
+    \strng{fullhash}{T2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{isort Documentation}
+    \verb{url}
+    \verb https://pycqa.github.io/isort/
     \endverb
     \field{year}{2024}
     \field{urlday}{05}
