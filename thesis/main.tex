@@ -1056,22 +1056,12 @@ z głównym przeznaczeniem aplikacji.
     \label{fig:landing_page}
 \end{figure}
 
-\FloatBarrier
-
 \subsection{Panel główny i podstawowe funkcje}
 Po pomyślnym zalogowaniu, użytkownik zostaje przekierowany do panelu głównego (Rys.~\ref{fig:dashboard}). 
 Jest to centralne miejsce systemu, prezentujące najważniejsze funkcje i statystyki. 
 Panel zawiera sekcje z najwyżej ocenianymi transkrypcjami, ostatnio dodanymi utworami 
 oraz personalizowanymi rekomendacjami. Użytkownik może stąd szybko przejść do wszystkich głównych funkcji systemu.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{screenshots/dashboard.png}
-    \caption{Panel główny użytkownika}
-    \label{fig:dashboard}
-\end{figure}
-
-\FloatBarrier
 
 \subsection{Proces transkrypcji}
 Kluczową funkcjonalnością systemu jest proces transkrypcji plików audio. 
@@ -1082,6 +1072,16 @@ informując o kolejnych etapach procesu. Po zakończeniu transkrypcji (Rys.~\ref
 system automatycznie generuje podgląd wyników. Użytkownik otrzymuje dostęp do szczegółowego widoku transkrypcji 
 (Rys.~\ref{fig:details_preview}), gdzie może przeglądać wygenerowane materiały, w tym nuty w formacie PDF oraz plik MIDI. 
 W tym miejscu możliwe jest również odsłuchanie oryginalnego nagrania i porównanie go z wygenerowaną transkrypcją.
+
+$ $
+$ $
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{screenshots/dashboard.png}
+    \caption{Panel główny użytkownika}
+    \label{fig:dashboard}
+\end{figure}
 
 \begin{figure}[htbp]
     \centering
@@ -1118,6 +1118,10 @@ Wszystkie transkrypcje użytkownika są dostępne w dedykowanej sekcji ``Moje tr
 (Rys.~\ref{fig:my_transcriptions}). Interfejs ten umożliwia łatwe zarządzanie własną biblioteką, 
 włączając w to możliwość edycji metadanych, usuwania transkrypcji czy zmiany ich widoczności.
 
+
+System oferuje również zaawansowane możliwości wyszukiwania i filtrowania (Rys.~\ref{fig:search}), 
+co jest szczególnie przydatne przy większej liczbie utworów.
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{screenshots/my_transcriptions.png}
@@ -1131,10 +1135,6 @@ włączając w to możliwość edycji metadanych, usuwania transkrypcji czy zmia
   \caption{Wyszukiwanie transkrypcji}
   \label{fig:search}
 \end{figure}
-
-System oferuje również zaawansowane możliwości wyszukiwania i filtrowania (Rys.~\ref{fig:search}), 
-co jest szczególnie przydatne przy większej liczbie utworów.
-
 \FloatBarrier
 
 \subsection{Personalizacja i ustawienia}
@@ -1392,15 +1392,14 @@ Cztery główne podmoduły korzystają z opisanej architektury w kontekście ró
   \item Moduł regresji końca dźwięku odpowiada za przewidywanie momentu zakończenia dźwięków.
 \end{itemize}
 
-Cała architektura została zaprojektowana tak, aby skutecznie wykorzystywać dane wejściowe w postaci spektrogramu melowego, jak przedstawiono na rysunku \ref{fig:ai_architecture}.
-
-
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{diagrams/ai_architecture.pdf}
-    \caption{Diagram architektury modelu transkrypcji}
-    \label{fig:ai_architecture}
+  \centering
+  \includegraphics[width=0.9\textwidth]{diagrams/ai_architecture.pdf}
+  \caption{Diagram architektury modelu transkrypcji}
+  \label{fig:ai_architecture}
 \end{figure}
+
+Cała architektura została zaprojektowana tak, aby skutecznie wykorzystywać dane wejściowe w postaci spektrogramu melowego, jak przedstawiono na rysunku \ref{fig:ai_architecture}.
 
 
 \section{Proces uczenia}
@@ -1482,13 +1481,23 @@ it('restores authentication state from localStorage', async () => {
       .toHaveTextContent('Authenticated');
     expect(screen.getByTestId('user-info'))
       .toHaveTextContent('saveduser');
-  });
-});
-\end{lstlisting}
+      });
+      });
+    \end{lstlisting}
 
+    
 \subsubsection{Testy komunikacji API} 
-Przeprowadzono szereg testów weryfikujących poprawność działania interfejsu API, szczególnie w kontekście strumieniowania danych podczas procesu transkrypcji. Test przedstawiony w listingu \ref{lst:sse-stream-test} pozwolił wykryć problemy z obsługą długotrwałych połączeń SSE oraz błędy w~obsłudze przerwanych połączeń.
-
+  Przeprowadzono szereg testów weryfikujących poprawność działania interfejsu API, szczególnie w kontekście strumieniowania danych podczas procesu transkrypcji. Test przedstawiony w listingu \ref{lst:sse-stream-test} pozwolił wykryć problemy z obsługą długotrwałych połączeń SSE oraz błędy w~obsłudze przerwanych połączeń.
+  
+  \subsubsection{Testy endpointów}
+  Istotnym elementem były również testy różnych endpointów API, w szczególności tych związanych z obsługą transkrypcji. Test pokazany w listingu \ref{lst:transcription-endpoint} ujawnił problemy z obsługą równoległych żądań transkrypcji oraz zarządzaniem stanem podczas długich operacji przetwarzania.
+  Testy te pozwoliły wykryć i naprawić następujące problemy:
+  \begin{itemize}
+    \item Nieprawidłową obsługę przerwanych połączeń SSE.
+    \item Problemy z timeoutami podczas długotrwałych transkrypcji.
+    \item Błędy w serializacji odpowiedzi JSON.
+  \end{itemize}
+  
 \begin{lstlisting}[float=h, language=typescript, caption={Test strumienia SSE}, label={lst:sse-stream-test}]
 it('should handle successful SSE stream', async () => {
   const handlerPromise = handler(mockReq as NextApiRequest, mockRes as NextApiResponse);
@@ -1519,9 +1528,9 @@ it('should handle successful SSE stream', async () => {
   expect(mockRes.end).toHaveBeenCalled();
 });
 \end{lstlisting}
+
+
  
-\subsubsection{Testy endpointów}
-Istotnym elementem były również testy różnych endpointów API, w szczególności tych związanych z obsługą transkrypcji. Test pokazany w listingu \ref{lst:transcription-endpoint} ujawnił problemy z obsługą równoległych żądań transkrypcji oraz zarządzaniem stanem podczas długich operacji przetwarzania.
 
 \begin{lstlisting}[float, language=typescript, caption={Test endpointu transkrypcji}, label={lst:transcription-endpoint}]
 it('handles concurrent transcription uploads correctly', async () => {
@@ -1555,14 +1564,6 @@ it('handles concurrent transcription uploads correctly', async () => {
   });
 });
 \end{lstlisting}
-
-Testy te pozwoliły wykryć i naprawić następujące problemy:
-\begin{itemize}
-  \item Nieprawidłową obsługę przerwanych połączeń SSE.
-  \item Problemy z timeoutami podczas długotrwałych transkrypcji.
-  \item Błędy w serializacji odpowiedzi JSON.
-  \item Nieoptymalne zarządzanie zasobami przy wielu równoległych połączeniach.
-\end{itemize}
 
 \subsection{Testy manualne}
 Poza testami automatycznymi przeprowadzono szereg testów manualnych, które pozwoliły na weryfikację systemu w rzeczywistych warunkach użytkowania. Szczególną uwagę poświęcono funkcjonalnościom wymagającym interakcji użytkownika oraz długotrwałym procesom przetwarzania danych.

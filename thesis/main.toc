@@ -61,7 +61,7 @@
 \contentsline {subsection}{\numberline {7.2.1}Testy automatyczne}{44}{subsection.7.2.1}%
 \contentsline {subsubsection}{Testy interfejsu użytkownika}{44}{section*.27}%
 \contentsline {subsubsection}{Testy komunikacji API}{45}{section*.29}%
-\contentsline {subsubsection}{Testy endpointów}{45}{section*.31}%
+\contentsline {subsubsection}{Testy endpointów}{45}{section*.30}%
 \contentsline {subsection}{\numberline {7.2.2}Testy manualne}{47}{subsection.7.2.2}%
 \contentsline {subsubsection}{Test importu z YouTube}{47}{section*.33}%
 \contentsline {subsubsection}{Test zmiany zdjęcia profilowego}{47}{section*.34}%
